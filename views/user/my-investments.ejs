@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>My Investments</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+
+    <style>
+        /* ===== RESET & BASE ===== */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f4f6fa;
+            background-image: radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.6) 0%, #eef1f5 90%);
+            padding: 1.25rem;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* ===== CARD ===== */
+        .card {
+            background: #ffffff;
+            border: none !important;
+            border-radius: 2rem !important;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.06), 0 8px 20px rgba(0, 0, 0, 0.03) !important;
+            transition: transform 0.25s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08), 0 12px 28px rgba(0, 0, 0, 0.04) !important;
+        }
+
+        /* ===== CARD HEADER ===== */
+        .card-header {
+            background: transparent !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.04) !important;
+            padding: 1.25rem 1.5rem !important;
+            border-radius: 2rem 2rem 0 0 !important;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.6rem;
+        }
+
+        .card-header h5 {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0;
+        }
+
+        .card-header h5 i {
+            color: #2563eb;
+            font-size: 1.1rem;
+        }
+
+        .card-header .btn-primary {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
+            border: none !important;
+            border-radius: 2rem !important;
+            padding: 0.35rem 1rem !important;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+            transition: all 0.25s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            white-space: nowrap;
+        }
+
+        .card-header .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+            background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
+        }
+
+        .card-header .btn-primary:active {
+            transform: scale(0.97);
+        }
+
+        /* ===== CARD BODY ===== */
+        .card-body {
+            padding: 1.25rem 1.5rem 1.5rem !important;
+        }
+
+        /* ===== TABLE - FIXED LAYOUT FOR FIT ===== */
+        .table-responsive {
+            border-radius: 0.75rem;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .table {
+            margin-bottom: 0;
+            font-size: 0.85rem;
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        /* Column widths – ensures everything fits */
+        .table .col-plan {
+            width: 22%;
+        }
+        .table .col-amount {
+            width: 15%;
+        }
+        .table .col-start {
+            width: 19%;
+        }
+        .table .col-maturity {
+            width: 19%;
+        }
+        .table .col-status {
+            width: 25%;
+        }
+
+        .table thead th {
+            background: #f8fafc;
+            color: #475569;
+            font-weight: 600;
+            font-size: 0.7rem;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            padding: 0.6rem 0.6rem;
+            border-bottom: 2px solid #e9edf2;
+            border-top: none;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: left;
+        }
+
+        .table tbody td {
+            padding: 0.6rem 0.6rem;
+            border-bottom: 1px solid #f1f5f9;
+            vertical-align: middle;
+            color: #1e293b;
+            font-size: 0.82rem;
+            word-break: break-word;
+            overflow: hidden;
+        }
+
+        .table tbody tr {
+            transition: background 0.2s ease;
+        }
+
+        .table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Plan name – wraps if too long */
+        .table tbody td.plan-name {
+            font-weight: 600;
+            word-break: break-word;
+            white-space: normal;
+            line-height: 1.3;
+        }
+
+        /* Amount, dates – keep on one line */
+        .table tbody td.amount,
+        .table tbody td.date {
+            white-space: nowrap;
+        }
+
+        /* ===== BADGE – compact ===== */
+        .badge {
+            font-weight: 600;
+            font-size: 0.65rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 2rem;
+            letter-spacing: 0.2px;
+            text-transform: capitalize;
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        .badge.bg-success {
+            background: #dcfce7 !important;
+            color: #166534 !important;
+        }
+
+        .badge.bg-secondary {
+            background: #f1f5f9 !important;
+            color: #475569 !important;
+        }
+
+        /* ===== EMPTY STATE ===== */
+        .empty-state {
+            text-align: center;
+            padding: 1.5rem 0;
+        }
+
+        .empty-state .text-muted {
+            color: #64748b !important;
+            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .empty-state .btn-primary {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
+            border: none !important;
+            border-radius: 2rem !important;
+            padding: 0.5rem 1.8rem !important;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+            transition: all 0.25s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .empty-state .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+            background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
+        }
+
+        /* ============================================ */
+        /* ===== RESPONSIVE – MOBILE FIRST ===== */
+        /* ============================================ */
+
+        /* Small phones (< 576px) – compact everything */
+        @media (max-width: 575.98px) {
+            body {
+                padding: 0.6rem;
+            }
+            .card {
+                border-radius: 1.25rem !important;
+            }
+            .card-header {
+                padding: 0.9rem 1rem !important;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.4rem;
+            }
+            .card-header h5 {
+                font-size: 1rem;
+                justify-content: center;
+            }
+            .card-header .btn-primary {
+                justify-content: center;
+                font-size: 0.7rem;
+                padding: 0.3rem 0.8rem !important;
+            }
+            .card-body {
+                padding: 0.8rem 0.6rem 1rem !important;
+            }
+            .table {
+                font-size: 0.65rem;
+            }
+            .table thead th {
+                font-size: 0.55rem;
+                padding: 0.4rem 0.3rem;
+                letter-spacing: 0.2px;
+            }
+            .table tbody td {
+                font-size: 0.6rem;
+                padding: 0.35rem 0.3rem;
+                line-height: 1.2;
+            }
+            /* Column widths – adjusted for mobile */
+            .table .col-plan {
+                width: 20%;
+            }
+            .table .col-amount {
+                width: 16%;
+            }
+            .table .col-start {
+                width: 18%;
+            }
+            .table .col-maturity {
+                width: 18%;
+            }
+            .table .col-status {
+                width: 28%;
+            }
+            .badge {
+                font-size: 0.5rem;
+                padding: 0.15rem 0.4rem;
+            }
+            .empty-state .text-muted {
+                font-size: 0.8rem;
+            }
+            .empty-state .btn-primary {
+                font-size: 0.75rem;
+                padding: 0.4rem 1.2rem !important;
+            }
+        }
+
+        /* Medium phones (576px – 767px) */
+        @media (min-width: 576px) and (max-width: 767.98px) {
+            .card-header {
+                padding: 1rem 1.25rem !important;
+            }
+            .card-body {
+                padding: 1rem 1rem 1.25rem !important;
+            }
+            .table {
+                font-size: 0.7rem;
+            }
+            .table thead th {
+                font-size: 0.6rem;
+                padding: 0.5rem 0.4rem;
+            }
+            .table tbody td {
+                font-size: 0.65rem;
+                padding: 0.45rem 0.4rem;
+            }
+            .badge {
+                font-size: 0.55rem;
+                padding: 0.15rem 0.5rem;
+            }
+        }
+
+        /* Tablets (768px – 991px) */
+        @media (min-width: 768px) and (max-width: 991.98px) {
+            .card-header {
+                padding: 1.25rem 1.5rem !important;
+            }
+            .card-body {
+                padding: 1.25rem 1.5rem !important;
+            }
+            .table {
+                font-size: 0.8rem;
+            }
+            .table thead th {
+                font-size: 0.65rem;
+                padding: 0.55rem 0.6rem;
+            }
+            .table tbody td {
+                font-size: 0.75rem;
+                padding: 0.55rem 0.6rem;
+            }
+        }
+
+        /* ============================================ */
+        /* ===== TOUCH / CLICK IMPROVEMENTS ===== */
+        /* ============================================ */
+        @media (hover: none) and (pointer: coarse) {
+            .card:hover {
+                transform: none !important;
+            }
+            .card-header .btn-primary:hover,
+            .empty-state .btn-primary:hover {
+                transform: none !important;
+                box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15) !important;
+            }
+            .table tbody tr:hover {
+                background: transparent;
+            }
+        }
+
+        /* ============================================ */
+        /* ===== SAFE AREA ===== */
+        /* ============================================ */
+        @supports (padding: max(0px)) {
+            body {
+                padding-left: max(0.6rem, env(safe-area-inset-left));
+                padding-right: max(0.6rem, env(safe-area-inset-right));
+                padding-top: max(0.6rem, env(safe-area-inset-top));
+                padding-bottom: max(0.6rem, env(safe-area-inset-bottom));
+            }
+        }
+
+        /* ============================================ */
+        /* ===== REDUCED MOTION ===== */
+        /* ============================================ */
+        @media (prefers-reduced-motion: reduce) {
+            .card,
+            .card-header .btn-primary,
+            .empty-state .btn-primary,
+            .table tbody tr {
+                transition: none !important;
+                animation: none !important;
+            }
+            .card:hover {
+                transform: none !important;
+            }
+            .card-header .btn-primary:hover,
+            .empty-state .btn-primary:hover {
+                transform: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Original markup – completely untouched, with all EJS logic -->
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="fas fa-list me-2"></i> My Investments</h5>
+                <a href="/invest" class="btn btn-primary btn-sm">+ New Investment</a>
+            </div>
+            <div class="card-body">
+                <% if (investments && investments.length > 0) { %>
+                    <div class="table-responsive">
+                        <table class="table align-middle">
+                            <thead>
+                                <tr>
+                                    <th class="col-plan">Plan</th>
+                                    <th class="col-amount">Amount</th>
+                                    <th class="col-start">Start Date</th>
+                                    <th class="col-maturity">Maturity Date</th>
+                                    <th class="col-status">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% investments.forEach(inv => { %>
+                                    <tr>
+                                        <td class="plan-name"><strong><%= inv.plan.name %></strong></td>
+                                        <td class="amount">₹<%= inv.amount.toFixed(2) %></td>
+                                        <td class="date"><%= new Date(inv.startDate).toLocaleDateString() %></td>
+                                        <td class="date"><%= new Date(inv.maturityDate).toLocaleDateString() %></td>
+                                        <td>
+                                            <span class="badge <%= inv.status === 'active' ? 'bg-success' : 'bg-secondary' %>">
+                                                <%= inv.status %>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                <% } else { %>
+                    <div class="empty-state">
+                        <p class="text-muted">You haven't made any investments yet.</p>
+                        <a href="/invest" class="btn btn-primary">Start Investing Now</a>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

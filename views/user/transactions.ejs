@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>Transactions</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
+
+    <style>
+        /* ───── reset & base ───── */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 1.5rem 1.5rem 1.5rem 80px; /* sidebar space */
+            background: linear-gradient(145deg, #f2f6fc 0%, #e6edf7 100%);
+            background-attachment: fixed;
+        }
+
+        /* ───── container – premium ───── */
+        .container {
+            max-width: 1120px;
+            width: 100%;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            padding: 1.75rem 2rem 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.02), 0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .container:hover {
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+        }
+
+        /* ───── header ───── */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem 1.2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+            margin-bottom: 1.5rem;
+        }
+
+        .page-header h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #0b1a2e;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            letter-spacing: -0.02em;
+        }
+
+        .page-header h2 i {
+            color: #2563eb;
+            font-size: 1.3rem;
+            background: #eef2ff;
+            padding: 0.4rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
+        }
+
+        .page-header .total-badge {
+            background: #ffffff;
+            color: #1e293b;
+            font-weight: 600;
+            font-size: 0.7rem;
+            padding: 0.35rem 1.2rem;
+            border-radius: 2rem;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+            letter-spacing: 0.2px;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .page-header .total-badge i {
+            color: #2563eb;
+            font-size: 0.65rem;
+        }
+
+        /* ───── table wrapper ───── */
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border-radius: 0.75rem;
+            margin: 0 -0.5rem;
+            padding: 0 0.5rem;
+        }
+
+        /* ───── table ───── */
+        .table {
+            width: 100%;
+            min-width: 680px;
+            border-collapse: separate;
+            border-spacing: 0 2px;
+            font-size: 0.8rem;
+            table-layout: fixed;
+        }
+
+        .col-type {
+            width: 11%;
+        }
+        .col-amount {
+            width: 13%;
+        }
+        .col-status {
+            width: 13%;
+        }
+        .col-date {
+            width: 14%;
+        }
+        .col-details {
+            width: 49%;
+        }
+
+        .table thead th {
+            background: transparent;
+            color: #475569;
+            font-weight: 600;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            padding: 0.7rem 0.8rem;
+            border-bottom: 2px solid #e9edf2;
+            text-align: left;
+            white-space: nowrap;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(4px);
+        }
+
+        .table thead th:first-child {
+            padding-left: 1rem;
+            border-radius: 0.75rem 0 0 0.75rem;
+        }
+        .table thead th:last-child {
+            padding-right: 1rem;
+            border-radius: 0 0.75rem 0.75rem 0;
+        }
+
+        .table tbody td {
+            padding: 0.7rem 0.8rem;
+            border-bottom: 1px solid #f0f3f7;
+            vertical-align: middle;
+            color: #1e293b;
+            font-size: 0.78rem;
+            line-height: 1.4;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            background: rgba(255, 255, 255, 0.3);
+            transition: background 0.2s ease;
+        }
+
+        .table tbody td:first-child {
+            padding-left: 1rem;
+            border-radius: 0.75rem 0 0 0.75rem;
+        }
+        .table tbody td:last-child {
+            padding-right: 1rem;
+            border-radius: 0 0.75rem 0.75rem 0;
+        }
+
+        .table tbody tr {
+            transition: transform 0.15s ease, box-shadow 0.2s ease;
+        }
+
+        .table tbody tr:hover td {
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        .table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .table tbody td.col-details-cell {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .table tbody td small {
+            display: inline;
+            color: #64748b;
+            font-size: 0.7rem;
+            font-weight: 400;
+            white-space: nowrap;
+        }
+
+        .table tbody td small .label {
+            color: #94a3b8;
+            font-weight: 500;
+            margin-right: 0.15rem;
+        }
+
+        .type-text {
+            font-weight: 500;
+            text-transform: capitalize;
+            color: #0b1a2e;
+            white-space: nowrap;
+        }
+
+        .status-text {
+            font-weight: 500;
+            text-transform: capitalize;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.15rem 0.7rem 0.15rem 0.6rem;
+            border-radius: 2rem;
+            font-size: 0.65rem;
+            background: #f1f4f9;
+            color: #1e293b;
+            border: 1px solid transparent;
+            transition: all 0.15s ease;
+        }
+
+        .status-text i {
+            font-size: 0.4rem;
+            opacity: 0.6;
+        }
+
+        .status-text.success {
+            background: #e6f7ef;
+            color: #0b6e4f;
+            border-color: #b8e6d3;
+        }
+        .status-text.pending {
+            background: #fef7e6;
+            color: #9c6f0a;
+            border-color: #fcebbd;
+        }
+        .status-text.failed {
+            background: #fde8ea;
+            color: #b91c2c;
+            border-color: #f9c9cc;
+        }
+        .status-text.completed {
+            background: #e6f0fd;
+            color: #1a56db;
+            border-color: #c7d9fc;
+        }
+        .status-text.cancelled {
+            background: #f1f3f5;
+            color: #5a6a7a;
+            border-color: #e2e6ea;
+        }
+
+        .amount-value {
+            font-weight: 600;
+            color: #0b1a2e;
+            white-space: nowrap;
+            font-size: 0.85rem;
+        }
+        .amount-value.negative {
+            color: #dc2626;
+        }
+        .amount-value.positive {
+            color: #0b6e4f;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #64748b;
+            font-size: 0.9rem;
+            padding: 3rem 0;
+        }
+
+        .empty-state i {
+            font-size: 2.5rem;
+            color: #cbd5e1;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        /* ───── DataTables – refined ───── */
+        .dataTables_wrapper .dataTables_filter {
+            margin-bottom: 1rem;
+            text-align: right;
+        }
+
+        .dataTables_wrapper .dataTables_filter label {
+            color: #475569;
+            font-weight: 500;
+            font-size: 0.75rem;
+        }
+
+        .dataTables_wrapper .dataTables_filter input {
+            border: 1.5px solid #e2e8f0;
+            border-radius: 2rem;
+            padding: 0.35rem 1.2rem;
+            font-size: 0.75rem;
+            outline: none;
+            width: 220px;
+            margin-left: 0.4rem;
+            transition: all 0.2s;
+            background: #ffffff;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+        }
+
+        .dataTables_wrapper .dataTables_filter input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.06), 0 2px 8px rgba(0, 0, 0, 0.02);
+        }
+
+        .dataTables_wrapper .dataTables_length {
+            margin-bottom: 0.7rem;
+        }
+
+        .dataTables_wrapper .dataTables_length label {
+            color: #475569;
+            font-weight: 500;
+            font-size: 0.75rem;
+        }
+
+        .dataTables_wrapper .dataTables_length select {
+            border: 1.5px solid #e2e8f0;
+            border-radius: 2rem;
+            padding: 0.2rem 1.8rem 0.2rem 0.8rem;
+            font-size: 0.75rem;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%236b7a8f' d='M5 7L1 3h8z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.6rem center;
+            background-size: 10px;
+            margin: 0 0.2rem;
+            background-color: #fff;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+        }
+
+        .dataTables_wrapper .dataTables_length select:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.06);
+            outline: none;
+        }
+
+        .dataTables_wrapper .dataTables_info {
+            color: #64748b;
+            font-size: 0.7rem;
+            padding-top: 0.6rem;
+        }
+
+        .dataTables_wrapper .dataTables_paginate {
+            padding-top: 0.6rem;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            border: 1px solid #e2e8f0;
+            border-radius: 2rem;
+            padding: 0.15rem 0.8rem;
+            margin: 0 0.15rem;
+            color: #1e293b !important;
+            background: #fff;
+            font-size: 0.7rem;
+            font-weight: 500;
+            transition: all 0.15s;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            background: #2563eb !important;
+            border-color: #2563eb !important;
+            color: #fff !important;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            background: #f1f5f9 !important;
+            border-color: #cbd5e1 !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        /* ───── responsive ───── */
+        @media (max-width: 991px) {
+            body {
+                padding-left: 40px;
+                padding-right: 1rem;
+            }
+            .container {
+                padding: 1.25rem 1.25rem 1.5rem;
+                border-radius: 1.5rem;
+            }
+            .page-header h2 {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 767px) {
+            body {
+                padding: 0.6rem;
+                justify-content: center;
+                background: #f2f6fc;
+            }
+            .container {
+                margin: 0;
+                padding: 0.9rem 0.9rem 1.1rem;
+                border-radius: 1.25rem;
+                backdrop-filter: blur(8px);
+                background: rgba(255, 255, 255, 0.8);
+            }
+            .page-header {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: space-between;
+            }
+            .page-header h2 {
+                font-size: 1rem;
+                gap: 0.3rem;
+            }
+            .page-header h2 i {
+                font-size: 1rem;
+                padding: 0.3rem;
+            }
+            .page-header .total-badge {
+                font-size: 0.6rem;
+                padding: 0.2rem 0.8rem;
+            }
+            .dataTables_wrapper .dataTables_filter {
+                text-align: left;
+            }
+            .dataTables_wrapper .dataTables_filter input {
+                width: 100%;
+                margin-left: 0;
+                font-size: 0.7rem;
+                padding: 0.25rem 1rem;
+            }
+            .dataTables_wrapper .dataTables_length label {
+                font-size: 0.7rem;
+            }
+            .dataTables_wrapper .dataTables_length select {
+                font-size: 0.7rem;
+                padding: 0.15rem 1.5rem 0.15rem 0.6rem;
+            }
+            .table {
+                min-width: 520px;
+                font-size: 0.7rem;
+            }
+            .table thead th,
+            .table tbody td {
+                padding: 0.4rem 0.5rem;
+            }
+            .table thead th:first-child,
+            .table tbody td:first-child {
+                padding-left: 0.6rem;
+            }
+            .status-text {
+                font-size: 0.55rem;
+                padding: 0.05rem 0.5rem 0.05rem 0.4rem;
+            }
+            .table tbody td small {
+                font-size: 0.6rem;
+            }
+            .amount-value {
+                font-size: 0.7rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 0.3rem;
+                background: #f2f6fc;
+            }
+            .container {
+                padding: 0.5rem 0.5rem 0.8rem;
+                border-radius: 1rem;
+                backdrop-filter: blur(4px);
+            }
+            .page-header h2 {
+                font-size: 0.85rem;
+                gap: 0.2rem;
+            }
+            .page-header h2 i {
+                font-size: 0.8rem;
+                padding: 0.2rem;
+                border-radius: 0.5rem;
+            }
+            .page-header .total-badge {
+                font-size: 0.5rem;
+                padding: 0.1rem 0.5rem;
+            }
+            .table {
+                min-width: 400px;
+                font-size: 0.6rem;
+            }
+            .table thead th,
+            .table tbody td {
+                padding: 0.25rem 0.3rem;
+            }
+            .table thead th:first-child,
+            .table tbody td:first-child {
+                padding-left: 0.4rem;
+            }
+            .table thead th {
+                font-size: 0.5rem;
+                letter-spacing: 0.3px;
+            }
+            .table tbody td {
+                font-size: 0.6rem;
+                padding: 0.3rem 0.3rem;
+            }
+            .table tbody td small {
+                font-size: 0.5rem;
+            }
+            .status-text {
+                font-size: 0.45rem;
+                padding: 0.03rem 0.4rem 0.03rem 0.3rem;
+                gap: 0.2rem;
+            }
+            .status-text i {
+                font-size: 0.3rem;
+            }
+            .amount-value {
+                font-size: 0.6rem;
+            }
+            .dataTables_wrapper .dataTables_filter input {
+                font-size: 0.6rem;
+                padding: 0.2rem 0.8rem;
+            }
+            .dataTables_wrapper .dataTables_filter label {
+                font-size: 0.65rem;
+            }
+            .dataTables_wrapper .dataTables_length label {
+                font-size: 0.6rem;
+            }
+            .dataTables_wrapper .dataTables_length select {
+                font-size: 0.6rem;
+                padding: 0.1rem 1.2rem 0.1rem 0.5rem;
+            }
+            .dataTables_wrapper .dataTables_info {
+                font-size: 0.6rem;
+            }
+            .dataTables_wrapper .dataTables_paginate .paginate_button {
+                font-size: 0.6rem;
+                padding: 0.1rem 0.5rem;
+            }
+            .empty-state {
+                font-size: 0.75rem;
+                padding: 1.5rem 0;
+            }
+            .empty-state i {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <div class="page-header">
+            <h2>
+                <i class="fas fa-list-ul"></i> Transactions
+            </h2>
+            <span class="total-badge">
+                <i class="fas fa-layer-group"></i> <%= transactions.length %> total
+            </span>
+        </div>
+
+        <% if (transactions && transactions.length) { %>
+            <div class="table-responsive">
+                <table class="table" id="transactionsTable">
+                    <thead>
+                        <tr>
+                            <th class="col-type">Type</th>
+                            <th class="col-amount">Amount</th>
+                            <th class="col-status">Status</th>
+                            <th class="col-date">Date</th>
+                            <th class="col-details">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% transactions.forEach(tx => { %>
+                            <tr>
+                                <td><span class="type-text"><%= tx.type.replace('_', ' ') %></span></td>
+                                <td><span class="amount-value <%= tx.amount >= 0 ? 'positive' : 'negative' %>">₹<%= tx.amount.toFixed(2) %></span></td>
+                                <td>
+                                    <span class="status-text <%= tx.status.toLowerCase() %>">
+                                        <i class="fas fa-circle"></i> <%= tx.status %>
+                                    </span>
+                                </td>
+                                <td><%= new Date(tx.createdAt).toLocaleDateString() %></td>
+                                <td class="col-details-cell">
+                                    <% if (tx.metadata && tx.metadata.utr) { %>
+                                        <small><span class="label">UTR</span> <%= tx.metadata.utr %></small>
+                                    <% } else if (tx.metadata && tx.metadata.planName) { %>
+                                        <small><span class="label">Plan</span> <%= tx.metadata.planName %></small>
+                                    <% } else if (tx.metadata && tx.metadata.bankAccount) { %>
+                                        <small><span class="label">Bank</span> <%= tx.metadata.bankAccount.bankName %></small>
+                                    <% } else { %>
+                                        <small>—</small>
+                                    <% } %>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        <% } else { %>
+            <div class="empty-state">
+                <i class="fas fa-inbox"></i>
+                You have no transactions yet.
+            </div>
+        <% } %>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js">
+    </script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js">
+    </script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js">
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#transactionsTable').DataTable({
+                order: [
+                    [3, 'desc']
+                ],
+                pageLength: 25,
+                responsive: true
+            });
+        });
+    </script>
+
+</body>
+</html>

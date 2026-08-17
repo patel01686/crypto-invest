@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>Deposit Requests</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
+
+    <style>
+        /* ───── reset & base ───── */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #f4f7fc;
+            padding: 1.5rem;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .dashboard-wrapper {
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        /* ───── deposit card ───── */
+        .deposit-card {
+            background: #ffffff;
+            border-radius: 1.5rem;
+            border: 1px solid #f1f5f9;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.03), 0 1px 4px rgba(0, 0, 0, 0.02);
+            overflow: hidden;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .deposit-card:hover {
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.05);
+        }
+
+        .deposit-card .card-header {
+            padding: 1.25rem 1.75rem;
+            background: transparent;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .deposit-card .card-header h5 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .deposit-card .card-header h5 i {
+            color: #2563eb;
+            font-size: 1rem;
+        }
+
+        .deposit-card .card-header .badge-count {
+            background: #eef2ff;
+            color: #1d4ed8;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 0.2rem 0.8rem;
+            border-radius: 2rem;
+        }
+
+        .deposit-card .card-body {
+            padding: 0.25rem 0.25rem 0.25rem 0.25rem;
+        }
+
+        /* ───── table ───── */
+        .table-deposits {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+            min-width: 720px;
+        }
+
+        .table-deposits thead th {
+            background: #f8fafc;
+            color: #475569;
+            font-weight: 600;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 0.8rem 1rem;
+            border-bottom: 2px solid #e9edf2;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        .table-deposits thead th:first-child {
+            padding-left: 1.5rem;
+        }
+
+        .table-deposits thead th:last-child {
+            padding-right: 1.5rem;
+        }
+
+        .table-deposits tbody td {
+            padding: 0.7rem 1rem;
+            border-bottom: 1px solid #f0f3f7;
+            vertical-align: middle;
+            color: #1e293b;
+            font-size: 0.78rem;
+            line-height: 1.4;
+        }
+
+        .table-deposits tbody td:first-child {
+            padding-left: 1.5rem;
+        }
+
+        .table-deposits tbody td:last-child {
+            padding-right: 1.5rem;
+        }
+
+        .table-deposits tbody tr {
+            transition: background 0.15s ease;
+        }
+
+        .table-deposits tbody tr:hover {
+            background: #fafcff;
+        }
+
+        .table-deposits tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* ───── user name ───── */
+        .user-name {
+            font-weight: 500;
+            color: #0f172a;
+        }
+
+        .user-deleted {
+            color: #94a3b8;
+            font-style: italic;
+            font-size: 0.75rem;
+        }
+
+        /* ───── amount ───── */
+        .amount-value {
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        /* ───── UTR ───── */
+        .utr-code {
+            font-family: 'Inter', monospace;
+            font-weight: 500;
+            font-size: 0.7rem;
+            color: #475569;
+            background: #f1f5f9;
+            padding: 0.15rem 0.6rem;
+            border-radius: 0.5rem;
+            display: inline-block;
+            letter-spacing: 0.3px;
+        }
+
+        /* ───── screenshot link ───── */
+        .screenshot-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: #2563eb;
+            text-decoration: none;
+            padding: 0.15rem 0.7rem;
+            border-radius: 2rem;
+            background: #eef2ff;
+            transition: all 0.2s ease;
+        }
+
+        .screenshot-link i {
+            font-size: 0.6rem;
+        }
+
+        .screenshot-link:hover {
+            background: #dbeafe;
+            color: #1d4ed8;
+            text-decoration: none;
+        }
+
+        /* ───── status badges ───── */
+        .badge-status {
+            font-size: 0.6rem;
+            font-weight: 600;
+            text-transform: capitalize;
+            padding: 0.2rem 0.8rem;
+            border-radius: 2rem;
+            display: inline-block;
+            letter-spacing: 0.2px;
+        }
+
+        .badge-pending {
+            background: #fef3c7;
+            color: #b45309;
+        }
+
+        .badge-approved {
+            background: #d1fae5;
+            color: #047857;
+        }
+
+        .badge-rejected {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        /* ───── action buttons ───── */
+        .action-group {
+            display: flex;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            border: none;
+            border-radius: 2rem;
+            padding: 0.2rem 0.9rem;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            transition: all 0.25s ease;
+            cursor: pointer;
+            letter-spacing: 0.2px;
+        }
+
+        .btn-action i {
+            font-size: 0.55rem;
+        }
+
+        .btn-approve {
+            background: #d1fae5;
+            color: #047857;
+        }
+
+        .btn-approve:hover {
+            background: #a7f3d0;
+            color: #065f46;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.15);
+            text-decoration: none;
+        }
+
+        .btn-reject {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .btn-reject:hover {
+            background: #fecaca;
+            color: #b91c2c;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.15);
+            text-decoration: none;
+        }
+
+        /* ───── no actions ───── */
+        .no-actions {
+            font-size: 0.65rem;
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+        /* ───── DataTables override ───── */
+        .dataTables_wrapper .dataTables_filter {
+            margin-bottom: 0.9rem;
+            text-align: right;
+        }
+
+        .dataTables_wrapper .dataTables_filter input {
+            border: 1.5px solid #e2e8f0;
+            border-radius: 2rem;
+            padding: 0.3rem 1.2rem;
+            font-size: 0.75rem;
+            outline: none;
+            width: 200px;
+            margin-left: 0.4rem;
+            transition: all 0.15s;
+            background: #fff;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .dataTables_wrapper .dataTables_filter input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.06);
+        }
+
+        .dataTables_wrapper .dataTables_filter label {
+            color: #475569;
+            font-weight: 500;
+            font-size: 0.75rem;
+        }
+
+        .dataTables_wrapper .dataTables_length {
+            margin-bottom: 0.7rem;
+        }
+
+        .dataTables_wrapper .dataTables_length select {
+            border: 1.5px solid #e2e8f0;
+            border-radius: 2rem;
+            padding: 0.2rem 1.8rem 0.2rem 0.8rem;
+            font-size: 0.75rem;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%236b7a8f' d='M5 7L1 3h8z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.6rem center;
+            background-size: 10px;
+            margin: 0 0.2rem;
+            background-color: #fff;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .dataTables_wrapper .dataTables_length select:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.06);
+            outline: none;
+        }
+
+        .dataTables_wrapper .dataTables_length label {
+            color: #475569;
+            font-weight: 500;
+            font-size: 0.75rem;
+        }
+
+        .dataTables_wrapper .dataTables_info {
+            color: #64748b;
+            font-size: 0.7rem;
+            padding-top: 0.6rem;
+        }
+
+        .dataTables_wrapper .dataTables_paginate {
+            padding-top: 0.6rem;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            border: 1px solid #e2e8f0;
+            border-radius: 2rem;
+            padding: 0.15rem 0.7rem;
+            margin: 0 0.1rem;
+            color: #1e293b !important;
+            background: #fff;
+            font-size: 0.7rem;
+            font-weight: 500;
+            transition: all 0.1s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            background: #2563eb !important;
+            border-color: #2563eb !important;
+            color: #fff !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            background: #f1f5f9 !important;
+            border-color: #cbd5e1 !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        /* ───── responsive ───── */
+        @media (max-width: 991px) {
+            .deposit-card .card-header {
+                padding: 1rem 1.25rem;
+            }
+
+            .deposit-card .card-header h5 {
+                font-size: 0.85rem;
+            }
+
+            .table-deposits {
+                min-width: 600px;
+                font-size: 0.75rem;
+            }
+
+            .table-deposits thead th,
+            .table-deposits tbody td {
+                padding: 0.5rem 0.7rem;
+            }
+
+            .table-deposits thead th:first-child,
+            .table-deposits tbody td:first-child {
+                padding-left: 1rem;
+            }
+
+            .table-deposits thead th:last-child,
+            .table-deposits tbody td:last-child {
+                padding-right: 1rem;
+            }
+
+            .btn-action {
+                font-size: 0.6rem;
+                padding: 0.15rem 0.7rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 0.75rem;
+            }
+
+            .deposit-card {
+                border-radius: 1.25rem;
+            }
+
+            .deposit-card .card-header {
+                padding: 0.8rem 1rem;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .deposit-card .card-header h5 {
+                font-size: 0.8rem;
+            }
+
+            .dataTables_wrapper .dataTables_filter {
+                text-align: left;
+            }
+
+            .dataTables_wrapper .dataTables_filter input {
+                width: 100%;
+                margin-left: 0;
+                font-size: 0.7rem;
+                padding: 0.25rem 1rem;
+            }
+
+            .dataTables_wrapper .dataTables_length label {
+                font-size: 0.7rem;
+            }
+
+            .dataTables_wrapper .dataTables_length select {
+                font-size: 0.7rem;
+                padding: 0.15rem 1.5rem 0.15rem 0.6rem;
+            }
+
+            .table-deposits {
+                min-width: 520px;
+                font-size: 0.7rem;
+            }
+
+            .table-deposits thead th,
+            .table-deposits tbody td {
+                padding: 0.4rem 0.5rem;
+            }
+
+            .table-deposits thead th:first-child,
+            .table-deposits tbody td:first-child {
+                padding-left: 0.7rem;
+            }
+
+            .table-deposits thead th:last-child,
+            .table-deposits tbody td:last-child {
+                padding-right: 0.7rem;
+            }
+
+            .btn-action {
+                font-size: 0.55rem;
+                padding: 0.1rem 0.6rem;
+            }
+
+            .badge-status {
+                font-size: 0.5rem;
+                padding: 0.1rem 0.6rem;
+            }
+
+            .utr-code {
+                font-size: 0.6rem;
+                padding: 0.1rem 0.4rem;
+            }
+
+            .screenshot-link {
+                font-size: 0.6rem;
+                padding: 0.1rem 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 0.4rem;
+            }
+
+            .deposit-card {
+                border-radius: 1rem;
+            }
+
+            .deposit-card .card-header {
+                padding: 0.6rem 0.7rem;
+            }
+
+            .deposit-card .card-header h5 {
+                font-size: 0.7rem;
+            }
+
+            .deposit-card .card-header .badge-count {
+                font-size: 0.55rem;
+                padding: 0.1rem 0.6rem;
+            }
+
+            .table-deposits {
+                min-width: 400px;
+                font-size: 0.6rem;
+            }
+
+            .table-deposits thead th {
+                font-size: 0.55rem;
+                padding: 0.3rem 0.4rem;
+                letter-spacing: 0.3px;
+            }
+
+            .table-deposits tbody td {
+                padding: 0.3rem 0.4rem;
+                font-size: 0.6rem;
+            }
+
+            .table-deposits thead th:first-child,
+            .table-deposits tbody td:first-child {
+                padding-left: 0.5rem;
+            }
+
+            .table-deposits thead th:last-child,
+            .table-deposits tbody td:last-child {
+                padding-right: 0.5rem;
+            }
+
+            .action-group {
+                gap: 0.2rem;
+                flex-direction: column;
+            }
+
+            .btn-action {
+                font-size: 0.5rem;
+                padding: 0.05rem 0.5rem;
+                justify-content: center;
+            }
+
+            .badge-status {
+                font-size: 0.45rem;
+                padding: 0.05rem 0.4rem;
+            }
+
+            .utr-code {
+                font-size: 0.5rem;
+                padding: 0.05rem 0.3rem;
+            }
+
+            .screenshot-link {
+                font-size: 0.5rem;
+                padding: 0.05rem 0.4rem;
+            }
+
+            .no-actions {
+                font-size: 0.5rem;
+            }
+
+            .dataTables_wrapper .dataTables_filter input {
+                font-size: 0.6rem;
+                padding: 0.2rem 0.8rem;
+            }
+
+            .dataTables_wrapper .dataTables_filter label {
+                font-size: 0.65rem;
+            }
+
+            .dataTables_wrapper .dataTables_length label {
+                font-size: 0.6rem;
+            }
+
+            .dataTables_wrapper .dataTables_length select {
+                font-size: 0.6rem;
+                padding: 0.1rem 1.2rem 0.1rem 0.5rem;
+            }
+
+            .dataTables_wrapper .dataTables_info {
+                font-size: 0.6rem;
+            }
+
+            .dataTables_wrapper .dataTables_paginate .paginate_button {
+                font-size: 0.6rem;
+                padding: 0.1rem 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-wrapper">
+
+        <!-- ===== DEPOSIT REQUESTS CARD ===== -->
+        <div class="deposit-card">
+            <div class="card-header">
+                <h5>
+                    <i class="fas fa-arrow-down"></i> Deposit Requests
+                    <span class="badge-count"><%= deposits.length %></span>
+                </h5>
+                <!-- optional: add a small refresh/status indicator -->
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table-deposits" id="depositsTable">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Amount</th>
+                                <th>UTR</th>
+                                <th>Screenshot</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% deposits.forEach(dep => { %>
+                                <tr>
+                                    <td>
+                                        <span class="<%= dep.user ? 'user-name' : 'user-deleted' %>">
+                                            <%= dep.user ? dep.user.fullName : 'Deleted' %>
+                                        </span>
+                                    </td>
+                                    <td><span class="amount-value">₹<%= dep.amount.toFixed(2) %></span></td>
+                                    <td><span class="utr-code"><%= dep.metadata.utr %></span></td>
+                                    <td>
+                                        <a href="<%= baseUrl %><%= dep.metadata.screenshotUrl %>" target="_blank" class="screenshot-link">
+                                            <i class="fas fa-eye"></i> View
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <span class="badge-status 
+                                            <%= dep.status === 'pending' ? 'badge-pending' : 
+                                               dep.status === 'approved' ? 'badge-approved' : 'badge-rejected' %>">
+                                            <%= dep.status %>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <% if (dep.status === 'pending') { %>
+                                            <div class="action-group">
+                                                <a href="/admin/deposits/approve/<%= dep._id %>" class="btn-action btn-approve">
+                                                    <i class="fas fa-check"></i> Approve
+                                                </a>
+                                                <a href="/admin/deposits/reject/<%= dep._id %>" class="btn-action btn-reject">
+                                                    <i class="fas fa-times"></i> Reject
+                                                </a>
+                                            </div>
+                                        <% } else { %>
+                                            <span class="no-actions">—</span>
+                                        <% } %>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- DataTables (unchanged) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js">
+    </script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js">
+    </script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js">
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#depositsTable').DataTable({
+                order: [
+                    [0, 'asc']
+                ],
+                pageLength: 25,
+                responsive: true
+            });
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,321 @@
+<style>
+    /* ===== FOOTER – PREMIUM DARK DESIGN ===== */
+.footer {
+    background: linear-gradient(160deg, #0b0e1a 0%, #141a2e 40%, #1a1f3a 100%);
+    padding: 3rem 2rem 1.5rem;
+    margin-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+.footer::before {
+    content: '';
+    position: absolute;
+    top: -100px;
+    right: -100px;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(74, 95, 207, 0.08), transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.footer .container-fluid {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0;
+    position: relative;
+    z-index: 1;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1.2fr;
+    gap: 2.5rem;
+    margin-bottom: 2rem;
+}
+
+/* Brand column */
+.footer-brand h3 {
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+.footer-brand h3 i {
+    color: #f5d98a;
+    margin-right: 8px;
+}
+
+.footer-brand p {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.9rem;
+    line-height: 1.7;
+    max-width: 320px;
+    margin-bottom: 1rem;
+}
+
+.footer-brand .footer-tagline {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0.3rem 1rem;
+    border-radius: 30px;
+    background: rgba(245, 217, 138, 0.1);
+    color: #f5d98a;
+    border: 1px solid rgba(245, 217, 138, 0.08);
+}
+
+/* Quick links */
+.footer-links h4,
+.footer-social h4 {
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 1rem;
+    opacity: 0.6;
+}
+
+.footer-links ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links ul li {
+    margin-bottom: 0.6rem;
+}
+
+.footer-links ul li a {
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.footer-links ul li a:hover {
+    color: #fff;
+    transform: translateX(4px);
+}
+
+.footer-links ul li a i {
+    font-size: 0.65rem;
+    color: #4a5fcf;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.footer-links ul li a:hover i {
+    opacity: 1;
+    transform: translateX(2px);
+}
+
+/* Social icons */
+.footer-social .social-icons {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+}
+
+.footer-social .social-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    color: #fff;
+    font-size: 1.1rem;
+    transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    position: relative;
+    overflow: hidden;
+}
+
+.footer-social .social-icon::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    border-radius: 14px;
+}
+
+/* Individual brand colours on hover */
+.footer-social .social-icon.telegram::before {
+    background: linear-gradient(135deg, #0088cc, #2aabee);
+}
+.footer-social .social-icon.whatsapp::before {
+    background: linear-gradient(135deg, #25d366, #128c7e);
+}
+.footer-social .social-icon.instagram::before {
+    background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+}
+.footer-social .social-icon.youtube::before {
+    background: linear-gradient(135deg, #ff0000, #cc0000);
+}
+
+.footer-social .social-icon:hover::before {
+    opacity: 1;
+}
+
+.footer-social .social-icon i {
+    position: relative;
+    z-index: 1;
+    transition: transform 0.3s ease;
+}
+
+.footer-social .social-icon:hover {
+    transform: translateY(-4px) scale(1.05);
+    border-color: transparent;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+.footer-social .social-icon:hover i {
+    transform: scale(1.1);
+}
+
+.footer-social .social-icon.telegram:hover {
+    box-shadow: 0 8px 30px rgba(0, 136, 204, 0.3);
+}
+.footer-social .social-icon.whatsapp:hover {
+    box-shadow: 0 8px 30px rgba(37, 211, 102, 0.3);
+}
+.footer-social .social-icon.instagram:hover {
+    box-shadow: 0 8px 30px rgba(225, 48, 108, 0.3);
+}
+.footer-social .social-icon.youtube:hover {
+    box-shadow: 0 8px 30px rgba(255, 0, 0, 0.3);
+}
+
+/* Footer bottom */
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+    padding-top: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+}
+
+.footer-bottom .copyright {
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 0.8rem;
+}
+
+.footer-bottom .copyright span {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.footer-bottom .footer-legal {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.footer-bottom .footer-legal a {
+    color: rgba(255, 255, 255, 0.25);
+    text-decoration: none;
+    font-size: 0.75rem;
+    transition: color 0.3s ease;
+}
+
+.footer-bottom .footer-legal a:hover {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* ===== Responsive Footer ===== */
+@media (max-width: 575.98px) {
+    .footer {
+        padding: 2rem 1.2rem 1.2rem;
+    }
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 1.8rem;
+    }
+    .footer-brand p {
+        max-width: 100%;
+    }
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+    }
+    .footer-bottom .footer-legal {
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .footer-social .social-icons {
+        justify-content: flex-start;
+    }
+}
+
+@media (min-width: 576px) and (max-width: 991.98px) {
+    .footer-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+    }
+    .footer-grid .footer-brand {
+        grid-column: 1 / -1;
+    }
+}
+</style>
+<footer class="footer">
+    <div class="container-fluid">
+        <div class="footer-grid">
+            <!-- Brand Column -->
+            <div class="footer-brand">
+                <h3><i class="fas fa-bitcoin"></i> CoinSwitch</h3>
+                <p>Smart, secure, and transparent crypto investment platform. Grow your wealth with confidence.</p>
+                <span class="footer-tagline"><i class="fas fa-shield-alt me-1"></i> Trusted Since 2024</span>
+            </div>
+
+            <!-- Quick Links -->
+         
+
+            <!-- Social Links -->
+            <div class="footer-social">
+                <h4>Connect With Us</h4>
+                <div class="social-icons">
+                    <a href="https://t.me/patell9" class="social-icon telegram" aria-label="Telegram">
+                        <i class="fab fa-telegram-plane"></i>
+                    </a>
+                    <a href="https://t.me/patell9" class="social-icon whatsapp" aria-label="WhatsApp">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="https://t.me/patell9" class="social-icon instagram" aria-label="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://t.me/patell9" class="social-icon youtube" aria-label="YouTube">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Bar -->
+        <div class="footer-bottom">
+            <div class="copyright">
+                &copy; <span><%= new Date().getFullYear() %></span> CoinSwitch. All rights reserved.
+            </div>
+            <div class="footer-legal">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Cookies</a>
+            </div>
+        </div>
+    </div>
+</footer>

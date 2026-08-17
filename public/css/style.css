@@ -1,0 +1,151 @@
+/* ============================================
+   MINIMUM CSS – SIRF KAAM KA
+   Baaki sab aap khud likhoge
+   ============================================ */
+
+/* ----- RESET ----- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: #f5f7fa;
+    color: #1e293b;
+}
+
+/* ----- SIDEBAR TOGGLE (ZAROORI) ----- */
+#sidebar-wrapper {
+    min-height: 100vh;
+    margin-left: -280px;
+    transition: margin 0.3s ease;
+    width: 280px;
+    position: fixed;
+    z-index: 1050;
+    background: #0f172a;
+    overflow-y: auto;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    margin-left: 0;
+}
+
+.sidebar-heading {
+    padding: 1.2rem 1.5rem;
+    font-weight: 700;
+    color: #fff;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.list-group-item {
+    border: none;
+    padding: 0.7rem 1.5rem;
+    background: transparent !important;
+    color: rgba(255,255,255,0.7) !important;
+    display: block;
+    text-decoration: none;
+}
+
+.list-group-item:hover {
+    background: rgba(255,255,255,0.05) !important;
+    color: #fff !important;
+}
+
+.list-group-item i {
+    width: 24px;
+    color: #818cf8;
+}
+
+/* ----- PAGE CONTENT ----- */
+#page-content-wrapper {
+    min-width: 100vw;
+    padding: 0;
+}
+
+@media (min-width: 992px) {
+    #sidebar-wrapper {
+        margin-left: 0;
+    }
+    #page-content-wrapper {
+        padding-left: 280px;
+    }
+    #wrapper.toggled #sidebar-wrapper {
+        margin-left: -280px;
+    }
+    #wrapper.toggled #page-content-wrapper {
+        padding-left: 0;
+    }
+}
+
+/* ----- SECTIONS (Sirf basic spacing) ----- */
+section {
+    padding: 60px 20px;
+}
+
+/* ----- BUTTONS (Basic Bootstrap override) ----- */
+.btn {
+    border-radius: 8px;
+    font-weight: 600;
+    padding: 0.6rem 1.5rem;
+    border: none;
+}
+
+.btn-primary {
+    background: #4f46e5;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background: #4338ca;
+}
+
+.btn-outline-light {
+    background: transparent;
+    color: #fff;
+    border: 2px solid rgba(255,255,255,0.3);
+}
+
+.btn-outline-light:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+/* ----- FORMS (Basic) ----- */
+.form-control,
+.form-select {
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    padding: 0.6rem 1rem;
+}
+
+.form-control:focus {
+    border-color: #4f46e5;
+    outline: none;
+}
+
+/* ----- ALERTS ----- */
+.alert {
+    border-radius: 8px;
+    border: none;
+}
+
+/* ----- QR CODE ----- */
+.qr-container img {
+    max-width: 200px;
+    border-radius: 12px;
+}
+
+/* ----- RESPONSIVE (Sirf mobile ke liye) ----- */
+@media (max-width: 768px) {
+    section {
+        padding: 40px 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}

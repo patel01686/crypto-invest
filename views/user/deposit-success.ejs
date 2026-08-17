@@ -1,0 +1,23 @@
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow border-success">
+            <div class="card-body text-center">
+                <i class="fas fa-check-circle text-success display-1"></i>
+                <h3 class="mt-3">Deposit Request Submitted ✅</h3>
+                <p class="lead">Your deposit of <strong>₹<%= transaction.amount.toFixed(2) %></strong> has been recorded.</p>
+                <p>Status: <span class="badge bg-warning">Pending Verification</span></p>
+                <p><strong>UTR:</strong> <%= transaction.metadata.utr %></p>
+                
+                <hr>
+                <p class="text-muted">Please send the payment notification to the admin via WhatsApp:</p>
+                <a href="<%= waLink %>" target="_blank" class="btn btn-success btn-lg mt-2">
+                    <i class="fab fa-whatsapp me-2"></i> Send Notification to Admin
+                </a>
+                <p class="text-muted mt-3">
+                    <small>Click the button to open WhatsApp with pre-filled message.</small>
+                </p>
+                <a href="/dashboard" class="btn btn-outline-primary mt-3">Back to Dashboard</a>
+            </div>
+        </div>
+    </div>
+</div>

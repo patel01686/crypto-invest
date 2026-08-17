@@ -1,0 +1,79 @@
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-transparent">
+                <h5 class="mb-0">
+                    <i class="fas fa-<%= plan ? 'edit' : 'plus-circle' %> me-2"></i>
+                    <%= plan ? 'Edit Investment Plan' : 'Create New Investment Plan' %>
+                </h5>
+            </div>
+            <div class="card-body">
+                <form action="/admin/plans/<%= plan ? 'edit' : 'create' %><%= plan ? '/' + plan._id : '' %>" method="POST">
+                    
+                    <!-- Plan Name -->
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Plan Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="name" name="name" 
+                               value="<%= plan ? plan.name : '' %>" placeholder="e.g., Bitcoin Mining Pool" required>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="2" 
+                                  placeholder="Brief description of the plan"><%= plan ? plan.description : '' %></textarea>
+                    </div>
+
+                    <div class="row">
+                        <!-- Return Rate -->
+                        <div class="col-md-6 mb-3">
+                            <label for="returnRate" class="form-label">Return Rate (%) <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="returnRate" name="returnRate" 
+                                   value="<%= plan ? plan.returnRate : '' %>" placeholder="e.g., 5" step="any" required>
+                            <small class="text-muted">Return percentage for the tenure.</small>
+                        </div>
+
+                        <!-- Tenure Days -->
+                        <div class="col-md-6 mb-3">
+                            <label for="tenureDays" class="form-label">Tenure (Days) <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="tenureDays" name="tenureDays" 
+                                   value="<%= plan ? plan.tenureDays : '' %>" placeholder="e.g., 7" required>
+                            <small class="text-muted">Number of days the investment will lock.</small>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <!-- Min Amount -->
+                        <div class="col-md-6 mb-3">
+                            <label for="minAmount" class="form-label">Minimum Amount (₹) <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="minAmount" name="minAmount" 
+                                   value="<%= plan ? plan.minAmount : '' %>" placeholder="e.g., 100" step="any" required>
+                        </div>
+
+                        <!-- Max Amount -->
+                        <div class="col-md-6 mb-3">
+                            <label for="maxAmount" class="form-label">Maximum Amount (₹) <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="maxAmount" name="maxAmount" 
+                                   value="<%= plan ? plan.maxAmount : '' %>" placeholder="e.g., 10000" step="any" required>
+                        </div>
+                    </div>
+
+                    <!-- Active Status (Checkbox) -->
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="isActive" name="isActive" 
+                               <%= plan && plan.isActive ? 'checked' : '' %>>
+                        <label class="form-check-label" for="isActive">Active</label>
+                        <small class="text-muted d-block">If inactive, users cannot invest in this plan.</small>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="/admin/plans" class="btn btn-secondary me-md-2">Cancel</a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-1"></i> <%= plan ? 'Update Plan' : 'Create Plan' %>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>Withdrawal Requests</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
+
+    <style>
+        /* ───── reset & base ───── */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #f4f7fc;
+            padding: 1.5rem;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .dashboard-wrapper {
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        /* ───── withdrawal card ───── */
+        .withdrawal-card {
+            background: #ffffff;
+            border-radius: 1.5rem;
+            border: 1px solid #f1f5f9;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.03), 0 1px 4px rgba(0, 0, 0, 0.02);
+            overflow: hidden;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .withdrawal-card:hover {
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.05);
+        }
+
+        .withdrawal-card .card-header {
+            padding: 1.25rem 1.75rem;
+            background: transparent;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .withdrawal-card .card-header h5 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .withdrawal-card .card-header h5 i {
+            color: #059669;
+            font-size: 1rem;
+        }
+
+        .withdrawal-card .card-header .badge-count {
+            background: #d1fae5;
+            color: #047857;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 0.2rem 0.8rem;
+            border-radius: 2rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .withdrawal-card .card-header .badge-count i {
+            font-size: 0.55rem;
+            color: #059669;
+        }
+
+        .withdrawal-card .card-body {
+            padding: 0.25rem 0.25rem 0.25rem 0.25rem;
+        }
+
+        /* ───── empty state ───── */
+        .empty-state {
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+            color: #94a3b8;
+        }
+
+        .empty-state i {
+            font-size: 2rem;
+            color: #cbd5e1;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state p {
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        /* ───── table ───── */
+        .table-withdrawals {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+            min-width: 820px;
+        }
+
+        .table-withdrawals thead th {
+            background: #f8fafc;
+            color: #475569;
+            font-weight: 600;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 0.8rem 1rem;
+            border-bottom: 2px solid #e9edf2;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        .table-withdrawals thead th:first-child {
+            padding-left: 1.5rem;
+        }
+
+        .table-withdrawals thead th:last-child {
+            padding-right: 1.5rem;
+        }
+
+        .table-withdrawals tbody td {
+            padding: 0.7rem 1rem;
+            border-bottom: 1px solid #f0f3f7;
+            vertical-align: middle;
+            color: #1e293b;
+            font-size: 0.78rem;
+            line-height: 1.4;
+            max-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* allow bank details column to wrap */
+        .table-withdrawals tbody td.bank-details-cell {
+            white-space: normal;
+            max-width: 200px;
+        }
+
+        .table-withdrawals tbody td:first-child {
+            padding-left: 1.5rem;
+        }
+
+        .table-withdrawals tbody td:last-child {
+            padding-right: 1.5rem;
+        }
+
+        .table-withdrawals tbody tr {
+            transition: background 0.15s ease;
+        }
+
+        .table-withdrawals tbody tr:hover {
+            background: #fafcff;
+        }
+
+        .table-withdrawals tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* ───── user column ───── */
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.05rem;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #0f172a;
+            font-size: 0.8rem;
+        }
+
+        .user-email {
+            font-size: 0.65rem;
+            color: #94a3b8;
+        }
+
+        .user-deleted {
+            color: #94a3b8;
+            font-style: italic;
+            font-size: 0.75rem;
+        }
+
+        /* ───── amount ───── */
+        .amount-value {
+            font-weight: 700;
+            color: #047857;
+            font-size: 0.85rem;
+        }
+
+        /* ───── bank details ───── */
+        .bank-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.1rem;
+            font-size: 0.7rem;
+            line-height: 1.3;
+        }
+
+        .bank-details .bank-name {
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .bank-details .bank-account {
+            color: #475569;
+            font-family: 'Inter', monospace;
+            font-size: 0.65rem;
+        }
+
+        .bank-details .bank-holder {
+            color: #475569;
+            font-size: 0.65rem;
+        }
+
+        .bank-na {
+            color: #94a3b8;
+            font-style: italic;
+            font-size: 0.7rem;
+        }
+
+        /* ───── IFSC ───── */
+        .ifsc-code {
+            font-family: 'Inter', monospace;
+            font-weight: 500;
+            font-size: 0.7rem;
+            color: #475569;
+            background: #f1f5f9;
+            padding: 0.1rem 0.5rem;
+            border-radius: 0.4rem;
+            display: inline-block;
+            letter-spacing: 0.3px;
+        }
+
+        .ifsc-na {
+            color: #94a3b8;
+            font-size: 0.7rem;
+            font-style: italic;
+        }
+
+        /* ───── status badges ───── */
+        .badge-status {
+            font-size: 0.6rem;
+            font-weight: 600;
+            text-transform: capitalize;
+            padding: 0.2rem 0.8rem;
+            border-radius: 2rem;
+            display: inline-block;
+            letter-spacing: 0.2px;
+        }
+
+        .badge-pending {
+            background: #fef3c7;
+            color: #b45309;
+        }
+
+        .badge-approved {
+            background: #d1fae5;
+            color: #047857;
+        }
+
+        .badge-rejected {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        /* ───── date ───── */
+        .date-text {
+            font-size: 0.7rem;
+            color: #64748b;
+            white-space: nowrap;
+        }
+
+        /* ───── action buttons ───── */
+        .action-group {
+            display: flex;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            border: none;
+            border-radius: 2rem;
+            padding: 0.2rem 0.9rem;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            transition: all 0.25s ease;
+            cursor: pointer;
+            letter-spacing: 0.2px;
+        }
+
+        .btn-action i {
+            font-size: 0.55rem;
+        }
+
+        .btn-approve {
+            background: #d1fae5;
+            color: #047857;
+        }
+
+        .btn-approve:hover {
+            background: #a7f3d0;
+            color: #065f46;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.15);
+            text-decoration: none;
+        }
+
+        .btn-reject {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .btn-reject:hover {
+            background: #fecaca;
+            color: #b91c2c;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.15);
+            text-decoration: none;
+        }
+
+        .no-actions {
+            font-size: 0.65rem;
+            color: #94a3b8;
+        }
+
+        /* ───── DataTables override ───── */
+        .dataTables_wrapper .dataTables_filter {
+            margin-bottom: 0.9rem;
+            text-align: right;
+        }
+
+        .dataTables_wrapper .dataTables_filter input {
+            border: 1.5px solid #e2e8f0;
+            border-radius: 2rem;
+            padding: 0.3rem 1.2rem;
+            font-size: 0.75rem;
+            outline: none;
+            width: 200px;
+            margin-left: 0.4rem;
+            transition: all 0.15s;
+            background: #fff;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .dataTables_wrapper .dataTables_filter input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.06);
+        }
+
+        .dataTables_wrapper .dataTables_filter label {
+            color: #475569;
+            font-weight: 500;
+            font-size: 0.75rem;
+        }
+
+        .dataTables_wrapper .dataTables_length {
+            margin-bottom: 0.7rem;
+        }
+
+        .dataTables_wrapper .dataTables_length select {
+            border: 1.5px solid #e2e8f0;
+            border-radius: 2rem;
+            padding: 0.2rem 1.8rem 0.2rem 0.8rem;
+            font-size: 0.75rem;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%236b7a8f' d='M5 7L1 3h8z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.6rem center;
+            background-size: 10px;
+            margin: 0 0.2rem;
+            background-color: #fff;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .dataTables_wrapper .dataTables_length select:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.06);
+            outline: none;
+        }
+
+        .dataTables_wrapper .dataTables_length label {
+            color: #475569;
+            font-weight: 500;
+            font-size: 0.75rem;
+        }
+
+        .dataTables_wrapper .dataTables_info {
+            color: #64748b;
+            font-size: 0.7rem;
+            padding-top: 0.6rem;
+        }
+
+        .dataTables_wrapper .dataTables_paginate {
+            padding-top: 0.6rem;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            border: 1px solid #e2e8f0;
+            border-radius: 2rem;
+            padding: 0.15rem 0.7rem;
+            margin: 0 0.1rem;
+            color: #1e293b !important;
+            background: #fff;
+            font-size: 0.7rem;
+            font-weight: 500;
+            transition: all 0.1s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            background: #2563eb !important;
+            border-color: #2563eb !important;
+            color: #fff !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            background: #f1f5f9 !important;
+            border-color: #cbd5e1 !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        /* ───── responsive ───── */
+        @media (max-width: 991px) {
+            .withdrawal-card .card-header {
+                padding: 1rem 1.25rem;
+            }
+
+            .withdrawal-card .card-header h5 {
+                font-size: 0.85rem;
+            }
+
+            .table-withdrawals {
+                min-width: 680px;
+                font-size: 0.75rem;
+            }
+
+            .table-withdrawals thead th,
+            .table-withdrawals tbody td {
+                padding: 0.5rem 0.7rem;
+            }
+
+            .table-withdrawals thead th:first-child,
+            .table-withdrawals tbody td:first-child {
+                padding-left: 1rem;
+            }
+
+            .table-withdrawals thead th:last-child,
+            .table-withdrawals tbody td:last-child {
+                padding-right: 1rem;
+            }
+
+            .btn-action {
+                font-size: 0.6rem;
+                padding: 0.15rem 0.7rem;
+            }
+
+            .bank-details {
+                font-size: 0.65rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 0.75rem;
+            }
+
+            .withdrawal-card {
+                border-radius: 1.25rem;
+            }
+
+            .withdrawal-card .card-header {
+                padding: 0.8rem 1rem;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .withdrawal-card .card-header h5 {
+                font-size: 0.8rem;
+            }
+
+            .withdrawal-card .card-header .badge-count {
+                font-size: 0.6rem;
+                padding: 0.15rem 0.7rem;
+            }
+
+            .dataTables_wrapper .dataTables_filter {
+                text-align: left;
+            }
+
+            .dataTables_wrapper .dataTables_filter input {
+                width: 100%;
+                margin-left: 0;
+                font-size: 0.7rem;
+                padding: 0.25rem 1rem;
+            }
+
+            .dataTables_wrapper .dataTables_length label {
+                font-size: 0.7rem;
+            }
+
+            .dataTables_wrapper .dataTables_length select {
+                font-size: 0.7rem;
+                padding: 0.15rem 1.5rem 0.15rem 0.6rem;
+            }
+
+            .table-withdrawals {
+                min-width: 580px;
+                font-size: 0.7rem;
+            }
+
+            .table-withdrawals thead th,
+            .table-withdrawals tbody td {
+                padding: 0.4rem 0.5rem;
+            }
+
+            .table-withdrawals thead th:first-child,
+            .table-withdrawals tbody td:first-child {
+                padding-left: 0.7rem;
+            }
+
+            .table-withdrawals thead th:last-child,
+            .table-withdrawals tbody td:last-child {
+                padding-right: 0.7rem;
+            }
+
+            .btn-action {
+                font-size: 0.55rem;
+                padding: 0.1rem 0.6rem;
+            }
+
+            .badge-status {
+                font-size: 0.5rem;
+                padding: 0.1rem 0.6rem;
+            }
+
+            .user-name {
+                font-size: 0.7rem;
+            }
+
+            .user-email {
+                font-size: 0.55rem;
+            }
+
+            .amount-value {
+                font-size: 0.75rem;
+            }
+
+            .bank-details {
+                font-size: 0.6rem;
+            }
+
+            .bank-details .bank-account {
+                font-size: 0.55rem;
+            }
+
+            .ifsc-code {
+                font-size: 0.6rem;
+                padding: 0.05rem 0.4rem;
+            }
+
+            .date-text {
+                font-size: 0.6rem;
+            }
+
+            .action-group {
+                gap: 0.3rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 0.4rem;
+            }
+
+            .withdrawal-card {
+                border-radius: 1rem;
+            }
+
+            .withdrawal-card .card-header {
+                padding: 0.6rem 0.7rem;
+            }
+
+            .withdrawal-card .card-header h5 {
+                font-size: 0.7rem;
+            }
+
+            .withdrawal-card .card-header .badge-count {
+                font-size: 0.5rem;
+                padding: 0.1rem 0.5rem;
+            }
+
+            .table-withdrawals {
+                min-width: 460px;
+                font-size: 0.6rem;
+            }
+
+            .table-withdrawals thead th {
+                font-size: 0.5rem;
+                padding: 0.3rem 0.4rem;
+                letter-spacing: 0.3px;
+            }
+
+            .table-withdrawals tbody td {
+                padding: 0.3rem 0.4rem;
+                font-size: 0.6rem;
+            }
+
+            .table-withdrawals thead th:first-child,
+            .table-withdrawals tbody td:first-child {
+                padding-left: 0.5rem;
+            }
+
+            .table-withdrawals thead th:last-child,
+            .table-withdrawals tbody td:last-child {
+                padding-right: 0.5rem;
+            }
+
+            .action-group {
+                gap: 0.2rem;
+                flex-direction: column;
+            }
+
+            .btn-action {
+                font-size: 0.5rem;
+                padding: 0.05rem 0.5rem;
+                justify-content: center;
+            }
+
+            .badge-status {
+                font-size: 0.45rem;
+                padding: 0.05rem 0.4rem;
+            }
+
+            .user-name {
+                font-size: 0.6rem;
+            }
+
+            .user-email {
+                font-size: 0.5rem;
+            }
+
+            .amount-value {
+                font-size: 0.65rem;
+            }
+
+            .bank-details {
+                font-size: 0.5rem;
+            }
+
+            .bank-details .bank-account {
+                font-size: 0.5rem;
+            }
+
+            .ifsc-code {
+                font-size: 0.5rem;
+                padding: 0.05rem 0.3rem;
+            }
+
+            .date-text {
+                font-size: 0.5rem;
+            }
+
+            .no-actions {
+                font-size: 0.5rem;
+            }
+
+            .empty-state {
+                padding: 1.5rem 1rem;
+            }
+
+            .empty-state i {
+                font-size: 1.5rem;
+            }
+
+            .empty-state p {
+                font-size: 0.75rem;
+            }
+
+            .dataTables_wrapper .dataTables_filter input {
+                font-size: 0.6rem;
+                padding: 0.2rem 0.8rem;
+            }
+
+            .dataTables_wrapper .dataTables_filter label {
+                font-size: 0.65rem;
+            }
+
+            .dataTables_wrapper .dataTables_length label {
+                font-size: 0.6rem;
+            }
+
+            .dataTables_wrapper .dataTables_length select {
+                font-size: 0.6rem;
+                padding: 0.1rem 1.2rem 0.1rem 0.5rem;
+            }
+
+            .dataTables_wrapper .dataTables_info {
+                font-size: 0.6rem;
+            }
+
+            .dataTables_wrapper .dataTables_paginate .paginate_button {
+                font-size: 0.6rem;
+                padding: 0.1rem 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-wrapper">
+
+        <!-- ===== WITHDRAWAL REQUESTS CARD ===== -->
+        <div class="withdrawal-card">
+            <div class="card-header">
+                <h5>
+                    <i class="fas fa-hand-holding-usd"></i> Withdrawal Requests
+                </h5>
+                <span class="badge-count">
+                    <i class="fas fa-clock"></i>
+                    <%= withdrawals.filter(w => w.status === 'pending').length %> Pending
+                </span>
+            </div>
+            <div class="card-body">
+                <% if (withdrawals && withdrawals.length) { %>
+                    <div class="table-responsive">
+                        <table class="table-withdrawals" id="withdrawalsTable">
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Amount</th>
+                                    <th>Bank Account</th>
+                                    <th>IFSC</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% withdrawals.forEach(w => { %>
+                                    <tr>
+                                        <td>
+                                            <div class="user-info">
+                                                <span class="<%= w.user ? 'user-name' : 'user-deleted' %>">
+                                                    <%= w.user ? w.user.fullName : 'Deleted' %>
+                                                </span>
+                                                <% if (w.user && w.user.email) { %>
+                                                    <span class="user-email"><%= w.user.email %></span>
+                                                <% } %>
+                                            </div>
+                                        </td>
+                                        <td><span class="amount-value">₹<%= w.amount.toFixed(2) %></span></td>
+                                        <td class="bank-details-cell">
+                                            <% if (w.metadata && w.metadata.bankAccount) { %>
+                                                <div class="bank-details">
+                                                    <span class="bank-name"><%= w.metadata.bankAccount.bankName %></span>
+                                                    <span class="bank-holder"><%= w.metadata.bankAccount.accountHolder %></span>
+                                                    <span class="bank-account">Ac: <%= w.metadata.bankAccount.accountNumber %></span>
+                                                </div>
+                                            <% } else { %>
+                                                <span class="bank-na">N/A</span>
+                                            <% } %>
+                                        </td>
+                                        <td>
+                                            <% if (w.metadata && w.metadata.bankAccount && w.metadata.bankAccount.ifscCode) { %>
+                                                <span class="ifsc-code"><%= w.metadata.bankAccount.ifscCode %></span>
+                                            <% } else { %>
+                                                <span class="ifsc-na">N/A</span>
+                                            <% } %>
+                                        </td>
+                                        <td>
+                                            <span class="badge-status 
+                                                <%= w.status === 'pending' ? 'badge-pending' : 
+                                                   w.status === 'approved' ? 'badge-approved' : 'badge-rejected' %>">
+                                                <%= w.status %>
+                                            </span>
+                                        </td>
+                                        <td><span class="date-text"><%= new Date(w.createdAt).toLocaleDateString() %></span></td>
+                                        <td>
+                                            <% if (w.status === 'pending') { %>
+                                                <div class="action-group">
+                                                    <a href="/admin/withdrawals/approve/<%= w._id %>" class="btn-action btn-approve" onclick="return confirm('Approve this withdrawal?')">
+                                                        <i class="fas fa-check"></i> Approve
+                                                    </a>
+                                                    <a href="/admin/withdrawals/reject/<%= w._id %>" class="btn-action btn-reject" onclick="return confirm('Reject this withdrawal?')">
+                                                        <i class="fas fa-times"></i> Reject
+                                                    </a>
+                                                </div>
+                                            <% } else { %>
+                                                <span class="no-actions">—</span>
+                                            <% } %>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                <% } else { %>
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <p>No withdrawal requests yet.</p>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- DataTables (unchanged logic) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js">
+    </script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js">
+    </script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js">
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#withdrawalsTable').DataTable({
+                order: [
+                    [5, 'desc']
+                ],
+                pageLength: 25,
+                responsive: true
+            });
+        });
+    </script>
+
+</body>
+</html>

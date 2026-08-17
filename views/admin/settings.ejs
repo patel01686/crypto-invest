@@ -1,0 +1,36 @@
+<div class="row">
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-header">Update UPI ID</div>
+            <div class="card-body">
+                <form action="/admin/settings/upi" method="POST">
+                    <div class="mb-3">
+                        <label>Current UPI ID: <strong><%= upiId %></strong></label>
+                        <input type="text" class="form-control" name="upiId" placeholder="New UPI ID" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update UPI ID</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-header">Upload QR Code</div>
+            <div class="card-body">
+                <form action="/admin/settings/qr" method="POST" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label>Current QR: 
+                            <% if (qrExists) { %>
+                                <img src="/images/upi_qr.png" alt="QR" style="max-width:100px;">
+                            <% } else { %>
+                                <span class="text-muted">No QR uploaded</span>
+                            <% } %>
+                        </label>
+                        <input type="file" class="form-control" name="qrImage" accept="image/*" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Upload QR</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

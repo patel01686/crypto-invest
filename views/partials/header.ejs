@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>Crypto Invest</title>
+
+    <!-- Bootstrap 5 + Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <style>
+        /* ===== GLOBAL RESET / BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f4f6fa;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+        }
+
+        /* ===== NAVBAR WRAPPER ===== */
+        .navbar {
+            background: rgba(255, 255, 255, 0.85) !important;
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
+            padding: 0.5rem 0;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            min-height: 68px;
+        }
+
+        .navbar.scrolled {
+            background: rgba(255, 255, 255, 0.92) !important;
+            box-shadow: 0 8px 40px rgba(0, 20, 40, 0.08);
+            border-bottom-color: rgba(0, 0, 0, 0.05) !important;
+        }
+
+        .container-fluid {
+            padding-left: 1rem;
+            padding-right: 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* ===== HAMBURGER BUTTON ===== */
+        #menu-toggle {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 12px;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.2rem;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.35);
+            padding: 0;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        #menu-toggle:hover {
+            transform: scale(1.06) rotate(-2deg);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.45);
+            background: linear-gradient(135deg, #5a6fd6 0%, #6a3f9e 100%);
+        }
+
+        #menu-toggle:active {
+            transform: scale(0.92);
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
+
+        #menu-toggle .fa-bars {
+            transition: transform 0.3s ease;
+        }
+
+        #menu-toggle.active .fa-bars {
+            transform: rotate(90deg);
+        }
+
+        /* ============================================================ */
+        /* =====  ENHANCED LOGO (advanced crypto style)  ===== */
+        /* ============================================================ */
+        .navbar-brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 800;
+            font-size: 1.4rem;
+            letter-spacing: -0.02em;
+            padding: 0;
+            margin-left: 10px !important;
+            white-space: nowrap;
+            position: relative;
+            text-decoration: none;
+            /* Gradient text */
+            background: linear-gradient(135deg, #f7971e 0%, #ffd200 40%, #f7971e 80%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            /* Glow effect */
+            text-shadow: 0 0 20px rgba(247, 151, 30, 0.25), 0 0 40px rgba(247, 151, 30, 0.1);
+            /* Shimmer animation */
+            background-size: 200% 200%;
+            animation: shimmer 4s ease-in-out infinite alternate;
+        }
+
+        /* Shimmer keyframes */
+        @keyframes shimmer {
+            0% {
+                background-position: 0% 50%;
+                text-shadow: 0 0 20px rgba(247, 151, 30, 0.25), 0 0 40px rgba(247, 151, 30, 0.1);
+            }
+            50% {
+                background-position: 100% 50%;
+                text-shadow: 0 0 30px rgba(247, 151, 30, 0.4), 0 0 60px rgba(247, 151, 30, 0.2);
+            }
+            100% {
+                background-position: 0% 50%;
+                text-shadow: 0 0 20px rgba(247, 151, 30, 0.25), 0 0 40px rgba(247, 151, 30, 0.1);
+            }
+        }
+
+        /* Bitcoin icon inside logo */
+        .navbar-brand .fa-bitcoin {
+            -webkit-text-fill-color: #f7931a;
+            font-size: 1.3rem;
+            filter: drop-shadow(0 0 8px rgba(247, 147, 26, 0.5));
+            transition: transform 0.3s ease;
+        }
+
+        .navbar-brand:hover .fa-bitcoin {
+            transform: rotate(15deg) scale(1.1);
+        }
+
+        /* Optional small dot (replaced by the icon) – we remove the previous pseudo */
+        .navbar-brand::after {
+            display: none;
+        }
+
+        /* ===== RIGHT SIDE ===== */
+        .ms-auto {
+            gap: 0.5rem !important;
+        }
+
+        /* Wallet Badge */
+        .badge.bg-success {
+            background: linear-gradient(135deg, #00b894, #00a381) !important;
+            font-weight: 600;
+            font-size: 0.85rem;
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            letter-spacing: 0.01em;
+            box-shadow: 0 2px 12px rgba(0, 184, 148, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(4px);
+            transition: all 0.25s ease;
+            white-space: nowrap;
+        }
+
+        .badge.bg-success:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(0, 184, 148, 0.35);
+        }
+
+        /* User Name */
+        .text-muted.d-none.d-sm-inline {
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: #1a1a2e !important;
+            opacity: 0.85;
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            display: inline-block;
+        }
+
+        /* Logout Button */
+        .btn-outline-danger {
+            border-radius: 40px;
+            padding: 0.4rem 1.1rem;
+            font-weight: 500;
+            font-size: 0.8rem;
+            border-color: rgba(220, 53, 69, 0.25);
+            color: #dc3545;
+            transition: all 0.25s ease;
+            background: rgba(220, 53, 69, 0.04);
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-outline-danger:hover {
+            background: #dc3545;
+            color: #fff;
+            border-color: #dc3545;
+            box-shadow: 0 4px 16px rgba(220, 53, 69, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .btn-outline-danger:active {
+            transform: scale(0.95);
+        }
+
+        .btn-outline-danger i {
+            font-size: 0.85rem;
+        }
+
+        /* ===== HIDDEN SPACER (for non-logged-in) ===== */
+        .btn-primary.disabled {
+            opacity: 0 !important;
+            pointer-events: none !important;
+            visibility: hidden !important;
+            width: 44px !important;
+            height: 44px !important;
+            display: flex !important;
+            flex-shrink: 0;
+        }
+
+        /* ============================================================ */
+        /* =====  RESPONSIVE TWEAKS  ===== */
+        /* ============================================================ */
+
+        /* --- Mobile First (≤ 575px) --- */
+        @media (max-width: 575.98px) {
+            .navbar {
+                min-height: 60px;
+                padding: 0.35rem 0;
+            }
+
+            .container-fluid {
+                padding-left: 0.75rem;
+                padding-right: 0.75rem;
+            }
+
+            #menu-toggle {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+                border-radius: 10px;
+            }
+
+            .navbar-brand {
+                font-size: 1.1rem;
+                margin-left: 6px !important;
+                gap: 4px;
+            }
+
+            .navbar-brand .fa-bitcoin {
+                font-size: 1rem;
+            }
+
+            .badge.bg-success {
+                font-size: 0.7rem;
+                padding: 0.35rem 0.7rem;
+                border-radius: 30px;
+            }
+
+            .text-muted.d-none.d-sm-inline {
+                display: none !important;
+            }
+
+            .btn-outline-danger {
+                padding: 0.35rem 0.7rem;
+                font-size: 0.75rem;
+                border-radius: 30px;
+                min-width: 34px;
+                justify-content: center;
+            }
+
+            .btn-outline-danger .d-none.d-sm-inline {
+                display: none !important;
+            }
+
+            .btn-outline-danger i {
+                font-size: 0.9rem;
+                margin: 0;
+            }
+
+            .ms-auto {
+                gap: 0.3rem !important;
+            }
+
+            .btn-primary.disabled {
+                width: 40px !important;
+                height: 40px !important;
+            }
+        }
+
+        /* --- Small (576px – 767px) --- */
+        @media (min-width: 576px) and (max-width: 767.98px) {
+            .navbar {
+                min-height: 64px;
+                padding: 0.4rem 0;
+            }
+
+            .container-fluid {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            #menu-toggle {
+                width: 42px;
+                height: 42px;
+                font-size: 1.1rem;
+            }
+
+            .navbar-brand {
+                font-size: 1.2rem;
+                gap: 6px;
+            }
+
+            .navbar-brand .fa-bitcoin {
+                font-size: 1.1rem;
+            }
+
+            .badge.bg-success {
+                font-size: 0.75rem;
+                padding: 0.4rem 0.85rem;
+            }
+
+            .text-muted.d-none.d-sm-inline {
+                display: inline-block !important;
+                font-size: 0.8rem;
+                max-width: 80px;
+            }
+
+            .btn-outline-danger {
+                padding: 0.35rem 0.9rem;
+                font-size: 0.75rem;
+            }
+
+            .btn-outline-danger .d-none.d-sm-inline {
+                display: inline !important;
+            }
+
+            .ms-auto {
+                gap: 0.4rem !important;
+            }
+        }
+
+        /* --- Medium (768px – 991px) --- */
+        @media (min-width: 768px) and (max-width: 991.98px) {
+            .navbar-brand {
+                font-size: 1.3rem;
+            }
+
+            .navbar-brand .fa-bitcoin {
+                font-size: 1.2rem;
+            }
+
+            .badge.bg-success {
+                font-size: 0.8rem;
+                padding: 0.45rem 1rem;
+            }
+
+            .text-muted.d-none.d-sm-inline {
+                font-size: 0.85rem;
+                max-width: 100px;
+            }
+
+            .btn-outline-danger {
+                padding: 0.4rem 1rem;
+                font-size: 0.8rem;
+            }
+
+            .ms-auto {
+                gap: 0.5rem !important;
+            }
+        }
+
+        /* --- Large (≥ 992px) --- */
+        @media (min-width: 992px) {
+            .navbar {
+                padding: 0.6rem 0;
+                min-height: 72px;
+            }
+
+            .container-fluid {
+                padding-left: 2rem;
+                padding-right: 2rem;
+            }
+
+            #menu-toggle {
+                width: 46px;
+                height: 46px;
+                font-size: 1.25rem;
+                border-radius: 14px;
+            }
+
+            .navbar-brand {
+                font-size: 1.6rem;
+                margin-left: 14px !important;
+                gap: 10px;
+            }
+
+            .navbar-brand .fa-bitcoin {
+                font-size: 1.5rem;
+            }
+
+            .badge.bg-success {
+                font-size: 0.9rem;
+                padding: 0.55rem 1.2rem;
+            }
+
+            .text-muted.d-none.d-sm-inline {
+                font-size: 0.95rem;
+                max-width: 140px;
+            }
+
+            .btn-outline-danger {
+                padding: 0.45rem 1.3rem;
+                font-size: 0.85rem;
+            }
+
+            .ms-auto {
+                gap: 0.75rem !important;
+            }
+        }
+
+        /* --- Extra Large (≥ 1200px) --- */
+        @media (min-width: 1200px) {
+            .container-fluid {
+                padding-left: 2.5rem;
+                padding-right: 2.5rem;
+            }
+
+            .navbar-brand {
+                font-size: 1.8rem;
+            }
+
+            .navbar-brand .fa-bitcoin {
+                font-size: 1.6rem;
+            }
+        }
+
+        /* ===== UTILITY: touch-friendly tap targets ===== */
+        .navbar .btn,
+        .navbar .badge,
+        .navbar a {
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* ===== ACCESSIBILITY / FOCUS ===== */
+        #menu-toggle:focus-visible,
+        .btn-outline-danger:focus-visible {
+            outline: 3px solid #667eea;
+            outline-offset: 3px;
+        }
+
+        /* ===== SMOOTH SCROLL ANCHOR ===== */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* ===== DARK MODE COMPAT (optional) ===== */
+        @media (prefers-color-scheme: dark) {
+            .navbar {
+                background: rgba(20, 20, 30, 0.88) !important;
+                border-bottom-color: rgba(255, 255, 255, 0.06) !important;
+            }
+
+            /* Logo stays bright in dark mode */
+            .navbar-brand {
+                background: linear-gradient(135deg, #f7971e 0%, #ffd200 40%, #f7971e 80%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                text-shadow: 0 0 30px rgba(247, 151, 30, 0.4);
+            }
+
+            .navbar-brand .fa-bitcoin {
+                -webkit-text-fill-color: #f7931a;
+                filter: drop-shadow(0 0 12px rgba(247, 147, 26, 0.6));
+            }
+
+            .text-muted.d-none.d-sm-inline {
+                color: #c8c8d8 !important;
+            }
+
+            .badge.bg-success {
+                background: linear-gradient(135deg, #00b894, #00856a) !important;
+            }
+
+            .btn-outline-danger {
+                border-color: rgba(255, 100, 100, 0.25);
+                color: #ff6b6b;
+                background: rgba(255, 100, 100, 0.06);
+            }
+
+            .btn-outline-danger:hover {
+                background: #ff6b6b;
+                color: #1a1a2e;
+                border-color: #ff6b6b;
+            }
+
+            .navbar.scrolled {
+                background: rgba(20, 20, 30, 0.94) !important;
+            }
+
+            #menu-toggle {
+                background: linear-gradient(135deg, #5a6fd6, #6a3f9e);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ===== NAVBAR (ONLY HEADER) ===== -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom" id="mainNav">
+        <div class="container-fluid">
+
+            <!-- ✅ Hamburger button only for logged-in users -->
+            <% if (user) { %>
+                <button class="btn btn-primary" id="menu-toggle" type="button" aria-label="Toggle navigation">
+                    <i class="fas fa-bars"></i>
+                </button>
+            <% } else { %>
+                <span class="btn btn-primary disabled" style="visibility:hidden; width:38px;"></span>
+            <% } %>
+
+            <!-- ✅ ADVANCED LOGO -->
+            <span class="navbar-brand ms-2">
+                <i class="fas fa-bitcoin"></i> CoinSwitch
+            </span>
+
+            <div class="ms-auto d-flex align-items-center gap-2">
+                <% if (user) { %>
+                    <span class="badge bg-success d-none d-md-inline">
+                        ₹<%= user.walletBalance ? user.walletBalance.toFixed(2) : '0.00' %>
+                    </span>
+                    <span class="text-muted d-none d-sm-inline"><%= user.fullName %></span>
+                    <a href="/logout" class="btn btn-sm btn-outline-danger">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span class="d-none d-sm-inline">Logout</span>
+                    </a>
+                <% } else { %>
+                    <span class="text-muted small"></span>
+                <% } %>
+            </div>
+
+        </div>
+    </nav>
+
+    <!-- ===== BOOTSTRAP JS (optional for toggles) ===== -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js">
+    </script>
+
+    <!-- ===== CUSTOM JS for scroll & toggle ===== -->
+    <script>
+        (function() {
+            'use strict';
+
+            // 1. Scroll shadow effect
+            const nav = document.getElementById('mainNav');
+            let ticking = false;
+
+            function updateNavShadow() {
+                if (window.scrollY > 10) {
+                    nav.classList.add('scrolled');
+                } else {
+                    nav.classList.remove('scrolled');
+                }
+                ticking = false;
+            }
+
+            window.addEventListener('scroll', function() {
+                if (!ticking) {
+                    window.requestAnimationFrame(updateNavShadow);
+                    ticking = true;
+                }
+            });
+
+            // 2. Hamburger toggle animation
+            const toggleBtn = document.getElementById('menu-toggle');
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', function(e) {
+                    this.classList.toggle('active');
+                });
+            }
+
+            // 3. Touch feedback for mobile
+            const allBtns = document.querySelectorAll('.navbar .btn, .navbar .badge');
+            allBtns.forEach(function(el) {
+                el.addEventListener('touchstart', function() {
+                    this.style.transition = 'transform 0.1s ease';
+                    this.style.transform = 'scale(0.96)';
+                }, { passive: true });
+
+                el.addEventListener('touchend', function() {
+                    this.style.transform = 'scale(1)';
+                }, { passive: true });
+            });
+
+        })();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,71 @@
+<div class="bg-dark text-white" id="sidebar-wrapper">
+    <div class="sidebar-heading text-center py-4 primary-text fs-4 fw-bold text-uppercase border-bottom">
+        <i class="fas fa-coins me-2"></i>Crypto Invest
+    </div>
+    <div class="list-group list-group-flush my-3">
+        <% if (user) { %>
+            <a href="/dashboard" class="list-group-item list-group-item-action bg-transparent text-white"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a>
+            <a href="/deposit" class="list-group-item list-group-item-action bg-transparent text-white"><i class="fas fa-plus-circle me-2"></i>Deposit</a>
+            <a href="/withdraw" class="list-group-item list-group-item-action bg-transparent text-white"><i class="fas fa-money-bill-wave me-2"></i>Withdraw</a>
+            <a href="/invest" class="list-group-item list-group-item-action bg-transparent text-white"><i class="fas fa-chart-line me-2"></i>Invest</a>
+            <a href="/my-investments" class="list-group-item list-group-item-action bg-transparent text-white"><i class="fas fa-list me-2"></i>My Investments</a>
+            <a href="/profile" class="list-group-item list-group-item-action bg-transparent text-white"><i class="fas fa-user me-2"></i>Profile</a>
+            <a href="/transactions" class="list-group-item list-group-item-action bg-transparent text-white"><i class="fas fa-history me-2"></i>Transactions</a>
+            <% if (user.role === 'admin') { %>
+                <div class="border-top my-2"></div>
+                <a href="/admin/dashboard" class="list-group-item list-group-item-action bg-transparent text-warning"><i class="fas fa-user-shield me-2"></i>Admin Panel</a>
+                <a href="/admin/deposits" class="list-group-item list-group-item-action bg-transparent text-white"><i class="fas fa-credit-card me-2"></i>Deposits</a>
+                <a href="/admin/withdrawals" class="list-group-item list-group-item-action bg-transparent text-white"><i class="fas fa-hand-holding-usd me-2"></i>Withdrawals</a>
+                <a href="/admin/users" class="list-group-item list-group-item-action bg-transparent text-white"><i class="fas fa-users me-2"></i>Users</a>
+                <a href="/admin/plans" class="list-group-item list-group-item-action bg-transparent text-white"><i class="fas fa-cubes me-2"></i>Plans</a>
+                <a href="/admin/settings" class="list-group-item list-group-item-action bg-transparent text-white"><i class="fas fa-cog me-2"></i>Settings</a>
+            <% } %>
+            <a href="/logout" class="list-group-item list-group-item-action bg-transparent text-danger"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
+        <% } else { %>
+            <!-- ✅ Guest users ke liye kuch nahi – sirf empty space -->
+        <% } %>
+    </div>
+    <div class="text-center text-muted small mt-5">v1.0</div>
+</div>
+
+<!-- ========== TOGGLE SCRIPTS (same as before) ========== -->
+<script>
+    (function() {
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleBtn = document.getElementById('menu-toggle');
+            const wrapper = document.getElementById('wrapper');
+            if (!toggleBtn || !wrapper) return;
+
+            toggleBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                wrapper.classList.toggle('toggled');
+            });
+
+            const pageContent = document.getElementById('page-content-wrapper');
+            if (pageContent) {
+                pageContent.addEventListener('click', function(e) {
+                    if (window.innerWidth < 992 && wrapper.classList.contains('toggled')) {
+                        if (!toggleBtn.contains(e.target)) {
+                            wrapper.classList.remove('toggled');
+                        }
+                    }
+                });
+            }
+
+            const sidebarLinks = document.querySelectorAll('#sidebar-wrapper .list-group-item');
+            sidebarLinks.forEach(function(link) {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth < 992) {
+                        wrapper.classList.remove('toggled');
+                    }
+                });
+            });
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && wrapper.classList.contains('toggled') && window.innerWidth < 992) {
+                    wrapper.classList.remove('toggled');
+                }
+            });
+        });
+    })();
+</script>

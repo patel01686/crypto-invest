@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>Register</title>
+
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <style>
+        /* ===== RESET & BASE ===== */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(145deg, #0f0c29, #302b63, #24243e);
+            background-attachment: fixed;
+            padding: 1.25rem;
+            margin: 0;
+        }
+
+        /* ===== CARD ===== */
+        .card {
+            background: rgba(255, 255, 255, 0.07) !important;
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.10) !important;
+            border-radius: 2.5rem !important;
+            box-shadow:
+                0 30px 60px rgba(0, 0, 0, 0.60),
+                inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+            transition: transform 0.3s ease, box-shadow 0.4s ease;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow:
+                0 40px 80px rgba(0, 0, 0, 0.70),
+                inset 0 1px 0 rgba(255, 255, 255, 0.10) !important;
+        }
+
+        .card-body {
+            padding: 2.5rem 2rem !important;
+        }
+
+        /* ===== HEADING ===== */
+        h3 {
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.85rem;
+            letter-spacing: -0.5px;
+            margin-bottom: 2rem !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+        }
+
+        h3 i {
+            color: #34d399;
+            font-size: 1.6rem;
+            filter: drop-shadow(0 0 10px rgba(52, 211, 153, 0.3));
+        }
+
+        /* ===== ERROR ALERT ===== */
+        .alert-danger {
+            background: rgba(220, 38, 38, 0.15) !important;
+            border: 1px solid rgba(220, 38, 38, 0.25) !important;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: #fca5a5 !important;
+            border-radius: 1rem !important;
+            padding: 0.75rem 1.25rem !important;
+            margin-bottom: 1.5rem !important;
+            font-weight: 500;
+        }
+
+        .alert-danger ul {
+            padding-left: 1.25rem;
+            margin: 0;
+        }
+
+        .alert-danger li {
+            margin-bottom: 0.2rem;
+        }
+
+        .alert-danger li:last-child {
+            margin-bottom: 0;
+        }
+
+        /* ===== FORM LABELS ===== */
+        .form-label {
+            color: rgba(255, 255, 255, 0.75);
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.3px;
+            margin-bottom: 0.4rem;
+            display: block;
+        }
+
+        /* ===== INPUTS ===== */
+        .form-control {
+            background: rgba(255, 255, 255, 0.06) !important;
+            border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
+            border-radius: 1.25rem !important;
+            padding: 0.85rem 1.2rem !important;
+            color: #fff !important;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.20);
+            width: 100%;
+            outline: none;
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.30);
+            font-weight: 400;
+        }
+
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.10) !important;
+            border-color: #34d399 !important;
+            box-shadow:
+                0 0 0 4px rgba(52, 211, 153, 0.15),
+                inset 0 2px 6px rgba(0, 0, 0, 0.20) !important;
+            transform: scale(1.01);
+        }
+
+        .form-control:-webkit-autofill {
+            -webkit-box-shadow: 0 0 0 1000px rgba(30, 27, 75, 0.95) inset !important;
+            -webkit-text-fill-color: #fff !important;
+            border-color: #34d399 !important;
+        }
+
+        /* ===== INPUT WRAPPER ===== */
+        .mb-3 {
+            margin-bottom: 1.5rem !important;
+        }
+
+        /* ===== REGISTER BUTTON (btn-success) ===== */
+        .btn-success {
+            background: linear-gradient(135deg, #34d399, #059669) !important;
+            border: none !important;
+            border-radius: 1.25rem !important;
+            padding: 0.9rem 1.5rem !important;
+            font-weight: 700;
+            font-size: 1.05rem;
+            letter-spacing: 0.4px;
+            color: #fff;
+            box-shadow:
+                0 8px 24px rgba(52, 211, 153, 0.35),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-success::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 1.25rem;
+            background: linear-gradient(135deg, transparent 40%, rgba(255, 255, 255, 0.10) 100%);
+            pointer-events: none;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px) scale(1.01);
+            box-shadow:
+                0 12px 36px rgba(52, 211, 153, 0.50),
+                inset 0 1px 0 rgba(255, 255, 255, 0.20);
+            background: linear-gradient(135deg, #6ee7b7, #10b981) !important;
+        }
+
+        .btn-success:active {
+            transform: scale(0.97);
+            box-shadow: 0 4px 12px rgba(52, 211, 153, 0.30);
+        }
+
+        /* ===== LOGIN LINK ===== */
+        .text-center.mt-3 {
+            color: rgba(255, 255, 255, 0.55);
+            font-size: 0.95rem;
+            margin-top: 1.8rem !important;
+            text-align: center;
+        }
+
+        .text-center.mt-3 a {
+            color: #34d399;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            border-bottom: 2px solid transparent;
+            padding-bottom: 2px;
+        }
+
+        .text-center.mt-3 a:hover {
+            color: #6ee7b7;
+            border-bottom-color: #34d399;
+        }
+
+        /* ===== RESPONSIVE — MOBILE FIRST ===== */
+
+        /* Extra small devices (phones, < 576px) */
+        @media (max-width: 575.98px) {
+            body {
+                padding: 0.75rem;
+                align-items: center;
+                min-height: 100dvh;
+            }
+
+            .card {
+                border-radius: 1.75rem !important;
+                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65) !important;
+            }
+
+            .card-body {
+                padding: 1.75rem 1.25rem !important;
+            }
+
+            h3 {
+                font-size: 1.5rem;
+                gap: 0.4rem;
+                margin-bottom: 1.5rem !important;
+            }
+
+            h3 i {
+                font-size: 1.3rem;
+            }
+
+            .form-label {
+                font-size: 0.8rem;
+            }
+
+            .form-control {
+                padding: 0.75rem 1rem !important;
+                font-size: 0.95rem;
+                border-radius: 1rem !important;
+            }
+
+            .btn-success {
+                padding: 0.8rem 1.2rem !important;
+                font-size: 0.95rem;
+                border-radius: 1rem !important;
+            }
+
+            .text-center.mt-3 {
+                font-size: 0.85rem;
+                margin-top: 1.4rem !important;
+            }
+
+            .mb-3 {
+                margin-bottom: 1.2rem !important;
+            }
+
+            .alert-danger {
+                font-size: 0.9rem;
+                padding: 0.6rem 1rem !important;
+                border-radius: 0.85rem !important;
+            }
+
+            .alert-danger ul {
+                padding-left: 1rem;
+            }
+        }
+
+        /* Small devices (landscape phones, 576px – 767px) */
+        @media (min-width: 576px) and (max-width: 767.98px) {
+            .card-body {
+                padding: 2.25rem 1.75rem !important;
+            }
+        }
+
+        /* Medium devices (tablets, 768px – 991px) */
+        @media (min-width: 768px) and (max-width: 991.98px) {
+            .card-body {
+                padding: 2.75rem 2.5rem !important;
+            }
+        }
+
+        /* Large devices (desktops, 992px+) */
+        @media (min-width: 992px) {
+            .card-body {
+                padding: 3rem 3rem !important;
+            }
+
+            .card {
+                border-radius: 3rem !important;
+            }
+        }
+
+        /* ===== TOUCH / CLICK IMPROVEMENTS ===== */
+        @media (hover: none) and (pointer: coarse) {
+            .btn-success:hover {
+                transform: none !important;
+                box-shadow: 0 8px 24px rgba(52, 211, 153, 0.35) !important;
+            }
+
+            .card:hover {
+                transform: none !important;
+            }
+
+            .form-control:focus {
+                transform: none !important;
+            }
+        }
+
+        /* ===== SAFE AREA FOR NOTCH PHONES ===== */
+        @supports (padding: max(0px)) {
+            body {
+                padding-left: max(1.25rem, env(safe-area-inset-left));
+                padding-right: max(1.25rem, env(safe-area-inset-right));
+                padding-top: max(1.25rem, env(safe-area-inset-top));
+                padding-bottom: max(1.25rem, env(safe-area-inset-bottom));
+            }
+        }
+
+        /* ===== REDUCED MOTION ===== */
+        @media (prefers-reduced-motion: reduce) {
+            .card,
+            .btn-success,
+            .form-control,
+            .text-center.mt-3 a {
+                transition: none !important;
+                animation: none !important;
+            }
+            .card:hover {
+                transform: none !important;
+            }
+            .btn-success:hover {
+                transform: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Exactly your original register snippet, with all EJS logic preserved -->
+    <div class="row justify-content-center" style="width:100%; margin:0; max-width:540px;">
+        <div class="col-md-6 col-lg-5" style="width:100%; padding:0;">
+            <div class="card shadow">
+                <div class="card-body p-5">
+                    <h3 class="text-center mb-4"><i class="fas fa-user-plus me-2"></i>Register</h3>
+                    <% if (errors && errors.length) { %>
+                        <div class="alert alert-danger">
+                            <ul class="mb-0">
+                                <% errors.forEach(err => { %>
+                                    <li><%= err.msg %></li>
+                                <% }) %>
+                            </ul> 
+                        </div>
+                    <% } %>
+                    <form action="/register" method="POST">
+                        <div class="mb-3">
+                            <label for="fullName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="fullName" name="fullName" value="<%= fullName || '' %>" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" value="<%= email || '' %>" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Phone</label>
+                            <input type="text" class="form-control" id="phone" name="phone" value="<%= phone || '' %>" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password2" class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control" id="password2" name="password2" required>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">Register</button>
+                    </form>
+                    <p class="text-center mt-3">Already have an account? <a href="/login">Login</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

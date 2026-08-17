@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>Deposit Funds</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <!-- Google Font for premium touch -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+
+    <style>
+        /* ===== RESET & BASE ===== */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f4f6fa;
+            background-image: radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.6) 0%, #eef1f5 90%);
+            padding: 1.25rem;
+            margin: 0;
+        }
+
+        /* ===== CARD ===== */
+        .card {
+            background: #ffffff;
+            border: none !important;
+            border-radius: 2rem !important;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.06), 0 8px 20px rgba(0, 0, 0, 0.03) !important;
+            transition: transform 0.25s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08), 0 12px 28px rgba(0, 0, 0, 0.04) !important;
+        }
+
+        /* ===== CARD HEADER ===== */
+        .card-header {
+            background: transparent !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.04) !important;
+            padding: 1.75rem 2rem !important;
+            border-radius: 2rem 2rem 0 0 !important;
+        }
+
+        .card-header h4 {
+            color: #1a2634;
+            font-weight: 700;
+            font-size: 1.6rem;
+            letter-spacing: -0.3px;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin: 0;
+        }
+
+        .card-header h4 i {
+            color: #2563eb;
+            font-size: 1.5rem;
+        }
+
+        /* ===== CARD BODY ===== */
+        .card-body {
+            padding: 2rem 2rem 2.25rem !important;
+            color: #1e293b;
+        }
+
+        /* ===== MUTED TEXT ===== */
+        .text-muted {
+            color: #475569 !important;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        /* ===== QR IMAGE ===== */
+        .text-center img {
+            border-radius: 1.25rem !important;
+            border: 2px solid #e9edf2 !important;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04) !important;
+            transition: transform 0.25s ease, box-shadow 0.3s ease;
+            max-width: 200px;
+            width: 100%;
+            height: auto;
+            background: #ffffff;
+            padding: 0.5rem;
+        }
+
+        .text-center img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08) !important;
+        }
+
+        /* ===== UPI ID ===== */
+        .text-center p {
+            margin-top: 0.75rem !important;
+            color: #334155;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .text-center .text-primary {
+            color: #2563eb !important;
+            font-weight: 700;
+            background: #eff6ff;
+            padding: 0.2rem 0.8rem;
+            border-radius: 2rem;
+            border: 1px solid #dbeafe;
+        }
+
+        .btn-outline-secondary {
+            background: #f8fafc !important;
+            border: 1px solid #e2e8f0 !important;
+            color: #64748b !important;
+            border-radius: 2rem !important;
+            padding: 0.25rem 0.6rem !important;
+            font-size: 0.8rem;
+            transition: all 0.25s ease;
+            margin-left: 0.4rem;
+        }
+
+        .btn-outline-secondary:hover {
+            background: #eff6ff !important;
+            border-color: #2563eb !important;
+            color: #2563eb !important;
+        }
+
+        /* ===== HR ===== */
+        hr {
+            border: 0;
+            height: 1px;
+            background: #e9edf2;
+            margin: 1.8rem 0;
+        }
+
+        /* ===== SUBHEADING ===== */
+        .card-body h5 {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #0f172a;
+            margin-bottom: 1.25rem;
+        }
+
+        /* ===== FORM LABELS ===== */
+        .form-label {
+            color: #334155;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.2px;
+            margin-bottom: 0.35rem;
+            display: block;
+        }
+
+        /* ===== INPUTS ===== */
+        .form-control {
+            background: #ffffff !important;
+            border: 1.5px solid #e2e8f0 !important;
+            border-radius: 1rem !important;
+            padding: 0.75rem 1.1rem !important;
+            color: #1e293b !important;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.25s ease;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.01);
+            width: 100%;
+            outline: none;
+        }
+
+        .form-control::placeholder {
+            color: #94a3b8;
+            font-weight: 400;
+        }
+
+        .form-control:focus {
+            border-color: #2563eb !important;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.10) !important;
+            transform: scale(1.005);
+        }
+
+        .form-control[type="file"] {
+            padding: 0.6rem 1rem !important;
+            background: #fafbfc !important;
+            color: #334155;
+        }
+
+        .form-control[type="file"]::-webkit-file-upload-button {
+            background: #eff6ff;
+            border: 1px solid #dbeafe;
+            border-radius: 2rem;
+            padding: 0.3rem 1.2rem;
+            color: #2563eb;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .form-control[type="file"]::-webkit-file-upload-button:hover {
+            background: #dbeafe;
+        }
+
+        .form-control:-webkit-autofill {
+            -webkit-box-shadow: 0 0 0 1000px #fff inset !important;
+            -webkit-text-fill-color: #1e293b !important;
+            border-color: #2563eb !important;
+        }
+
+        /* ===== INPUT WRAPPER ===== */
+        .mb-3 {
+            margin-bottom: 1.5rem !important;
+        }
+
+        /* ===== SUBMIT BUTTON ===== */
+        .btn-primary {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
+            border: none !important;
+            border-radius: 1rem !important;
+            padding: 0.85rem 1.5rem !important;
+            font-weight: 700;
+            font-size: 1.05rem;
+            letter-spacing: 0.3px;
+            color: #ffffff;
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.20);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent 40%, rgba(255, 255, 255, 0.08) 100%);
+            pointer-events: none;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(37, 99, 235, 0.30);
+            background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.97);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+        }
+
+        /* ===== RESPONSIVE — MOBILE FIRST ===== */
+
+        @media (max-width: 575.98px) {
+            body {
+                padding: 0.75rem;
+            }
+
+            .card {
+                border-radius: 1.5rem !important;
+            }
+
+            .card-header {
+                padding: 1.25rem 1.25rem !important;
+            }
+
+            .card-header h4 {
+                font-size: 1.3rem;
+            }
+
+            .card-header h4 i {
+                font-size: 1.2rem;
+            }
+
+            .card-body {
+                padding: 1.5rem 1.25rem !important;
+            }
+
+            .text-muted {
+                font-size: 0.9rem;
+            }
+
+            .text-center img {
+                max-width: 150px;
+                padding: 0.4rem;
+            }
+
+            .text-center p {
+                font-size: 0.85rem;
+            }
+
+            .btn-outline-secondary {
+                font-size: 0.7rem;
+                padding: 0.15rem 0.5rem !important;
+            }
+
+            .card-body h5 {
+                font-size: 1.05rem;
+            }
+
+            .form-label {
+                font-size: 0.8rem;
+            }
+
+            .form-control {
+                padding: 0.7rem 0.9rem !important;
+                font-size: 0.95rem;
+                border-radius: 0.85rem !important;
+            }
+
+            .btn-primary {
+                padding: 0.75rem 1.2rem !important;
+                font-size: 0.95rem;
+                border-radius: 0.85rem !important;
+            }
+
+            .mb-3 {
+                margin-bottom: 1.2rem !important;
+            }
+
+            hr {
+                margin: 1.5rem 0;
+            }
+        }
+
+        @media (min-width: 576px) and (max-width: 767.98px) {
+            .card-header {
+                padding: 1.5rem 1.75rem !important;
+            }
+            .card-body {
+                padding: 1.75rem 1.75rem !important;
+            }
+        }
+
+        @media (min-width: 768px) and (max-width: 991.98px) {
+            .card-header {
+                padding: 1.75rem 2rem !important;
+            }
+            .card-body {
+                padding: 2rem 2rem !important;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .card-header {
+                padding: 1.75rem 2.25rem !important;
+            }
+            .card-body {
+                padding: 2.25rem 2.25rem !important;
+            }
+        }
+
+        /* ===== TOUCH / CLICK IMPROVEMENTS ===== */
+        @media (hover: none) and (pointer: coarse) {
+            .btn-primary:hover {
+                transform: none !important;
+                box-shadow: 0 8px 20px rgba(37, 99, 235, 0.20) !important;
+            }
+            .card:hover {
+                transform: none !important;
+            }
+            .form-control:focus {
+                transform: none !important;
+            }
+            .text-center img:hover {
+                transform: none !important;
+            }
+        }
+
+        /* ===== SAFE AREA ===== */
+        @supports (padding: max(0px)) {
+            body {
+                padding-left: max(1.25rem, env(safe-area-inset-left));
+                padding-right: max(1.25rem, env(safe-area-inset-right));
+                padding-top: max(1.25rem, env(safe-area-inset-top));
+                padding-bottom: max(1.25rem, env(safe-area-inset-bottom));
+            }
+        }
+
+        /* ===== REDUCED MOTION ===== */
+        @media (prefers-reduced-motion: reduce) {
+            .card,
+            .btn-primary,
+            .form-control,
+            .text-center img,
+            .btn-outline-secondary {
+                transition: none !important;
+                animation: none !important;
+            }
+            .card:hover {
+                transform: none !important;
+            }
+            .btn-primary:hover {
+                transform: none !important;
+            }
+            .text-center img:hover {
+                transform: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Original deposit markup – completely untouched -->
+    <div class="row justify-content-center" style="width:100%; margin:0; max-width:700px;">
+        <div class="col-md-8 col-lg-6" style="width:100%; padding:0;">
+            <div class="card shadow">
+                <div class="card-header bg-transparent">
+                    <h4 class="mb-0"><i class="fas fa-credit-card me-2"></i>Deposit Funds</h4>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted">Scan the QR code below using any UPI app (GPay, PhonePe, Paytm) and send the exact amount.</p>
+                    <div class="text-center">
+                        <img src="<%= qrImage %>" alt="UPI QR" class="img-fluid border shadow rounded" style="max-width: 250px;">
+                        <p class="mt-2"><strong>UPI ID:</strong> <span class="text-primary"><%= upiId %></span> <button class="btn btn-sm btn-outline-secondary" onclick="navigator.clipboard.writeText('<%= upiId %>')"><i class="fas fa-copy"></i></button></p>
+                    </div>
+                    <hr>
+                    <h5>Submit Payment Details</h5>
+                    <form action="/deposit" method="POST" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="amount" class="form-label">Amount (₹)</label>
+                            <input type="number" class="form-control" id="amount" name="amount" min="1" step="any" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="utr" class="form-label">UTR Number</label>
+                            <input type="text" class="form-control" id="utr" name="utr" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="screenshot" class="form-label">Payment Screenshot</label>
+                            <input type="file" class="form-control" id="screenshot" name="screenshot" accept="image/*" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Submit Deposit Request</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
