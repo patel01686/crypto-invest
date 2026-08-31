@@ -8,7 +8,7 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
-    <!-- Google Font for premium touch -->
+    <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
 
     <style>
@@ -39,13 +39,8 @@
             border: none !important;
             border-radius: 2rem !important;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.06), 0 8px 20px rgba(0, 0, 0, 0.03) !important;
-            transition: transform 0.25s ease, box-shadow 0.3s ease;
             overflow: hidden;
-        }
-
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08), 0 12px 28px rgba(0, 0, 0, 0.04) !important;
+            width: 100%;
         }
 
         /* ===== CARD HEADER ===== */
@@ -53,13 +48,12 @@
             background: transparent !important;
             border-bottom: 1px solid rgba(0, 0, 0, 0.04) !important;
             padding: 1.75rem 2rem !important;
-            border-radius: 2rem 2rem 0 0 !important;
         }
 
         .card-header h4 {
             color: #1a2634;
             font-weight: 700;
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             letter-spacing: -0.3px;
             display: flex;
             align-items: center;
@@ -69,7 +63,7 @@
 
         .card-header h4 i {
             color: #2563eb;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
         }
 
         /* ===== CARD BODY ===== */
@@ -78,68 +72,178 @@
             color: #1e293b;
         }
 
-        /* ===== MUTED TEXT ===== */
-        .text-muted {
-            color: #475569 !important;
-            font-size: 1rem;
-            font-weight: 400;
-            line-height: 1.6;
-            margin-bottom: 1.5rem;
+        /* ============================================================ */
+        /* ===== TABS — FULLY RESPONSIVE, CLEAN, WELL-ALIGNED ===== */
+        /* ============================================================ */
+        .nav-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            background: #f1f4f9;
+            padding: 0.5rem;
+            border-radius: 1.25rem;
+            margin-bottom: 1.75rem;
         }
 
-        /* ===== QR IMAGE ===== */
-        .text-center img {
+        .nav-pills .nav-item {
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+
+        .nav-pills .nav-link {
+            background: transparent !important;
+            border: none !important;
+            border-radius: 1rem !important;
+            padding: 0.65rem 0.75rem !important;
+            font-weight: 600;
+            font-size: 0.82rem;
+            color: #475569 !important;
+            transition: all 0.25s ease;
+            text-align: center;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            width: 100%;
+            letter-spacing: 0.2px;
+        }
+
+        .nav-pills .nav-link i {
+            font-size: 0.95rem;
+            color: #64748b;
+            transition: color 0.25s ease;
+        }
+
+        .nav-pills .nav-link:hover {
+            background: rgba(37, 99, 235, 0.06) !important;
+            color: #1e293b !important;
+        }
+
+        .nav-pills .nav-link:hover i {
+            color: #2563eb;
+        }
+
+        .nav-pills .nav-link.active {
+            background: #ffffff !important;
+            color: #2563eb !important;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.12), 0 1px 3px rgba(0, 0, 0, 0.03) !important;
+            font-weight: 700;
+        }
+
+        .nav-pills .nav-link.active i {
+            color: #2563eb !important;
+        }
+
+        /* ===== TAB CONTENT — QR + ADDRESS ===== */
+        .tab-pane {
+            padding: 0.25rem 0 0.5rem;
+        }
+
+        .tab-pane .text-center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .tab-pane .text-center img {
             border-radius: 1.25rem !important;
             border: 2px solid #e9edf2 !important;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04) !important;
-            transition: transform 0.25s ease, box-shadow 0.3s ease;
-            max-width: 200px;
+            max-width: 180px;
             width: 100%;
             height: auto;
             background: #ffffff;
-            padding: 0.5rem;
+            padding: 0.6rem;
+            transition: transform 0.25s ease;
         }
 
-        .text-center img:hover {
+        .tab-pane .text-center img:hover {
             transform: scale(1.02);
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08) !important;
         }
 
-        /* ===== UPI ID ===== */
-        .text-center p {
-            margin-top: 0.75rem !important;
-            color: #334155;
-            font-weight: 500;
-            font-size: 0.95rem;
+        /* --- UPI ID / Wallet Address Row --- */
+        .address-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+            width: 100%;
+            padding: 0 0.25rem;
         }
 
-        .text-center .text-primary {
-            color: #2563eb !important;
+        .address-row .address-text {
             font-weight: 700;
+            color: #2563eb;
             background: #eff6ff;
-            padding: 0.2rem 0.8rem;
+            padding: 0.3rem 1rem;
             border-radius: 2rem;
             border: 1px solid #dbeafe;
+            font-size: 0.85rem;
+            word-break: break-all;
+            text-align: center;
+            max-width: 100%;
+            flex: 1 1 auto;
+            min-width: 120px;
         }
 
-        .btn-outline-secondary {
+        .address-row .btn-copy {
             background: #f8fafc !important;
             border: 1px solid #e2e8f0 !important;
             color: #64748b !important;
             border-radius: 2rem !important;
-            padding: 0.25rem 0.6rem !important;
+            padding: 0.3rem 0.7rem !important;
             font-size: 0.8rem;
-            transition: all 0.25s ease;
-            margin-left: 0.4rem;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .btn-outline-secondary:hover {
+        .address-row .btn-copy:hover {
             background: #eff6ff !important;
             border-color: #2563eb !important;
             color: #2563eb !important;
         }
 
-        /* ===== HR ===== */
+        /* --- Network Badges --- */
+        .network-badges {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 0.6rem;
+        }
+
+        .network-badges .badge {
+            font-weight: 600;
+            padding: 0.35rem 0.9rem;
+            border-radius: 2rem;
+            font-size: 0.7rem;
+            letter-spacing: 0.2px;
+        }
+
+        .badge-bg-info {
+            background: #e0f2fe !important;
+            color: #0369a1 !important;
+        }
+
+        .badge-bg-warning {
+            background: #fef9c3 !important;
+            color: #854d0e !important;
+        }
+
+        .tab-pane .text-muted.small {
+            font-size: 0.8rem;
+            color: #64748b !important;
+            margin-top: 0.5rem;
+        }
+
+        /* ===== DIVIDER ===== */
         hr {
             border: 0;
             height: 1px;
@@ -147,10 +251,10 @@
             margin: 1.8rem 0;
         }
 
-        /* ===== SUBHEADING ===== */
+        /* ===== FORM HEADING ===== */
         .card-body h5 {
             font-weight: 700;
-            font-size: 1.2rem;
+            font-size: 1.15rem;
             color: #0f172a;
             margin-bottom: 1.25rem;
         }
@@ -159,7 +263,7 @@
         .form-label {
             color: #334155;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             letter-spacing: 0.2px;
             margin-bottom: 0.35rem;
             display: block;
@@ -175,7 +279,6 @@
             font-size: 1rem;
             font-weight: 500;
             transition: all 0.25s ease;
-            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.01);
             width: 100%;
             outline: none;
         }
@@ -188,39 +291,10 @@
         .form-control:focus {
             border-color: #2563eb !important;
             box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.10) !important;
-            transform: scale(1.005);
         }
 
-        .form-control[type="file"] {
-            padding: 0.6rem 1rem !important;
-            background: #fafbfc !important;
-            color: #334155;
-        }
-
-        .form-control[type="file"]::-webkit-file-upload-button {
-            background: #eff6ff;
-            border: 1px solid #dbeafe;
-            border-radius: 2rem;
-            padding: 0.3rem 1.2rem;
-            color: #2563eb;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .form-control[type="file"]::-webkit-file-upload-button:hover {
-            background: #dbeafe;
-        }
-
-        .form-control:-webkit-autofill {
-            -webkit-box-shadow: 0 0 0 1000px #fff inset !important;
-            -webkit-text-fill-color: #1e293b !important;
-            border-color: #2563eb !important;
-        }
-
-        /* ===== INPUT WRAPPER ===== */
         .mb-3 {
-            margin-bottom: 1.5rem !important;
+            margin-bottom: 1.35rem !important;
         }
 
         /* ===== SUBMIT BUTTON ===== */
@@ -237,16 +311,6 @@
             transition: all 0.3s ease;
             cursor: pointer;
             width: 100%;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-primary::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, transparent 40%, rgba(255, 255, 255, 0.08) 100%);
-            pointer-events: none;
         }
 
         .btn-primary:hover {
@@ -257,14 +321,21 @@
 
         .btn-primary:active {
             transform: scale(0.97);
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
         }
 
+        .text-muted.small.text-center {
+            font-size: 0.8rem;
+            color: #94a3b8 !important;
+            margin-top: 1.25rem !important;
+        }
+
+        /* ============================================================ */
         /* ===== RESPONSIVE — MOBILE FIRST ===== */
+        /* ============================================================ */
 
         @media (max-width: 575.98px) {
             body {
-                padding: 0.75rem;
+                padding: 0.6rem;
             }
 
             .card {
@@ -272,86 +343,130 @@
             }
 
             .card-header {
-                padding: 1.25rem 1.25rem !important;
+                padding: 1.1rem 1.1rem !important;
             }
 
             .card-header h4 {
-                font-size: 1.3rem;
-            }
-
-            .card-header h4 i {
                 font-size: 1.2rem;
             }
 
+            .card-header h4 i {
+                font-size: 1.1rem;
+            }
+
             .card-body {
-                padding: 1.5rem 1.25rem !important;
+                padding: 1.25rem 1.1rem !important;
             }
 
-            .text-muted {
-                font-size: 0.9rem;
+            /* --- TABS --- */
+            .nav-pills {
+                gap: 0.35rem;
+                padding: 0.4rem;
+                border-radius: 1rem;
             }
 
-            .text-center img {
-                max-width: 150px;
+            .nav-pills .nav-link {
+                padding: 0.5rem 0.4rem !important;
+                font-size: 0.65rem;
+                border-radius: 0.75rem !important;
+                gap: 0.3rem;
+            }
+
+            .nav-pills .nav-link i {
+                font-size: 0.75rem;
+            }
+
+            /* --- QR --- */
+            .tab-pane .text-center img {
+                max-width: 140px;
                 padding: 0.4rem;
             }
 
-            .text-center p {
-                font-size: 0.85rem;
+            .address-row .address-text {
+                font-size: 0.72rem;
+                padding: 0.2rem 0.7rem;
+                min-width: 80px;
             }
 
-            .btn-outline-secondary {
+            .address-row .btn-copy {
+                font-size: 0.65rem;
+                padding: 0.2rem 0.5rem !important;
+            }
+
+            .network-badges .badge {
+                font-size: 0.6rem;
+                padding: 0.25rem 0.7rem;
+            }
+
+            .tab-pane .text-muted.small {
                 font-size: 0.7rem;
-                padding: 0.15rem 0.5rem !important;
             }
 
+            /* --- FORM --- */
             .card-body h5 {
-                font-size: 1.05rem;
+                font-size: 1rem;
             }
 
             .form-label {
-                font-size: 0.8rem;
+                font-size: 0.78rem;
             }
 
             .form-control {
-                padding: 0.7rem 0.9rem !important;
-                font-size: 0.95rem;
+                padding: 0.6rem 0.85rem !important;
+                font-size: 0.9rem;
                 border-radius: 0.85rem !important;
             }
 
             .btn-primary {
-                padding: 0.75rem 1.2rem !important;
-                font-size: 0.95rem;
+                padding: 0.7rem 1rem !important;
+                font-size: 0.9rem;
                 border-radius: 0.85rem !important;
             }
 
             .mb-3 {
-                margin-bottom: 1.2rem !important;
+                margin-bottom: 1rem !important;
             }
 
             hr {
-                margin: 1.5rem 0;
+                margin: 1.25rem 0;
             }
         }
 
+        /* ===== TABLET (SMALL) ===== */
         @media (min-width: 576px) and (max-width: 767.98px) {
             .card-header {
-                padding: 1.5rem 1.75rem !important;
+                padding: 1.4rem 1.5rem !important;
             }
             .card-body {
-                padding: 1.75rem 1.75rem !important;
+                padding: 1.5rem 1.5rem !important;
+            }
+
+            .nav-pills .nav-link {
+                font-size: 0.75rem;
+                padding: 0.55rem 0.6rem !important;
+            }
+
+            .tab-pane .text-center img {
+                max-width: 160px;
             }
         }
 
+        /* ===== TABLET (LARGE) ===== */
         @media (min-width: 768px) and (max-width: 991.98px) {
             .card-header {
-                padding: 1.75rem 2rem !important;
+                padding: 1.6rem 1.8rem !important;
             }
             .card-body {
-                padding: 2rem 2rem !important;
+                padding: 1.8rem 1.8rem !important;
+            }
+
+            .nav-pills .nav-link {
+                font-size: 0.8rem;
+                padding: 0.6rem 0.7rem !important;
             }
         }
 
+        /* ===== DESKTOP ===== */
         @media (min-width: 992px) {
             .card-header {
                 padding: 1.75rem 2.25rem !important;
@@ -361,19 +476,33 @@
             }
         }
 
-        /* ===== TOUCH / CLICK IMPROVEMENTS ===== */
+        /* ============================================================ */
+        /* ===== TOUCH DEVICES — DISABLE HOVER EFFECTS ===== */
+        /* ============================================================ */
         @media (hover: none) and (pointer: coarse) {
             .btn-primary:hover {
                 transform: none !important;
                 box-shadow: 0 8px 20px rgba(37, 99, 235, 0.20) !important;
             }
-            .card:hover {
+            .tab-pane .text-center img:hover {
                 transform: none !important;
             }
-            .form-control:focus {
-                transform: none !important;
+            .address-row .btn-copy:hover {
+                background: #f8fafc !important;
+                border-color: #e2e8f0 !important;
+                color: #64748b !important;
             }
-            .text-center img:hover {
+        }
+
+        /* ===== REDUCED MOTION ===== */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                transition: none !important;
+                animation: none !important;
+            }
+            .btn-primary:hover {
                 transform: none !important;
             }
         }
@@ -388,25 +517,12 @@
             }
         }
 
-        /* ===== REDUCED MOTION ===== */
-        @media (prefers-reduced-motion: reduce) {
-            .card,
-            .btn-primary,
-            .form-control,
-            .text-center img,
-            .btn-outline-secondary {
-                transition: none !important;
-                animation: none !important;
-            }
-            .card:hover {
-                transform: none !important;
-            }
-            .btn-primary:hover {
-                transform: none !important;
-            }
-            .text-center img:hover {
-                transform: none !important;
-            }
+        /* ===== TOAST ===== */
+        .position-fixed.top-0.start-50.translate-middle-x {
+            transform: translateX(-50%) !important;
+        }
+        .position-fixed {
+            z-index: 9999 !important;
         }
     </style>
 </head>
@@ -424,22 +540,22 @@
                     <ul class="nav nav-pills nav-fill mb-4" id="depositTabs" role="tablist">
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active" id="tab-upi" data-bs-toggle="pill" data-bs-target="#panel-upi" type="button" role="tab">
-                                <i class="fas fa-mobile-alt me-1"></i> UPI
+                                <i class="fas fa-mobile-alt"></i> UPI
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="tab-trc20" data-bs-toggle="pill" data-bs-target="#panel-trc20" type="button" role="tab">
-                                <i class="fab fa-bitcoin me-1"></i> USDT TRC20
+                                <i class="fab fa-bitcoin"></i> TRC20
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="tab-erc20" data-bs-toggle="pill" data-bs-target="#panel-erc20" type="button" role="tab">
-                                <i class="fab fa-ethereum me-1"></i> USDT ERC20
+                                <i class="fab fa-ethereum"></i> ERC20
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="tab-bep20" data-bs-toggle="pill" data-bs-target="#panel-bep20" type="button" role="tab">
-                                <i class="fas fa-link me-1"></i> USDT BEP20
+                                <i class="fas fa-link"></i> BEP20
                             </button>
                         </li>
                     </ul>
@@ -450,32 +566,32 @@
                         <!-- PANEL 1: UPI -->
                         <div class="tab-pane fade show active" id="panel-upi" role="tabpanel">
                             <div class="text-center">
-                                <img src="<%= typeof qrImage !== 'undefined' ? qrImage : '/images/upi-qr.png' %>" alt="UPI QR" class="img-fluid border shadow rounded" style="max-width: 200px;">
-                                <p class="text-muted small mt-2">Scan the QR code or copy the UPI ID and pay the exact amount.</p>
+                                <img src="<%= typeof qrImage !== 'undefined' ? qrImage : '/images/upi-qr.png' %>" alt="UPI QR" class="img-fluid border shadow rounded">
+                                <p class="text-muted small">Scan QR or copy UPI ID and pay exact amount.</p>
                             </div>
                         </div>
 
                         <!-- PANEL 2: USDT TRC20 -->
                         <div class="tab-pane fade" id="panel-trc20" role="tabpanel">
                             <div class="text-center">
-                                <img src="<%= typeof usdtTrc20Qr !== 'undefined' ? usdtTrc20Qr : '/images/usdt-trc20-qr.png' %>" alt="USDT TRC20 QR" class="img-fluid border shadow rounded" style="max-width: 200px;">
-                                <p class="text-muted small">Send USDT on the TRC20 network to the address above.</p>
+                                <img src="<%= typeof usdtTrc20Qr !== 'undefined' ? usdtTrc20Qr : '/images/usdt-trc20-qr.png' %>" alt="USDT TRC20 QR" class="img-fluid border shadow rounded">
+                                <p class="text-muted small">Send USDT on TRC20 network to the address above.</p>
                             </div>
                         </div>
 
                         <!-- PANEL 3: USDT ERC20 -->
                         <div class="tab-pane fade" id="panel-erc20" role="tabpanel">
                             <div class="text-center">
-                                <img src="<%= typeof usdtErc20Qr !== 'undefined' ? usdtErc20Qr : '/images/usdt-erc20-qr.png' %>" alt="USDT ERC20 QR" class="img-fluid border shadow rounded" style="max-width: 200px;">
-                                <p class="text-muted small">Send USDT on the ERC20 network to the address above.</p>
+                                <img src="<%= typeof usdtErc20Qr !== 'undefined' ? usdtErc20Qr : '/images/usdt-erc20-qr.png' %>" alt="USDT ERC20 QR" class="img-fluid border shadow rounded">
+                                <p class="text-muted small">Send USDT on ERC20 network to the address above.</p>
                             </div>
                         </div>
 
                         <!-- PANEL 4: USDT BEP20 -->
                         <div class="tab-pane fade" id="panel-bep20" role="tabpanel">
                             <div class="text-center">
-                                <img src="<%= typeof usdtBep20Qr !== 'undefined' ? usdtBep20Qr : '/images/usdt-bep20-qr.png' %>" alt="USDT BEP20 QR" class="img-fluid border shadow rounded" style="max-width: 200px;">
-                                <p class="text-muted small">Send USDT on the BEP20 network to the address above.</p>
+                                <img src="<%= typeof usdtBep20Qr !== 'undefined' ? usdtBep20Qr : '/images/usdt-bep20-qr.png' %>" alt="USDT BEP20 QR" class="img-fluid border shadow rounded">
+                                <p class="text-muted small">Send USDT on BEP20 network to the address above.</p>
                             </div>
                         </div>
 
@@ -497,8 +613,6 @@
                             <label for="utr" class="form-label" id="utrLabel">UTR Number</label>
                             <input type="text" class="form-control" id="utr" name="utr" placeholder="Enter UTR / Transaction ID" required>
                         </div>
-
-                        <!-- Screenshot field removed as requested -->
 
                         <button type="submit" class="btn btn-primary w-100">
                             <i class="fas fa-paper-plane me-2"></i>Submit Deposit Request
@@ -631,7 +745,6 @@
         }
     </script>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
     </script>
 
