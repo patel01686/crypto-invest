@@ -363,36 +363,74 @@
 <body>
 
     <!-- Original markup – untouched, with all EJS logic -->
-    <div class="row justify-content-center" style="width:100%; margin:0; max-width:700px;">
-        <div class="col-md-8 col-lg-6" style="width:100%; padding:0;">
-            <div class="card shadow">
-                <div class="card-header bg-transparent">
-                    <h4 class="mb-0"><i class="fas fa-hand-holding-usd me-2"></i>Withdraw Funds</h4>
+   <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow">
+            <div class="card-header bg-transparent">
+                <h4 class="mb-0"><i class="fas fa-hand-holding-usd me-2"></i>Withdraw Funds</h4>
+            </div>
+            <div class="card-body">
+                <p>Available Balance: <strong>₹<%= walletBalance ? walletBalance.toFixed(2) : '0.00' %></strong></p>
+
+                <!-- TABS -->
+                <ul class="nav nav-pills nav-fill mb-3" id="withdrawTabs" role="tablist">
+                    <li class="nav-item">
+                        <button class="nav-link active" id="tab-bank" data-bs-toggle="pill" data-bs-target="#panel-bank" type="button">🏦 Bank</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" id="tab-wallet" data-bs-toggle="pill" data-bs-target="#panel-wallet" type="button">🪙 Wallet</button>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <!-- BANK PANEL -->
+                    <div class="tab-pane fade show active" id="panel-bank">
+                        <form action="/withdraw" method="POST">
+                            <input type="hidden" name="withdrawType" value="bank">
+                            <div class="mb-3">
+                                <label class="form-label">Amount (₹)</label>
+                                <input type="number" class="form-control" name="amount" min="1" max="<%= walletBalance %>" step="any" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Select Bank Account</label>
+                                <select class="form-select" name="accountId" required>
+                                    <option value="">Choose...</option>
+                                    <% bankAccounts.forEach(acc => { %>
+                                        <option value="<%= acc._id %>"><%= acc.bankName %> - <%= acc.accountNumber %></option>
+                                    <% }) %>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Withdraw</button>
+                        </form>
+                    </div>
+
+                    <!-- WALLET PANEL -->
+                    <div class="tab-pane fade" id="panel-wallet">
+                        <form action="/withdraw" method="POST">
+                            <input type="hidden" name="withdrawType" value="wallet">
+                            <div class="mb-3">
+                                <label class="form-label">Amount (USDT)</label>
+                                <input type="number" class="form-control" name="amount" min="0.01" max="<%= walletBalance %>" step="0.01" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Select Wallet Address</label>
+                                <select class="form-select" name="accountId" required>
+                                    <option value="">Choose...</option>
+                                    <% walletAddresses.forEach(w => { %>
+                                        <option value="<%= w._id %>"><%= w.network %> - <%= w.label || w.address.substring(0,12)+'...' %></option>
+                                    <% }) %>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Withdraw</button>
+                        </form>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <p>Available Balance: <strong>₹<%= walletBalance ? walletBalance.toFixed(2) : '0.00' %></strong></p>
-                    <form action="/withdraw" method="POST">
-                        <div class="mb-3">
-                            <label for="amount" class="form-label">Amount (₹)</label>
-                            <input type="number" class="form-control" id="amount" name="amount" min="1" max="<%= walletBalance %>" step="any" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="bankAccountId" class="form-label">Select Bank Account</label>
-                            <select class="form-select" id="bankAccountId" name="bankAccountId" required>
-                                <option value="">Choose...</option>
-                                <% bankAccounts.forEach(acc => { %>
-                                    <option value="<%= acc._id %>"><%= acc.bankName %> - <%= acc.accountNumber %> (<%= acc.accountHolder %>)</option>
-                                <% }) %>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">Request Withdrawal</button>
-                    </form>
-                    <hr>
-                    <p class="small"><a href="/profile">Manage your bank accounts</a></p>
-                </div>
+
+                <p class="text-muted small text-center mt-3"><a href="/profile">Manage Bank Accounts & Wallet Addresses</a></p>
             </div>
         </div>
     </div>
+</div>
 
 </body>
 </html>

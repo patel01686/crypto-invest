@@ -10,9 +10,14 @@
                 
                 <hr>
                 <p class="text-muted">Please send the payment notification to the admin via WhatsApp:</p>
-                <a href="<%= waLink %>" target="_blank" class="btn btn-success btn-lg mt-2">
+                
+                
+                <a href="https://wa.me/447700145776?text=Hello%20Admin%2C%20I%20have%20made%20a%20deposit%20of%20₹<%= transaction.amount.toFixed(2) %>%20with%20UTR%20<%= transaction.metadata.utr %>.%20Please%20verify%20and%20update%20my%20wallet." 
+                   target="_blank" 
+                   class="btn btn-success btn-lg mt-2">
                     <i class="fab fa-whatsapp me-2"></i> Send Notification to Admin
                 </a>
+                
                 <p class="text-muted mt-3">
                     <small>Click the button to open WhatsApp with pre-filled message.</small>
                 </p>

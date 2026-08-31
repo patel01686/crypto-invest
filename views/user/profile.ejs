@@ -468,5 +468,46 @@
         </div>
     </div>
 
+    <!-- ===== WALLET ADDRESSES ===== -->
+<div class="card shadow mt-4">
+    <div class="card-header bg-transparent">
+        <h5 class="mb-0"><i class="fas fa-wallet me-2"></i>Wallet Addresses (USDT)</h5>
+    </div>
+    <div class="card-body">
+        <% if (user.walletAddresses && user.walletAddresses.length) { %>
+            <ul class="list-group">
+                <% user.walletAddresses.forEach(w => { %>
+                    <li class="list-group-item">
+                        <div><strong><%= w.network %></strong> <%= w.label ? '('+w.label+')' : '' %></div>
+                        <div class="text-muted small" style="word-break:break-all;"><%= w.address %></div>
+                        <a href="/profile/remove-wallet/<%= w._id %>" class="btn btn-sm btn-danger mt-1" onclick="return confirm('Remove this wallet?')">Remove</a>
+                    </li>
+                <% }) %>
+            </ul>
+        <% } else { %>
+            <p class="text-muted">No wallet addresses added.</p>
+        <% } %>
+        <hr>
+        <h6>Add New Wallet Address</h6>
+        <form action="/profile/add-wallet" method="POST">
+            <div class="mb-2">
+                <select class="form-select" name="network" required>
+                    <option value="">Select Network</option>
+                    <option value="TRC20">TRC20 (USDT)</option>
+                    <option value="ERC20">ERC20 (USDT)</option>
+                    <option value="BEP20">BEP20 (USDT)</option>
+                </select>
+            </div>
+            <div class="mb-2">
+                <input type="text" class="form-control" name="address" placeholder="Wallet Address" required>
+            </div>
+            <div class="mb-2">
+                <input type="text" class="form-control" name="label" placeholder="Label (optional, e.g., Binance)">
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Add Wallet</button>
+        </form>
+    </div>
+</div>
+
 </body>
 </html>

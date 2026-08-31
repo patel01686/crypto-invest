@@ -20,7 +20,7 @@ router.get('/my-investments', ensureAuthenticated, dashboardController.getMyInve
 
 // Deposit
 router.get('/deposit', ensureAuthenticated, depositController.getDeposit);
-router.post('/deposit', ensureAuthenticated, upload.single('screenshot'), depositController.postDeposit);
+router.post('/deposit', ensureAuthenticated, depositController.postDeposit);
 
 // Withdraw
 router.get('/withdraw', ensureAuthenticated, withdrawController.getWithdraw);
@@ -32,6 +32,9 @@ router.get('/profile', ensureAuthenticated, (req, res) => {
 });
 router.post('/profile/add-bank', ensureAuthenticated, withdrawController.addBankAccount);
 router.get('/profile/remove-bank/:accountId', ensureAuthenticated, withdrawController.removeBankAccount);
+
+router.post('/profile/add-wallet', ensureAuthenticated, withdrawController.addWalletAddress);
+router.get('/profile/remove-wallet/:addressId', ensureAuthenticated, withdrawController.removeWalletAddress);
 
 // Invest
 router.get('/invest', ensureAuthenticated, investController.getInvest);

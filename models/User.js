@@ -9,6 +9,16 @@ const BankAccountSchema = new mongoose.Schema({
   isDefault: { type: Boolean, default: false },
 });
 
+
+const WalletAddressSchema = new mongoose.Schema({
+  network: { type: String, required: true, enum: ['TRC20', 'ERC20', 'BEP20'] },
+  address: { type: String, required: true },
+  label: { type: String, default: '' },
+  isDefault: { type: Boolean, default: false }
+});
+
+
+
 const UserSchema = new mongoose.Schema({
   fullName: { type: String, required: true },
   email: { type: String, required: true, unique: true },
@@ -17,6 +27,7 @@ const UserSchema = new mongoose.Schema({
   role: { type: String, enum: ['user', 'admin'], default: 'user' },
   walletBalance: { type: Number, default: 0 },
   bankAccounts: [BankAccountSchema],
+  walletAddresses: [WalletAddressSchema],
   isActive: { type: Boolean, default: true },
   createdAt: { type: Date, default: Date.now },
 });
