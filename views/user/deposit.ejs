@@ -566,32 +566,72 @@
                         <!-- PANEL 1: UPI -->
                         <div class="tab-pane fade show active" id="panel-upi" role="tabpanel">
                             <div class="text-center">
-                                <img src="<%= typeof qrImage !== 'undefined' ? qrImage : '/images/upi-qr.png' %>" alt="UPI QR" class="img-fluid border shadow rounded">
-                                <p class="text-muted small">Scan QR or copy UPI ID and pay exact amount.</p>
+                                <img src="<%= typeof qrImage !== 'undefined' ? qrImage : '/images/upi-qr.png' %>" alt="UPI QR" class="img-fluid border shadow rounded" style="max-width:200px;">
+                                <p class="mt-2 mb-1"><strong>UPI ID:</strong></p>
+                                <div class="d-flex align-items-center justify-content-center gap-2">
+                                    <span class="text-primary fw-bold"><%= typeof upiId !== 'undefined' ? upiId : 'example@upi' %></span>
+                                    <button class="btn btn-sm btn-outline-secondary" onclick="copyText('<%= typeof upiId !== 'undefined' ? upiId : 'example@upi' %>')">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                                <p class="text-muted small mt-2">Scan the QR code or copy the UPI ID and pay the exact amount.</p>
                             </div>
                         </div>
 
                         <!-- PANEL 2: USDT TRC20 -->
                         <div class="tab-pane fade" id="panel-trc20" role="tabpanel">
                             <div class="text-center">
-                                <img src="<%= typeof usdtTrc20Qr !== 'undefined' ? usdtTrc20Qr : '/images/usdt-trc20-qr.png' %>" alt="USDT TRC20 QR" class="img-fluid border shadow rounded">
-                                <p class="text-muted small">Send USDT on TRC20 network to the address above.</p>
+                                <img src="<%= typeof usdtTrc20Qr !== 'undefined' ? usdtTrc20Qr : '/images/usdt-trc20-qr.png' %>" alt="USDT TRC20 QR" class="img-fluid border shadow rounded" style="max-width:200px;">
+                                <p class="mt-2 mb-1"><strong>Wallet Address (TRC20):</strong></p>
+                                <div class="d-flex align-items-center justify-content-center gap-2 flex-wrap">
+                                    <span class="text-primary fw-bold small" style="word-break:break-all;"><%= typeof usdtTrc20Address !== 'undefined' ? usdtTrc20Address : 'TXYZ...1234' %></span>
+                                    <button class="btn btn-sm btn-outline-secondary" onclick="copyText('<%= typeof usdtTrc20Address !== 'undefined' ? usdtTrc20Address : 'TXYZ...1234' %>')">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                                <p class="text-muted small mt-2">
+                                    <span class="badge bg-info text-dark">Network: TRC20</span>
+                                    <span class="badge bg-warning text-dark ms-1">Token: USDT</span>
+                                </p>
+                                <p class="text-muted small">Send USDT on the TRC20 network to the address above.</p>
                             </div>
                         </div>
 
                         <!-- PANEL 3: USDT ERC20 -->
                         <div class="tab-pane fade" id="panel-erc20" role="tabpanel">
                             <div class="text-center">
-                                <img src="<%= typeof usdtErc20Qr !== 'undefined' ? usdtErc20Qr : '/images/usdt-erc20-qr.png' %>" alt="USDT ERC20 QR" class="img-fluid border shadow rounded">
-                                <p class="text-muted small">Send USDT on ERC20 network to the address above.</p>
+                                <img src="<%= typeof usdtErc20Qr !== 'undefined' ? usdtErc20Qr : '/images/usdt-erc20-qr.png' %>" alt="USDT ERC20 QR" class="img-fluid border shadow rounded" style="max-width:200px;">
+                                <p class="mt-2 mb-1"><strong>Wallet Address (ERC20):</strong></p>
+                                <div class="d-flex align-items-center justify-content-center gap-2 flex-wrap">
+                                    <span class="text-primary fw-bold small" style="word-break:break-all;"><%= typeof usdtErc20Address !== 'undefined' ? usdtErc20Address : '0xABC...789' %></span>
+                                    <button class="btn btn-sm btn-outline-secondary" onclick="copyText('<%= typeof usdtErc20Address !== 'undefined' ? usdtErc20Address : '0xABC...789' %>')">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                                <p class="text-muted small mt-2">
+                                    <span class="badge bg-info text-dark">Network: ERC20</span>
+                                    <span class="badge bg-warning text-dark ms-1">Token: USDT</span>
+                                </p>
+                                <p class="text-muted small">Send USDT on the ERC20 network to the address above.</p>
                             </div>
                         </div>
 
                         <!-- PANEL 4: USDT BEP20 -->
                         <div class="tab-pane fade" id="panel-bep20" role="tabpanel">
                             <div class="text-center">
-                                <img src="<%= typeof usdtBep20Qr !== 'undefined' ? usdtBep20Qr : '/images/usdt-bep20-qr.png' %>" alt="USDT BEP20 QR" class="img-fluid border shadow rounded">
-                                <p class="text-muted small">Send USDT on BEP20 network to the address above.</p>
+                                <img src="<%= typeof usdtBep20Qr !== 'undefined' ? usdtBep20Qr : '/images/usdt-bep20-qr.png' %>" alt="USDT BEP20 QR" class="img-fluid border shadow rounded" style="max-width:200px;">
+                                <p class="mt-2 mb-1"><strong>Wallet Address (BEP20):</strong></p>
+                                <div class="d-flex align-items-center justify-content-center gap-2 flex-wrap">
+                                    <span class="text-primary fw-bold small" style="word-break:break-all;"><%= typeof usdtBep20Address !== 'undefined' ? usdtBep20Address : '0xDEF...456' %></span>
+                                    <button class="btn btn-sm btn-outline-secondary" onclick="copyText('<%= typeof usdtBep20Address !== 'undefined' ? usdtBep20Address : '0xDEF...456' %>')">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                                <p class="text-muted small mt-2">
+                                    <span class="badge bg-info text-dark">Network: BEP20</span>
+                                    <span class="badge bg-warning text-dark ms-1">Token: USDT</span>
+                                </p>
+                                <p class="text-muted small">Send USDT on the BEP20 network to the address above.</p>
                             </div>
                         </div>
 
