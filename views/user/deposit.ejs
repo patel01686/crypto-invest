@@ -539,8 +539,18 @@
                     <!-- ===== DEPOSIT METHOD TABS ===== -->
                     <ul class="nav nav-pills nav-fill mb-4" id="depositTabs" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="tab-upi" data-bs-toggle="pill" data-bs-target="#panel-upi" type="button" role="tab">
-                                <i class="fas fa-mobile-alt"></i> UPI
+                            <button class="nav-link active" id="tab-upi1" data-bs-toggle="pill" data-bs-target="#panel-upi1" type="button" role="tab">
+                                <i class="fas fa-mobile-alt"></i> UPI 1
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="tab-upi2" data-bs-toggle="pill" data-bs-target="#panel-upi2" type="button" role="tab">
+                                <i class="fas fa-mobile-alt"></i> UPI 2
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="tab-upi3" data-bs-toggle="pill" data-bs-target="#panel-upi3" type="button" role="tab">
+                                <i class="fas fa-mobile-alt"></i> UPI 3
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
@@ -548,44 +558,64 @@
                                 <i class="fab fa-bitcoin"></i> TRC20
                             </button>
                         </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="tab-erc20" data-bs-toggle="pill" data-bs-target="#panel-erc20" type="button" role="tab">
-                                <i class="fab fa-ethereum"></i> ERC20
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="tab-bep20" data-bs-toggle="pill" data-bs-target="#panel-bep20" type="button" role="tab">
-                                <i class="fas fa-link"></i> BEP20
-                            </button>
-                        </li>
                     </ul>
 
                     <!-- ===== TAB PANELS ===== -->
                     <div class="tab-content" id="depositTabContent">
 
-                        <!-- PANEL 1: UPI -->
-                        <div class="tab-pane fade show active" id="panel-upi" role="tabpanel">
+                        <!-- PANEL 1: UPI 1 -->
+                        <div class="tab-pane fade show active" id="panel-upi1" role="tabpanel">
                             <div class="text-center">
-                                <img src="<%= typeof qrImage !== 'undefined' ? qrImage : '/images/upi-qr.png' %>" alt="UPI QR" class="img-fluid border shadow rounded" style="max-width:200px;">
-                                <p class="mt-2 mb-1"><strong>UPI ID:</strong></p>
+                                <img src="<%= upiQr1 %>" alt="UPI 1 QR" class="img-fluid border shadow rounded" style="max-width:200px;">
+                                <p class="mt-2 mb-1"><strong>UPI ID (1):</strong></p>
                                 <div class="d-flex align-items-center justify-content-center gap-2">
-                                    <span class="text-primary fw-bold"><%= typeof upiId !== 'undefined' ? upiId : 'example@upi' %></span>
-                                    <button class="btn btn-sm btn-outline-secondary" onclick="copyText('<%= typeof upiId !== 'undefined' ? upiId : 'example@upi' %>')">
+                                    <span class="text-primary fw-bold"><%= upiId1 %></span>
+                                    <button class="btn btn-sm btn-outline-secondary" onclick="copyText('<%= upiId1 %>')">
                                         <i class="fas fa-copy"></i>
                                     </button>
                                 </div>
-                                <p class="text-muted small mt-2">Scan the QR code or copy the UPI ID and pay the exact amount.</p>
+                                <p class="text-muted small mt-2">Scan QR or copy UPI ID and pay exact amount.</p>
                             </div>
                         </div>
 
-                        <!-- PANEL 2: USDT TRC20 -->
+                        <!-- PANEL 2: UPI 2 -->
+                        <div class="tab-pane fade" id="panel-upi2" role="tabpanel">
+                            <div class="text-center">
+                                <img src="<%= upiQr2 %>" alt="UPI 2 QR" class="img-fluid border shadow rounded" style="max-width:200px;">
+                                <p class="mt-2 mb-1"><strong>UPI ID (2):</strong></p>
+                                <div class="d-flex align-items-center justify-content-center gap-2">
+                                    <span class="text-primary fw-bold"><%= upiId2 %></span>
+                                    <button class="btn btn-sm btn-outline-secondary" onclick="copyText('<%= upiId2 %>')">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                                <p class="text-muted small mt-2">Scan QR or copy UPI ID and pay exact amount.</p>
+                            </div>
+                        </div>
+
+                        <!-- PANEL 3: UPI 3 -->
+                        <div class="tab-pane fade" id="panel-upi3" role="tabpanel">
+                            <div class="text-center">
+                                <img src="<%= upiQr3 %>" alt="UPI 3 QR" class="img-fluid border shadow rounded" style="max-width:200px;">
+                                <p class="mt-2 mb-1"><strong>UPI ID (3):</strong></p>
+                                <div class="d-flex align-items-center justify-content-center gap-2">
+                                    <span class="text-primary fw-bold"><%= upiId3 %></span>
+                                    <button class="btn btn-sm btn-outline-secondary" onclick="copyText('<%= upiId3 %>')">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                                <p class="text-muted small mt-2">Scan QR or copy UPI ID and pay exact amount.</p>
+                            </div>
+                        </div>
+
+                        <!-- PANEL 4: TRC20 -->
                         <div class="tab-pane fade" id="panel-trc20" role="tabpanel">
                             <div class="text-center">
-                                <img src="<%= typeof usdtTrc20Qr !== 'undefined' ? usdtTrc20Qr : '/images/usdt-trc20-qr.png' %>" alt="USDT TRC20 QR" class="img-fluid border shadow rounded" style="max-width:200px;">
+                                <img src="<%= usdtTrc20Qr %>" alt="USDT TRC20 QR" class="img-fluid border shadow rounded" style="max-width:200px;">
                                 <p class="mt-2 mb-1"><strong>Wallet Address (TRC20):</strong></p>
                                 <div class="d-flex align-items-center justify-content-center gap-2 flex-wrap">
-                                    <span class="text-primary fw-bold small" style="word-break:break-all;"><%= typeof usdtTrc20Address !== 'undefined' ? usdtTrc20Address : 'TXYZ...1234' %></span>
-                                    <button class="btn btn-sm btn-outline-secondary" onclick="copyText('<%= typeof usdtTrc20Address !== 'undefined' ? usdtTrc20Address : 'TXYZ...1234' %>')">
+                                    <span class="text-primary fw-bold small" style="word-break:break-all;"><%= usdtTrc20Address %></span>
+                                    <button class="btn btn-sm btn-outline-secondary" onclick="copyText('<%= usdtTrc20Address %>')">
                                         <i class="fas fa-copy"></i>
                                     </button>
                                 </div>
@@ -597,44 +627,6 @@
                             </div>
                         </div>
 
-                        <!-- PANEL 3: USDT ERC20 -->
-                        <div class="tab-pane fade" id="panel-erc20" role="tabpanel">
-                            <div class="text-center">
-                                <img src="<%= typeof usdtErc20Qr !== 'undefined' ? usdtErc20Qr : '/images/usdt-erc20-qr.png' %>" alt="USDT ERC20 QR" class="img-fluid border shadow rounded" style="max-width:200px;">
-                                <p class="mt-2 mb-1"><strong>Wallet Address (ERC20):</strong></p>
-                                <div class="d-flex align-items-center justify-content-center gap-2 flex-wrap">
-                                    <span class="text-primary fw-bold small" style="word-break:break-all;"><%= typeof usdtErc20Address !== 'undefined' ? usdtErc20Address : '0xABC...789' %></span>
-                                    <button class="btn btn-sm btn-outline-secondary" onclick="copyText('<%= typeof usdtErc20Address !== 'undefined' ? usdtErc20Address : '0xABC...789' %>')">
-                                        <i class="fas fa-copy"></i>
-                                    </button>
-                                </div>
-                                <p class="text-muted small mt-2">
-                                    <span class="badge bg-info text-dark">Network: ERC20</span>
-                                    <span class="badge bg-warning text-dark ms-1">Token: USDT</span>
-                                </p>
-                                <p class="text-muted small">Send USDT on the ERC20 network to the address above.</p>
-                            </div>
-                        </div>
-
-                        <!-- PANEL 4: USDT BEP20 -->
-                        <div class="tab-pane fade" id="panel-bep20" role="tabpanel">
-                            <div class="text-center">
-                                <img src="<%= typeof usdtBep20Qr !== 'undefined' ? usdtBep20Qr : '/images/usdt-bep20-qr.png' %>" alt="USDT BEP20 QR" class="img-fluid border shadow rounded" style="max-width:200px;">
-                                <p class="mt-2 mb-1"><strong>Wallet Address (BEP20):</strong></p>
-                                <div class="d-flex align-items-center justify-content-center gap-2 flex-wrap">
-                                    <span class="text-primary fw-bold small" style="word-break:break-all;"><%= typeof usdtBep20Address !== 'undefined' ? usdtBep20Address : '0xDEF...456' %></span>
-                                    <button class="btn btn-sm btn-outline-secondary" onclick="copyText('<%= typeof usdtBep20Address !== 'undefined' ? usdtBep20Address : '0xDEF...456' %>')">
-                                        <i class="fas fa-copy"></i>
-                                    </button>
-                                </div>
-                                <p class="text-muted small mt-2">
-                                    <span class="badge bg-info text-dark">Network: BEP20</span>
-                                    <span class="badge bg-warning text-dark ms-1">Token: USDT</span>
-                                </p>
-                                <p class="text-muted small">Send USDT on the BEP20 network to the address above.</p>
-                            </div>
-                        </div>
-
                     </div>
 
                     <hr>
@@ -642,7 +634,7 @@
                     <!-- ===== DEPOSIT FORM ===== -->
                     <h5>Submit Payment Details</h5>
                     <form action="/deposit" method="POST" id="depositForm">
-                        <input type="hidden" name="method" id="depositMethod" value="upi">
+                        <input type="hidden" name="method" id="depositMethod" value="upi1">
 
                         <div class="mb-3">
                             <label for="amount" class="form-label" id="amountLabel">Amount (₹)</label>
@@ -679,8 +671,22 @@
             const utrInput = document.getElementById('utr');
 
             const config = {
-                'tab-upi': {
-                    method: 'upi',
+                'tab-upi1': {
+                    method: 'upi1',
+                    amountLabel: 'Amount (₹)',
+                    utrLabel: 'UTR Number',
+                    amountPlaceholder: 'Enter amount in ₹',
+                    utrPlaceholder: 'Enter UTR number'
+                },
+                'tab-upi2': {
+                    method: 'upi2',
+                    amountLabel: 'Amount (₹)',
+                    utrLabel: 'UTR Number',
+                    amountPlaceholder: 'Enter amount in ₹',
+                    utrPlaceholder: 'Enter UTR number'
+                },
+                'tab-upi3': {
+                    method: 'upi3',
                     amountLabel: 'Amount (₹)',
                     utrLabel: 'UTR Number',
                     amountPlaceholder: 'Enter amount in ₹',
@@ -688,20 +694,6 @@
                 },
                 'tab-trc20': {
                     method: 'usdt_trc20',
-                    amountLabel: 'Amount (USDT)',
-                    utrLabel: 'Transaction Hash (TXN)',
-                    amountPlaceholder: 'Enter USDT amount',
-                    utrPlaceholder: 'Enter transaction hash'
-                },
-                'tab-erc20': {
-                    method: 'usdt_erc20',
-                    amountLabel: 'Amount (USDT)',
-                    utrLabel: 'Transaction Hash (TXN)',
-                    amountPlaceholder: 'Enter USDT amount',
-                    utrPlaceholder: 'Enter transaction hash'
-                },
-                'tab-bep20': {
-                    method: 'usdt_bep20',
                     amountLabel: 'Amount (USDT)',
                     utrLabel: 'Transaction Hash (TXN)',
                     amountPlaceholder: 'Enter USDT amount',
@@ -718,8 +710,8 @@
                 utrLabel.textContent = cfg.utrLabel;
                 amountInput.placeholder = cfg.amountPlaceholder;
                 utrInput.placeholder = cfg.utrPlaceholder;
-                amountInput.min = cfg.method === 'upi' ? 1 : 0.01;
-                amountInput.step = cfg.method === 'upi' ? 'any' : '0.01';
+                amountInput.min = (cfg.method === 'upi1' || cfg.method === 'upi2' || cfg.method === 'upi3') ? 1 : 0.01;
+                amountInput.step = (cfg.method === 'upi1' || cfg.method === 'upi2' || cfg.method === 'upi3') ? 'any' : '0.01';
             }
 
             tabs.forEach(tab => {

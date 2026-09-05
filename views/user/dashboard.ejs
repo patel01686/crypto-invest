@@ -6,636 +6,611 @@
     <title>Dashboard</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet" />
 
     <style>
-        /* ───── reset & base ───── */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            background: #f4f7fc;
-            padding: 1.5rem;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-        }
-
-        .dashboard-wrapper {
-            max-width: 1200px;
-            width: 100%;
-        }
-
-        /* ───── quick action buttons ───── */
-        .quick-actions .btn {
-            border: none;
-            border-radius: 1rem;
-            padding: 0.9rem 0.5rem;
-            font-weight: 600;
-            font-size: 0.85rem;
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            position: relative;
-            overflow: hidden;
-            letter-spacing: 0.2px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-        }
-
-        .quick-actions .btn i {
-            font-size: 1rem;
-            transition: transform 0.3s ease;
-        }
-
-        .quick-actions .btn:hover i {
-            transform: scale(1.15) translateY(-1px);
-        }
-
-        .quick-actions .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.10);
-        }
-
-        .quick-actions .btn:active {
-            transform: translateY(0px);
-        }
-
-        /* individual button styles */
-        .btn-deposit {
-            background: linear-gradient(135deg, #2563eb, #1d4ed8);
-            color: #fff;
-        }
-        .btn-deposit:hover {
-            background: linear-gradient(135deg, #3b82f6, #2563eb);
-            color: #fff;
-        }
-
-        .btn-withdraw {
-            background: linear-gradient(135deg, #059669, #047857);
-            color: #fff;
-        }
-        .btn-withdraw:hover {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: #fff;
-        }
-
-        .btn-invest {
-            background: linear-gradient(135deg, #d97706, #b45309);
-            color: #fff;
-        }
-        .btn-invest:hover {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            color: #fff;
-        }
-
-        .btn-history {
-            background: #fff;
-            color: #1e293b;
-            border: 1.5px solid #e2e8f0 !important;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
-        }
-        .btn-history:hover {
-            background: #f8fafc;
-            border-color: #94a3b8 !important;
-            color: #0f172a;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
-        }
-
-        /* ───── stats cards ───── */
-        .stat-card {
-            background: #fff;
-            border-radius: 1.25rem;
-            padding: 1.25rem 1.5rem;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03), 0 1px 3px rgba(0, 0, 0, 0.02);
-            border: 1px solid #f1f5f9;
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            height: 100%;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            border-radius: 1.25rem 1.25rem 0 0;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.06);
-        }
-
-        .stat-card.primary::before {
-            background: linear-gradient(90deg, #2563eb, #60a5fa);
-        }
-        .stat-card.success::before {
-            background: linear-gradient(90deg, #059669, #34d399);
-        }
-        .stat-card.warning::before {
-            background: linear-gradient(90deg, #d97706, #fbbf24);
-        }
-
-        .stat-label {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
-            font-weight: 600;
-            color: #94a3b8;
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-            margin-bottom: 0.25rem;
-        }
-
-        .stat-label i {
-            font-size: 0.7rem;
-            opacity: 0.6;
-        }
-
-        .stat-number {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #0f172a;
-            letter-spacing: -0.02em;
-            line-height: 1.2;
-        }
-
-        .stat-card.primary .stat-number {
-            color: #1d4ed8;
-        }
-        .stat-card.success .stat-number {
-            color: #047857;
-        }
-        .stat-card.warning .stat-number {
-            color: #b45309;
-        }
-
-        /* ───── section title ───── */
-        .section-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #0f172a;
-            letter-spacing: -0.02em;
-            margin-bottom: 0.2rem;
-        }
-
-        .section-subtitle {
-            color: #94a3b8;
-            font-size: 0.85rem;
-            margin-bottom: 1.25rem;
-        }
-
-        /* ───── plans grid ───── */
-        .plans-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 1.25rem;
-        }
-
-        .plan-item {
-            background: #fff;
-            border-radius: 1.25rem;
-            padding: 1.5rem 1.25rem 1.5rem;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
-            border: 1px solid #f1f5f9;
-            transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .plan-item::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #2563eb, #8b5cf6);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .plan-item:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 20px 48px rgba(0, 0, 0, 0.07);
-            border-color: #e2e8f0;
-        }
-
-        .plan-item:hover::after {
-            opacity: 1;
-        }
-
-        .plan-item h3 {
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: #0f172a;
-            margin-bottom: 0.2rem;
-        }
-
-        .plan-desc {
-            font-size: 0.8rem;
-            color: #94a3b8;
-            margin-bottom: 0.75rem;
-            flex: 1;
-        }
-
-        .plan-details {
-            display: flex;
-            flex-direction: column;
-            gap: 0.3rem;
-            margin-bottom: 1.25rem;
-            font-size: 0.75rem;
-            color: #475569;
-        }
-
-        .plan-details span {
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-
-        .plan-details i {
-            width: 1.1rem;
-            color: #94a3b8;
-            font-size: 0.7rem;
-        }
-
-        .plan-item .btn {
-            border: none;
-            border-radius: 2rem;
-            padding: 0.55rem 1rem;
-            font-weight: 600;
-            font-size: 0.75rem;
-            background: linear-gradient(135deg, #2563eb, #1d4ed8);
-            color: #fff;
-            transition: all 0.3s ease;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: auto;
-            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.15);
-        }
-
-        .plan-item .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.25);
-            background: linear-gradient(135deg, #3b82f6, #2563eb);
-            color: #fff;
-        }
-
-        .no-plans {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 2.5rem 1rem;
-            background: #fff;
-            border-radius: 1.25rem;
-            border: 2px dashed #e2e8f0;
-            color: #94a3b8;
-        }
-
-        .no-plans p {
-            font-weight: 500;
-            margin-bottom: 0.2rem;
-        }
-
-        /* ───── recent activity card ───── */
-        .recent-card {
-            background: #fff;
-            border-radius: 1.25rem;
-            border: 1px solid #f1f5f9;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
-            overflow: hidden;
-            transition: box-shadow 0.3s ease;
-        }
-
-        .recent-card:hover {
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
-        }
-
-        .recent-card .card-header {
-            padding: 1rem 1.5rem;
-            background: transparent;
-            border-bottom: 1px solid #f1f5f9;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .recent-card .card-header h5 {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #0f172a;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .recent-card .card-header h5 i {
-            color: #2563eb;
-            font-size: 0.9rem;
-        }
-
-        .recent-card .card-header .btn-link {
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: #2563eb;
-            text-decoration: none;
-            padding: 0.2rem 0.6rem;
-            border-radius: 2rem;
-            transition: all 0.2s ease;
-        }
-
-        .recent-card .card-header .btn-link:hover {
-            background: #eef2ff;
-            color: #1d4ed8;
-        }
-
-        .recent-card .card-body {
-            padding: 0.25rem 0.25rem 0.25rem 0.25rem;
-        }
-
-        .list-group-flush .list-group-item {
-            border: none;
-            border-bottom: 1px solid #f1f5f9;
-            padding: 0.7rem 1.25rem;
-            background: transparent;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: background 0.15s ease;
-        }
-
-        .list-group-flush .list-group-item:last-child {
-            border-bottom: none;
-        }
-
-        .list-group-flush .list-group-item:hover {
-            background: #fafcff;
-        }
-
-        .list-group-item .tx-left {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .list-group-item .badge-type {
-            font-size: 0.6rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-            padding: 0.2rem 0.7rem;
-            border-radius: 2rem;
-        }
-
-        .badge-deposit {
-            background: #dbeafe;
-            color: #1d4ed8;
-        }
-        .badge-withdrawal {
-            background: #fee2e2;
-            color: #dc2626;
-        }
-        .badge-investment {
-            background: #d1fae5;
-            color: #047857;
-        }
-        .badge-other {
-            background: #f1f5f9;
-            color: #475569;
-        }
-
-        .tx-amount {
-            font-weight: 600;
-            font-size: 0.85rem;
-            color: #0f172a;
-        }
-
-        .tx-right {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .badge-status {
-            font-size: 0.6rem;
-            font-weight: 600;
-            text-transform: capitalize;
-            padding: 0.15rem 0.7rem;
-            border-radius: 2rem;
-        }
-
-        .badge-completed {
-            background: #d1fae5;
-            color: #047857;
-        }
-        .badge-pending {
-            background: #fef3c7;
-            color: #b45309;
-        }
-        .badge-failed {
-            background: #fee2e2;
-            color: #dc2626;
-        }
-        .badge-cancelled {
-            background: #f1f5f9;
-            color: #64748b;
-        }
-
-        .tx-date {
-            font-size: 0.65rem;
-            color: #94a3b8;
-            white-space: nowrap;
-        }
-
-        .no-transactions {
-            padding: 1.5rem;
-            text-align: center;
-            color: #94a3b8;
-            font-size: 0.85rem;
-        }
-
-        /* ───── responsive ───── */
-        @media (max-width: 768px) {
-            body {
-                padding: 0.75rem;
-            }
-
-            .quick-actions .btn {
-                font-size: 0.7rem;
-                padding: 0.7rem 0.3rem;
-                border-radius: 0.75rem;
-            }
-
-            .quick-actions .btn i {
-                font-size: 0.8rem;
-            }
-
-            .stat-card {
-                padding: 1rem 1rem;
-                border-radius: 1rem;
-            }
-
-            .stat-number {
-                font-size: 1.2rem;
-            }
-
-            .stat-label {
-                font-size: 0.6rem;
-            }
-
-            .plans-grid {
-                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-                gap: 0.9rem;
-            }
-
-            .plan-item {
-                padding: 1.1rem 1rem 1.1rem;
-                border-radius: 1rem;
-            }
-
-            .plan-item h3 {
-                font-size: 0.9rem;
-            }
-
-            .plan-details {
-                font-size: 0.65rem;
-            }
-
-            .plan-item .btn {
-                font-size: 0.65rem;
-                padding: 0.4rem 0.8rem;
-            }
-
-            .recent-card .card-header {
-                padding: 0.75rem 1rem;
-            }
-
-            .recent-card .card-header h5 {
-                font-size: 0.75rem;
-            }
-
-            .list-group-flush .list-group-item {
-                padding: 0.5rem 0.75rem;
-                flex-wrap: wrap;
-                gap: 0.3rem;
-            }
-
-            .tx-amount {
-                font-size: 0.75rem;
-            }
-
-            .tx-date {
-                font-size: 0.55rem;
-            }
-
-            .badge-type,
-            .badge-status {
-                font-size: 0.5rem;
-                padding: 0.1rem 0.5rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .plans-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .quick-actions .btn {
-                font-size: 0.65rem;
-                padding: 0.6rem 0.2rem;
-            }
-
-            .stat-card {
-                padding: 0.75rem 0.9rem;
-            }
-
-            .stat-number {
-                font-size: 1rem;
-            }
-        }
+        
+       /* ───── RESET ───── */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: #f5f7fa;
+    padding: 1.25rem;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.dashboard-wrapper {
+    max-width: 1200px;
+    width: 100%;
+}
+
+/* ───── QUICK ACTION BUTTONS ───── */
+.quick-actions .btn {
+    border: none;
+    border-radius: 0.75rem;
+    padding: 0.85rem 0.5rem;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.quick-actions .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.quick-actions .btn i {
+    font-size: 1rem;
+}
+
+.btn-deposit {
+    background: #2563eb;
+    color: #fff;
+}
+.btn-deposit:hover {
+    background: #1d4ed8;
+    color: #fff;
+}
+
+.btn-withdraw {
+    background: #059669;
+    color: #fff;
+}
+.btn-withdraw:hover {
+    background: #047857;
+    color: #fff;
+}
+
+/* ───── STATS CARDS ───── */
+.stat-card {
+    background: #fff;
+    border-radius: 1rem;
+    padding: 1.25rem 1.5rem;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+    border: 1px solid #eef2f6;
+    transition: box-shadow 0.2s ease;
+    height: 100%;
+}
+
+.stat-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.stat-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.3rem;
+}
+
+.stat-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    color: #94a3b8;
+}
+
+.stat-icon {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+}
+
+.stat-card.primary .stat-icon {
+    background: #eff6ff;
+    color: #2563eb;
+}
+.stat-card.success .stat-icon {
+    background: #ecfdf5;
+    color: #059669;
+}
+
+.stat-number {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: -0.02em;
+}
+
+.stat-card.primary .stat-number {
+    color: #1d4ed8;
+}
+.stat-card.success .stat-number {
+    color: #047857;
+}
+
+.stat-sub {
+    font-size: 0.65rem;
+    color: #94a3b8;
+    font-weight: 500;
+    margin-top: 0.1rem;
+}
+
+/* ───── SECTION TITLE ───── */
+.section-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 0.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.section-title .title-icon {
+    background: #2563eb;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    color: #fff;
+}
+
+.section-subtitle {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    margin-bottom: 1.25rem;
+    margin-left: 2.6rem;
+}
+
+/* ───── INVESTMENT PLANS ───── */
+.plans-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 1.25rem;
+}
+
+.plan-item {
+    background: #fff;
+    border-radius: 1rem;
+    padding: 1.5rem 1.25rem;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+    border: 1px solid #eef2f6;
+    transition: all 0.25s ease;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.plan-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.06);
+    border-color: #e2e8f0;
+}
+
+.plan-item .plan-icon {
+    width: 2.8rem;
+    height: 2.8rem;
+    border-radius: 0.9rem;
+    background: #eff6ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    color: #2563eb;
+    margin-bottom: 0.6rem;
+}
+
+.plan-item h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 0.1rem;
+}
+
+.plan-desc {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    margin-bottom: 0.75rem;
+    flex: 1;
+}
+
+.plan-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    margin-bottom: 1.25rem;
+    font-size: 0.75rem;
+    color: #475569;
+    background: #f8fafc;
+    padding: 0.6rem 0.9rem;
+    border-radius: 0.75rem;
+    border: 1px solid #f1f5f9;
+}
+
+.plan-details span {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.plan-details i {
+    width: 1rem;
+    color: #94a3b8;
+    font-size: 0.65rem;
+}
+
+.plan-details .detail-value {
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.plan-item .btn {
+    border: none;
+    border-radius: 2rem;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    font-size: 0.75rem;
+    background: #2563eb;
+    color: #fff;
+    transition: all 0.25s ease;
+    text-align: center;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    margin-top: auto;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+}
+
+.plan-item .btn:hover {
+    background: #1d4ed8;
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.25);
+    transform: translateY(-2px);
+    color: #fff;
+}
+
+.no-plans {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 2rem 1rem;
+    background: #fff;
+    border-radius: 1rem;
+    border: 2px dashed #e2e8f0;
+    color: #94a3b8;
+}
+
+.no-plans p {
+    font-weight: 500;
+    color: #475569;
+}
+
+/* ───── RECENT ACTIVITY ───── */
+.recent-card {
+    background: #fff;
+    border-radius: 1rem;
+    border: 1px solid #eef2f6;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+    overflow: hidden;
+}
+
+.recent-card .card-header {
+    padding: 1rem 1.5rem;
+    background: transparent;
+    border-bottom: 1px solid #f1f5f9;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.recent-card .card-header h5 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #0f172a;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.recent-card .card-header h5 i {
+    color: #2563eb;
+}
+
+.recent-card .card-header .btn-link {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #2563eb;
+    text-decoration: none;
+    padding: 0.2rem 0.6rem;
+    border-radius: 2rem;
+    transition: background 0.2s ease;
+}
+
+.recent-card .card-header .btn-link:hover {
+    background: #eff6ff;
+}
+
+.recent-card .card-body {
+    padding: 0;
+}
+
+.list-group-flush .list-group-item {
+    border: none;
+    border-bottom: 1px solid #f1f5f9;
+    padding: 0.6rem 1.5rem;
+    background: transparent;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.list-group-flush .list-group-item:last-child {
+    border-bottom: none;
+}
+
+.tx-left {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.badge-type {
+    font-size: 0.6rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    padding: 0.15rem 0.7rem;
+    border-radius: 2rem;
+}
+
+.badge-deposit {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+.badge-withdrawal {
+    background: #fee2e2;
+    color: #dc2626;
+}
+.badge-investment {
+    background: #d1fae5;
+    color: #047857;
+}
+.badge-other {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.tx-amount {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #0f172a;
+}
+
+.tx-right {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.badge-status {
+    font-size: 0.55rem;
+    font-weight: 600;
+    text-transform: capitalize;
+    padding: 0.15rem 0.7rem;
+    border-radius: 2rem;
+}
+
+.badge-completed {
+    background: #d1fae5;
+    color: #047857;
+}
+.badge-pending {
+    background: #fef3c7;
+    color: #b45309;
+}
+.badge-failed {
+    background: #fee2e2;
+    color: #dc2626;
+}
+.badge-cancelled {
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+.tx-date {
+    font-size: 0.65rem;
+    color: #94a3b8;
+    white-space: nowrap;
+}
+
+.no-transactions {
+    padding: 1.5rem;
+    text-align: center;
+    color: #94a3b8;
+    font-size: 0.85rem;
+}
+
+/* ───── RESPONSIVE ───── */
+@media (max-width: 768px) {
+    body {
+        padding: 0.75rem;
+    }
+    .quick-actions .btn {
+        font-size: 0.7rem;
+        padding: 0.7rem 0.3rem;
+    }
+    .stat-card {
+        padding: 1rem 1rem;
+    }
+    .stat-number {
+        font-size: 1.3rem;
+    }
+    .plans-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 0.9rem;
+    }
+    .plan-item {
+        padding: 1.1rem 1rem;
+    }
+    .plan-item h3 {
+        font-size: 0.9rem;
+    }
+    .list-group-flush .list-group-item {
+        padding: 0.5rem 0.75rem;
+        flex-wrap: wrap;
+        gap: 0.3rem;
+    }
+    .tx-amount {
+        font-size: 0.75rem;
+    }
+    .tx-date {
+        font-size: 0.55rem;
+    }
+    .badge-type,
+    .badge-status {
+        font-size: 0.5rem;
+        padding: 0.1rem 0.5rem;
+    }
+    .section-title {
+        font-size: 1.05rem;
+    }
+    .section-subtitle {
+        font-size: 0.75rem;
+        margin-left: 2.4rem;
+    }
+    .section-title .title-icon {
+        width: 1.7rem;
+        height: 1.7rem;
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .plans-grid {
+        grid-template-columns: 1fr;
+    }
+    .quick-actions .btn {
+        font-size: 0.65rem;
+        padding: 0.6rem 0.2rem;
+    }
+    .stat-number {
+        font-size: 1.1rem;
+    }
+}
+
+@media (hover: none) and (pointer: coarse) {
+    .quick-actions .btn:hover {
+        transform: none !important;
+    }
+    .plan-item:hover {
+        transform: none !important;
+    }
+    .plan-item .btn:hover {
+        transform: none !important;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+    }
+}
     </style>
 </head>
 <body>
 
     <div class="dashboard-wrapper">
 
-        <!-- ===== QUICK ACTION BUTTONS ===== -->
+        <!-- ═══════════════════════════════════════════════════════════════
+        QUICK ACTION BUTTONS
+        ═══════════════════════════════════════════════════════════════ -->
         <div class="row g-2 g-md-3 mb-4 quick-actions">
             <div class="col-6 col-md-3">
                 <a href="/deposit" class="btn btn-deposit w-100 py-3">
-                    <i class="fas fa-plus-circle me-2"></i> Deposit
+                    <i class="fas fa-plus-circle"></i> Deposit
                 </a>
             </div>
             <div class="col-6 col-md-3">
                 <a href="/withdraw" class="btn btn-withdraw w-100 py-3">
-                    <i class="fas fa-hand-holding-usd me-2"></i> Withdraw
-                </a>
-            </div>
-            <div class="col-6 col-md-3">
-                <a href="/invest" class="btn btn-invest w-100 py-3">
-                    <i class="fas fa-chart-line me-2"></i> Invest
-                </a>
-            </div>
-            <div class="col-6 col-md-3">
-                <a href="/transactions" class="btn btn-history w-100 py-3">
-                    <i class="fas fa-history me-2"></i> History
+                    <i class="fas fa-hand-holding-usd"></i> Withdraw
                 </a>
             </div>
         </div>
 
-        <!-- ===== STATS CARDS ===== -->
+        <!-- ═══════════════════════════════════════════════════════════════
+        STATS CARDS
+        ═══════════════════════════════════════════════════════════════ -->
         <div class="row g-3 g-md-4 mb-4">
             <div class="col-6 col-md-4">
                 <div class="stat-card primary">
-                    <div class="stat-label"><i class="fas fa-wallet me-1"></i> Balance</div>
+                    <div class="stat-top">
+                        <span class="stat-label"><i class="fas fa-wallet me-1"></i> Balance</span>
+                        <span class="stat-icon"><i class="fas fa-wallet"></i></span>
+                    </div>
                     <div class="stat-number">₹<%= walletBalance ? walletBalance.toFixed(2) : '0.00' %></div>
+                    <div class="stat-sub">Available for withdrawal</div>
                 </div>
             </div>
             <div class="col-6 col-md-4">
                 <div class="stat-card success">
-                    <div class="stat-label"><i class="fas fa-chart-pie me-1"></i> Invested</div>
+                    <div class="stat-top">
+                        <span class="stat-label"><i class="fas fa-chart-pie me-1"></i> Invested</span>
+                        <span class="stat-icon"><i class="fas fa-chart-line"></i></span>
+                    </div>
                     <div class="stat-number">₹<%= totalInvested ? totalInvested.toFixed(2) : '0.00' %></div>
-                </div>
-            </div>
-            <div class="col-6 col-md-4">
-                <div class="stat-card warning">
-                    <div class="stat-label"><i class="fas fa-rocket me-1"></i> Active Plans</div>
-                    <div class="stat-number"><%= activeInvestments.length %></div>
+                    <div class="stat-sub">Total invested amount</div>
                 </div>
             </div>
         </div>
 
-        <!-- ===== ALL INVESTMENT PLANS ===== -->
+        <!-- ═══════════════════════════════════════════════════════════════
+        INVESTMENT PLANS — Premium Cards
+        ═══════════════════════════════════════════════════════════════ -->
         <section class="plans-section mt-4">
-            <h2 class="section-title">📊 Available Investment Plans</h2>
+            <h2 class="section-title">
+                <span class="title-icon"><i class="fas fa-rocket"></i></span>
+                Investment Plans
+            </h2>
             <p class="section-subtitle">Choose a plan and start earning today</p>
+
             <div class="plans-grid">
                 <% if (plans && plans.length > 0) { %>
-                    <% plans.forEach(plan => { %>
+                    <% plans.forEach((plan, index) => { %>
                         <div class="plan-item">
-                            <h3><%= plan.name %></h3>
-                            <p class="plan-desc"><%= plan.description || 'Secure and profitable' %></p>
-                            <div class="plan-details">
-                                <span><i class="fas fa-percent"></i> <%= plan.returnRate %>% return</span>
-                                <span><i class="fas fa-calendar-alt"></i> <%= plan.tenureDays %> days</span>
-                                <span><i class="fas fa-coins"></i> ₹<%= plan.minAmount %> – ₹<%= plan.maxAmount %></span>
+                            <span class="plan-badge"><i class="fas fa-star me-1"></i> Active</span>
+                            <div class="plan-icon">
+                                <i class="fas <%= ['fa-chart-simple', 'fa-arrow-trend-up', 'fa-coins', 'fa-sack-dollar', 'fa-circle-dollar', 'fa-bolt'][index % 6] %>"></i>
                             </div>
-                            <a href="/invest?plan=<%= plan._id %>" class="btn">Invest Now</a>
+                            <h3><%= plan.name %></h3>
+                            <p class="plan-desc"><%= plan.description || 'Secure and profitable investment' %></p>
+                            <div class="plan-details">
+                                <span><i class="fas fa-percent"></i> Return: <span class="detail-value"><%= plan.returnRate %>%</span></span>
+                                <span><i class="fas fa-calendar-alt"></i> Tenure: <span class="detail-value"><%= plan.tenureDays %> days</span></span>
+                                <span><i class="fas fa-coins"></i> Range: <span class="detail-value">₹<%= plan.minAmount %> – ₹<%= plan.maxAmount %></span></span>
+                            </div>
+                            <a href="/invest?plan=<%= plan._id %>" class="btn">
+                                Invest Now <i class="fas fa-arrow-right"></i>
+                            </a>
                         </div>
                     <% }) %>
                 <% } else { %>
                     <div class="no-plans">
+                        <div class="no-icon"><i class="fas fa-folder-open"></i></div>
                         <p>No active investment plans available.</p>
                         <small>Check back later or contact admin.</small>
                     </div>
@@ -643,7 +618,9 @@
             </div>
         </section>
 
-        <!-- ===== RECENT TRANSACTIONS ===== -->
+        <!-- ═══════════════════════════════════════════════════════════════
+        RECENT TRANSACTIONS
+        ═══════════════════════════════════════════════════════════════ -->
         <div class="recent-card mt-4">
             <div class="card-header">
                 <h5><i class="fas fa-clock"></i> Recent Activity</h5>
@@ -676,7 +653,10 @@
                         <% }) %>
                     </div>
                 <% } else { %>
-                    <div class="no-transactions">No recent transactions.</div>
+                    <div class="no-transactions">
+                        <div class="empty-icon"><i class="fas fa-receipt"></i></div>
+                        No recent transactions.
+                    </div>
                 <% } %>
             </div>
         </div>
