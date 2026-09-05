@@ -4,11 +4,10 @@ const { whatsappLink } = require('../utils/helpers');
 const path = require('path');
 const fs = require('fs');
 
-// ---------- Helper: find a single UPI QR (fallback) ----------
-// (Not used directly now, but kept for fallback if needed)
+// Helper: find UPI QR (fallback)
 const getQrPath = () => {
   const baseDir = path.join(__dirname, '../public/images');
-  const possibleNames = ['upi_qr.png', 'qr.png', 'qr.jpg', 'qr.jpeg', 'upi_qr.jpg', 'upi_qr.jpeg'];
+  const possibleNames = ['upi_qr.png', 'qr.png', 'qr.jpg', 'qr.jpeg'];
   for (const name of possibleNames) {
     const fullPath = path.join(baseDir, name);
     if (fs.existsSync(fullPath)) {
@@ -18,45 +17,40 @@ const getQrPath = () => {
   return null;
 };
 
-// ---------- GET deposit page ----------
+// GET deposit page
 exports.getDeposit = (req, res) => {
-  // Read UPI IDs from environment variables
-  const upiId1 = process.env.UPI_ID_1 || 'upi1@paytm';
-  const upiId2 = process.env.UPI_ID_2 || 'upi2@paytm';
-  const upiId3 = process.env.UPI_ID_3 || 'upi3@paytm';
+  // Read from .env
+  const upiId = process.env.UPI_ID || 'admin@upi';
   const usdtTrc20Address = process.env.USDT_TRC20_ADDRESS || 'TXYZ...1234';
+  const usdtErc20Address = process.env.USDT_ERC20_ADDRESS || '0xABC...789';
+  const usdtBep20Address = process.env.USDT_BEP20_ADDRESS || '0xDEF...456';
 
-  // QR image paths – place your own images in public/images/
-  // For each UPI, you should have a separate QR code image.
-  const upiQr1 = '/images/upi1-qr.png';
-  const upiQr2 = '/images/upi2-qr.png';
-  const upiQr3 = '/images/upi3-qr.png';
-  const usdtTrc20Qr = '/images/usdt-trc20-qr.png';
+  // QR images – place your own images in public/images/
+  const upiQr = '/images/upi-qr.png';
+  const trc20Qr = '/images/usdt-trc20-qr.png';
+  const erc20Qr = '/images/usdt-erc20-qr.png';
+  const bep20Qr = '/images/usdt-bep20-qr.png';
 
   res.render('user/deposit', {
     title: 'Deposit Funds',
-    // UPI details
-    upiId1,
-    upiId2,
-    upiId3,
-    upiQr1,
-    upiQr2,
-    upiQr3,
-    // TRC20 details
+    upiId,
+    upiQr,
     usdtTrc20Address,
-    usdtTrc20Qr,
-    // Other common data
+    usdtErc20Address,
+    usdtBep20Address,
+    trc20Qr,
+    erc20Qr,
+    bep20Qr,
     baseUrl: process.env.BASE_URL,
-    qrExists: true // we always have images
+    qrExists: true
   });
 };
 
-// ---------- POST deposit (handle all methods) ----------
+// POST deposit
 exports.postDeposit = async (req, res) => {
   try {
     const { method, amount, utr } = req.body;
 
-    // Validate all required fields
     if (!method || !amount || !utr) {
       req.flash('error_msg', 'All fields are required');
       return res.redirect('/deposit');
@@ -68,19 +62,18 @@ exports.postDeposit = async (req, res) => {
       return res.redirect('/deposit');
     }
 
-    // Determine currency and method label for display
+    // Determine currency and method label
     let currency = 'INR';
     let methodLabel = method.toUpperCase();
 
-    if (method === 'usdt_trc20') {
+    if (method === 'usdt_trc20' || method === 'usdt_erc20' || method === 'usdt_bep20') {
       currency = 'USDT';
-      methodLabel = 'USDT TRC20';
-    } else if (method.startsWith('upi')) {
+      methodLabel = method.toUpperCase().replace('_', ' ');
+    } else if (method === 'upi') {
       currency = 'INR';
-      methodLabel = `UPI (${method.toUpperCase()})`;
+      methodLabel = 'UPI';
     }
 
-    // Create transaction
     const transaction = new Transaction({
       user: req.user._id,
       type: 'deposit',
@@ -93,12 +86,11 @@ exports.postDeposit = async (req, res) => {
     });
     await transaction.save();
 
-    // WhatsApp message to admin
     const adminPhone = process.env.ADMIN_PHONE;
     const message = `New Deposit Request\nUser: ${req.user.fullName}\nAmount: ${depositAmount} ${currency}\nMethod: ${methodLabel}\nUTR: ${utr}`;
     const waLink = whatsappLink(adminPhone, message);
 
-    req.flash('success_msg', 'Deposit request submitted. Admin will verify it shortly.');
+    req.flash('success_msg', 'Deposit request submitted.');
     res.render('user/deposit-success', {
       title: 'Deposit Submitted',
       transaction,

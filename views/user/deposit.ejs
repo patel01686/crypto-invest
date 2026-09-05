@@ -536,21 +536,11 @@
                 </div>
                 <div class="card-body">
 
-                    <!-- ===== DEPOSIT METHOD TABS ===== -->
+                    <!-- ===== DEPOSIT METHOD TABS (4 tabs) ===== -->
                     <ul class="nav nav-pills nav-fill mb-4" id="depositTabs" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="tab-upi1" data-bs-toggle="pill" data-bs-target="#panel-upi1" type="button" role="tab">
-                                <i class="fas fa-mobile-alt"></i> UPI 1
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="tab-upi2" data-bs-toggle="pill" data-bs-target="#panel-upi2" type="button" role="tab">
-                                <i class="fas fa-mobile-alt"></i> UPI 2
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="tab-upi3" data-bs-toggle="pill" data-bs-target="#panel-upi3" type="button" role="tab">
-                                <i class="fas fa-mobile-alt"></i> UPI 3
+                            <button class="nav-link active" id="tab-upi" data-bs-toggle="pill" data-bs-target="#panel-upi" type="button" role="tab">
+                                <i class="fas fa-mobile-alt"></i> UPI
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
@@ -558,19 +548,28 @@
                                 <i class="fab fa-bitcoin"></i> TRC20
                             </button>
                         </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="tab-erc20" data-bs-toggle="pill" data-bs-target="#panel-erc20" type="button" role="tab">
+                                <i class="fab fa-ethereum"></i> ERC20
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="tab-bep20" data-bs-toggle="pill" data-bs-target="#panel-bep20" type="button" role="tab">
+                                <i class="fas fa-link"></i> BEP20
+                            </button>
+                        </li>
                     </ul>
 
-                    <!-- ===== TAB PANELS ===== -->
                     <div class="tab-content" id="depositTabContent">
 
-                        <!-- PANEL 1: UPI 1 -->
-                        <div class="tab-pane fade show active" id="panel-upi1" role="tabpanel">
+                        <!-- PANEL: UPI -->
+                        <div class="tab-pane fade show active" id="panel-upi" role="tabpanel">
                             <div class="text-center">
-                                <img src="<%= upiQr1 %>" alt="UPI 1 QR" class="img-fluid border shadow rounded" style="max-width:200px;">
-                                <p class="mt-2 mb-1"><strong>UPI ID (1):</strong></p>
+                                <img src="<%= upiQr %>" alt="UPI QR" class="img-fluid border shadow rounded" style="max-width:200px;">
+                                <p class="mt-2 mb-1"><strong>UPI ID:</strong></p>
                                 <div class="d-flex align-items-center justify-content-center gap-2">
-                                    <span class="text-primary fw-bold"><%= upiId1 %></span>
-                                    <button class="btn btn-sm btn-outline-secondary" onclick="copyText('<%= upiId1 %>')">
+                                    <span class="text-primary fw-bold"><%= upiId %></span>
+                                    <button class="btn btn-sm btn-outline-secondary" onclick="copyText('<%= upiId %>')">
                                         <i class="fas fa-copy"></i>
                                     </button>
                                 </div>
@@ -578,40 +577,10 @@
                             </div>
                         </div>
 
-                        <!-- PANEL 2: UPI 2 -->
-                        <div class="tab-pane fade" id="panel-upi2" role="tabpanel">
-                            <div class="text-center">
-                                <img src="<%= upiQr2 %>" alt="UPI 2 QR" class="img-fluid border shadow rounded" style="max-width:200px;">
-                                <p class="mt-2 mb-1"><strong>UPI ID (2):</strong></p>
-                                <div class="d-flex align-items-center justify-content-center gap-2">
-                                    <span class="text-primary fw-bold"><%= upiId2 %></span>
-                                    <button class="btn btn-sm btn-outline-secondary" onclick="copyText('<%= upiId2 %>')">
-                                        <i class="fas fa-copy"></i>
-                                    </button>
-                                </div>
-                                <p class="text-muted small mt-2">Scan QR or copy UPI ID and pay exact amount.</p>
-                            </div>
-                        </div>
-
-                        <!-- PANEL 3: UPI 3 -->
-                        <div class="tab-pane fade" id="panel-upi3" role="tabpanel">
-                            <div class="text-center">
-                                <img src="<%= upiQr3 %>" alt="UPI 3 QR" class="img-fluid border shadow rounded" style="max-width:200px;">
-                                <p class="mt-2 mb-1"><strong>UPI ID (3):</strong></p>
-                                <div class="d-flex align-items-center justify-content-center gap-2">
-                                    <span class="text-primary fw-bold"><%= upiId3 %></span>
-                                    <button class="btn btn-sm btn-outline-secondary" onclick="copyText('<%= upiId3 %>')">
-                                        <i class="fas fa-copy"></i>
-                                    </button>
-                                </div>
-                                <p class="text-muted small mt-2">Scan QR or copy UPI ID and pay exact amount.</p>
-                            </div>
-                        </div>
-
-                        <!-- PANEL 4: TRC20 -->
+                        <!-- PANEL: TRC20 -->
                         <div class="tab-pane fade" id="panel-trc20" role="tabpanel">
                             <div class="text-center">
-                                <img src="<%= usdtTrc20Qr %>" alt="USDT TRC20 QR" class="img-fluid border shadow rounded" style="max-width:200px;">
+                                <img src="<%= trc20Qr %>" alt="USDT TRC20 QR" class="img-fluid border shadow rounded" style="max-width:200px;">
                                 <p class="mt-2 mb-1"><strong>Wallet Address (TRC20):</strong></p>
                                 <div class="d-flex align-items-center justify-content-center gap-2 flex-wrap">
                                     <span class="text-primary fw-bold small" style="word-break:break-all;"><%= usdtTrc20Address %></span>
@@ -627,14 +596,52 @@
                             </div>
                         </div>
 
+                        <!-- PANEL: ERC20 -->
+                        <div class="tab-pane fade" id="panel-erc20" role="tabpanel">
+                            <div class="text-center">
+                                <img src="<%= erc20Qr %>" alt="USDT ERC20 QR" class="img-fluid border shadow rounded" style="max-width:200px;">
+                                <p class="mt-2 mb-1"><strong>Wallet Address (ERC20):</strong></p>
+                                <div class="d-flex align-items-center justify-content-center gap-2 flex-wrap">
+                                    <span class="text-primary fw-bold small" style="word-break:break-all;"><%= usdtErc20Address %></span>
+                                    <button class="btn btn-sm btn-outline-secondary" onclick="copyText('<%= usdtErc20Address %>')">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                                <p class="text-muted small mt-2">
+                                    <span class="badge bg-info text-dark">Network: ERC20</span>
+                                    <span class="badge bg-warning text-dark ms-1">Token: USDT</span>
+                                </p>
+                                <p class="text-muted small">Send USDT on the ERC20 network to the address above.</p>
+                            </div>
+                        </div>
+
+                        <!-- PANEL: BEP20 -->
+                        <div class="tab-pane fade" id="panel-bep20" role="tabpanel">
+                            <div class="text-center">
+                                <img src="<%= bep20Qr %>" alt="USDT BEP20 QR" class="img-fluid border shadow rounded" style="max-width:200px;">
+                                <p class="mt-2 mb-1"><strong>Wallet Address (BEP20):</strong></p>
+                                <div class="d-flex align-items-center justify-content-center gap-2 flex-wrap">
+                                    <span class="text-primary fw-bold small" style="word-break:break-all;"><%= usdtBep20Address %></span>
+                                    <button class="btn btn-sm btn-outline-secondary" onclick="copyText('<%= usdtBep20Address %>')">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                                <p class="text-muted small mt-2">
+                                    <span class="badge bg-info text-dark">Network: BEP20</span>
+                                    <span class="badge bg-warning text-dark ms-1">Token: USDT</span>
+                                </p>
+                                <p class="text-muted small">Send USDT on the BEP20 network to the address above.</p>
+                            </div>
+                        </div>
+
                     </div>
 
                     <hr>
 
-                    <!-- ===== DEPOSIT FORM ===== -->
+                    <!-- DEPOSIT FORM -->
                     <h5>Submit Payment Details</h5>
                     <form action="/deposit" method="POST" id="depositForm">
-                        <input type="hidden" name="method" id="depositMethod" value="upi1">
+                        <input type="hidden" name="method" id="depositMethod" value="upi">
 
                         <div class="mb-3">
                             <label for="amount" class="form-label" id="amountLabel">Amount (₹)</label>
@@ -660,7 +667,7 @@
         </div>
     </div>
 
-    <!-- ===== JAVASCRIPT ===== -->
+    <!-- JAVASCRIPT for dynamic form labels -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const tabs = document.querySelectorAll('#depositTabs .nav-link');
@@ -671,22 +678,8 @@
             const utrInput = document.getElementById('utr');
 
             const config = {
-                'tab-upi1': {
-                    method: 'upi1',
-                    amountLabel: 'Amount (₹)',
-                    utrLabel: 'UTR Number',
-                    amountPlaceholder: 'Enter amount in ₹',
-                    utrPlaceholder: 'Enter UTR number'
-                },
-                'tab-upi2': {
-                    method: 'upi2',
-                    amountLabel: 'Amount (₹)',
-                    utrLabel: 'UTR Number',
-                    amountPlaceholder: 'Enter amount in ₹',
-                    utrPlaceholder: 'Enter UTR number'
-                },
-                'tab-upi3': {
-                    method: 'upi3',
+                'tab-upi': {
+                    method: 'upi',
                     amountLabel: 'Amount (₹)',
                     utrLabel: 'UTR Number',
                     amountPlaceholder: 'Enter amount in ₹',
@@ -698,43 +691,50 @@
                     utrLabel: 'Transaction Hash (TXN)',
                     amountPlaceholder: 'Enter USDT amount',
                     utrPlaceholder: 'Enter transaction hash'
+                },
+                'tab-erc20': {
+                    method: 'usdt_erc20',
+                    amountLabel: 'Amount (USDT)',
+                    utrLabel: 'Transaction Hash (TXN)',
+                    amountPlaceholder: 'Enter USDT amount',
+                    utrPlaceholder: 'Enter transaction hash'
+                },
+                'tab-bep20': {
+                    method: 'usdt_bep20',
+                    amountLabel: 'Amount (USDT)',
+                    utrLabel: 'Transaction Hash (TXN)',
+                    amountPlaceholder: 'Enter USDT amount',
+                    utrPlaceholder: 'Enter transaction hash'
                 }
             };
 
             function updateForm(tabId) {
                 const cfg = config[tabId];
                 if (!cfg) return;
-
                 methodInput.value = cfg.method;
                 amountLabel.textContent = cfg.amountLabel;
                 utrLabel.textContent = cfg.utrLabel;
                 amountInput.placeholder = cfg.amountPlaceholder;
                 utrInput.placeholder = cfg.utrPlaceholder;
-                amountInput.min = (cfg.method === 'upi1' || cfg.method === 'upi2' || cfg.method === 'upi3') ? 1 : 0.01;
-                amountInput.step = (cfg.method === 'upi1' || cfg.method === 'upi2' || cfg.method === 'upi3') ? 'any' : '0.01';
+                amountInput.min = cfg.method === 'upi' ? 1 : 0.01;
+                amountInput.step = cfg.method === 'upi' ? 'any' : '0.01';
             }
 
             tabs.forEach(tab => {
                 tab.addEventListener('click', function(e) {
-                    setTimeout(() => {
-                        updateForm(this.id);
-                    }, 50);
+                    setTimeout(() => updateForm(this.id), 50);
                 });
             });
 
             const activeTab = document.querySelector('#depositTabs .nav-link.active');
-            if (activeTab) {
-                updateForm(activeTab.id);
-            }
+            if (activeTab) updateForm(activeTab.id);
         });
 
         function copyText(text) {
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(text).then(() => {
                     showToast('Copied!', 'Address copied to clipboard.');
-                }).catch(() => {
-                    fallbackCopy(text);
-                });
+                }).catch(() => fallbackCopy(text));
             } else {
                 fallbackCopy(text);
             }
@@ -749,9 +749,9 @@
             el.select();
             try {
                 document.execCommand('copy');
-                showToast('Copied!', 'Address copied to clipboard.');
+                showToast('Copied!', 'Address copied.');
             } catch (e) {
-                showToast('Error', 'Could not copy. Please copy manually.', 'danger');
+                showToast('Error', 'Copy manually', 'danger');
             }
             document.body.removeChild(el);
         }
@@ -760,16 +760,13 @@
             type = type || 'success';
             const bg = type === 'danger' ? 'bg-danger' : 'bg-success';
             const toast = document.createElement('div');
-            toast.className =
-                `position-fixed top-0 start-50 translate-middle-x mt-3 px-4 py-2 rounded text-white ${bg} shadow`;
+            toast.className = `position-fixed top-0 start-50 translate-middle-x mt-3 px-4 py-2 rounded text-white ${bg} shadow`;
             toast.style.zIndex = '9999';
             toast.style.opacity = '0';
             toast.style.transition = 'opacity 0.3s ease';
             toast.innerHTML = `<strong>${title}</strong> ${message}`;
             document.body.appendChild(toast);
-            requestAnimationFrame(() => {
-                toast.style.opacity = '1';
-            });
+            requestAnimationFrame(() => { toast.style.opacity = '1'; });
             setTimeout(() => {
                 toast.style.opacity = '0';
                 setTimeout(() => toast.remove(), 400);
@@ -777,8 +774,7 @@
         }
     </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
