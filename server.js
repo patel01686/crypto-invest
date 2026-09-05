@@ -6,6 +6,7 @@ const flash = require('connect-flash');
 const expressLayouts = require('express-ejs-layouts');
 const path = require('path');
 const mongoose = require('mongoose');
+const cron = require('node-cron'); // ✅ Cron job ke liye
 
 // Import routes
 const authRoutes = require('./routes/authRoutes');
@@ -104,6 +105,61 @@ app.use('/admin', adminRoutes);
 
 // ✅ ROOT ROUTE – Home page (hero banner + investment plans)
 app.get('/', homeController.getHome);
+
+// ------------------------- CRON JOB: Auto-mature investments -------------------------
+// Runs daily at 00:00 (midnight)
+const Investment = require('./models/Investment');
+const InvestmentPlan = require('./models/InvestmentPlan');
+const Transaction = require('./models/Transaction');
+
+cron.schedule('0 0 * * *', async () => {
+  console.log('🔄 Running auto-mature cron job...');
+  try {
+    const now = new Date();
+    const activeInvestments = await Investment.find({
+      status: 'active',
+      maturityDate: { $lte: now }
+    }).populate('plan');
+
+    for (const inv of activeInvestments) {
+      const user = await User.findById(inv.user);
+      if (!user) continue;
+
+      // Calculate returns: principal + (principal * returnRate / 100)
+      const returnAmount = inv.amount + (inv.amount * inv.plan.returnRate / 100);
+
+      // Credit wallet
+      user.walletBalance += returnAmount;
+      await user.save();
+
+      // Create transaction for return
+      await Transaction.create({
+        user: user._id,
+        type: 'return',
+        amount: returnAmount,
+        status: 'completed',
+        metadata: {
+          planName: inv.plan.name,
+          investmentId: inv._id,
+          note: 'Auto-matured investment'
+        }
+      });
+
+      // Mark investment as matured
+      inv.status = 'matured';
+      await inv.save();
+
+      console.log(`✅ Matured investment ${inv._id} for user ${user.email} – credited ₹${returnAmount}`);
+    }
+  } catch (err) {
+    console.error('Cron job error:', err);
+  }
+}, {
+  scheduled: true,
+  timezone: "Asia/Kolkata" // आप अपनी timezone के हिसाब से बदल सकते हैं
+});
+
+console.log('✅ Cron job scheduled for daily maturity check.');
 
 // 404 handler
 app.use((req, res) => {
