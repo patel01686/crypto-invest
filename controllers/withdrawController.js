@@ -9,7 +9,7 @@ exports.getWithdraw = async (req, res) => {
     res.render('user/withdraw', {
       title: 'Withdraw Funds',
       bankAccounts: user.bankAccounts || [],
-      walletAddresses: user.walletAddresses || [], // ✅ NAYA
+      walletAddresses: user.walletAddresses || [],
       walletBalance: user.walletBalance
     });
   } catch (err) {
@@ -19,7 +19,7 @@ exports.getWithdraw = async (req, res) => {
   }
 };
 
-// POST withdrawal
+// POST withdrawal – FIXED ✅
 exports.postWithdraw = async (req, res) => {
   try {
     const { amount, withdrawType, accountId } = req.body;
@@ -35,7 +35,7 @@ exports.postWithdraw = async (req, res) => {
       return res.redirect('/withdraw');
     }
 
-    let accountDetails = {};
+    let metadata = {};
 
     if (withdrawType === 'bank') {
       const bankAccount = user.bankAccounts.id(accountId);
@@ -43,12 +43,14 @@ exports.postWithdraw = async (req, res) => {
         req.flash('error_msg', 'Select a bank account');
         return res.redirect('/withdraw');
       }
-      accountDetails = {
-        type: 'bank',
-        accountHolder: bankAccount.accountHolder,
-        bankName: bankAccount.bankName,
-        accountNumber: bankAccount.accountNumber,
-        ifscCode: bankAccount.ifscCode
+      // ✅ Store as bankAccount for admin view
+      metadata = {
+        bankAccount: {
+          accountHolder: bankAccount.accountHolder,
+          bankName: bankAccount.bankName,
+          accountNumber: bankAccount.accountNumber,
+          ifscCode: bankAccount.ifscCode
+        }
       };
     } else if (withdrawType === 'wallet') {
       const wallet = user.walletAddresses.id(accountId);
@@ -56,11 +58,13 @@ exports.postWithdraw = async (req, res) => {
         req.flash('error_msg', 'Select a wallet address');
         return res.redirect('/withdraw');
       }
-      accountDetails = {
-        type: 'wallet',
-        network: wallet.network,
-        address: wallet.address,
-        label: wallet.label
+      // ✅ Store as walletAddress
+      metadata = {
+        walletAddress: {
+          network: wallet.network,
+          address: wallet.address,
+          label: wallet.label
+        }
       };
     } else {
       req.flash('error_msg', 'Invalid method');
@@ -73,17 +77,17 @@ exports.postWithdraw = async (req, res) => {
       type: 'withdrawal',
       amount: parseFloat(amount),
       status: 'pending',
-      metadata: { accountDetails }
+      metadata: metadata
     });
     await transaction.save();
 
     // WhatsApp message
     const adminPhone = process.env.ADMIN_PHONE;
     let message = `New Withdrawal Request\nUser: ${user.fullName}\nAmount: ₹${amount}\n`;
-    if (accountDetails.type === 'bank') {
-      message += `Bank: ${accountDetails.bankName}\nAccount: ${accountDetails.accountNumber}\nIFSC: ${accountDetails.ifscCode}`;
+    if (withdrawType === 'bank') {
+      message += `Bank: ${metadata.bankAccount.bankName}\nAccount: ${metadata.bankAccount.accountNumber}\nIFSC: ${metadata.bankAccount.ifscCode}`;
     } else {
-      message += `Network: ${accountDetails.network}\nAddress: ${accountDetails.address}`;
+      message += `Network: ${metadata.walletAddress.network}\nAddress: ${metadata.walletAddress.address}`;
     }
     const waLink = whatsappLink(adminPhone, message);
 
@@ -96,7 +100,7 @@ exports.postWithdraw = async (req, res) => {
   }
 };
 
-// ---- BANK ACCOUNT FUNCTIONS (same as before) ----
+// ---- BANK ACCOUNT FUNCTIONS ----
 exports.addBankAccount = async (req, res) => {
   try {
     const { accountHolder, bankName, accountNumber, ifscCode } = req.body;
@@ -132,7 +136,7 @@ exports.removeBankAccount = async (req, res) => {
   }
 };
 
-// ---- ✅ NEW: WALLET FUNCTIONS ----
+// ---- WALLET FUNCTIONS ----
 exports.addWalletAddress = async (req, res) => {
   try {
     const { network, address, label } = req.body;
