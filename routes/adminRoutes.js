@@ -24,6 +24,7 @@ router.get('/withdrawals/reject/:id', ensureAuthenticated, ensureAdmin, adminCon
 router.get('/users', ensureAuthenticated, ensureAdmin, adminController.getUsers);
 router.get('/users/toggle/:id', ensureAuthenticated, ensureAdmin, adminController.toggleUserStatus);
 router.post('/users/adjust-balance', ensureAuthenticated, ensureAdmin, adminController.adjustBalance);
+router.get('/investments', ensureAuthenticated, ensureAdmin, adminController.getInvestments);
 
 // Plan management
 router.get('/plans', ensureAuthenticated, ensureAdmin, adminController.getPlans);

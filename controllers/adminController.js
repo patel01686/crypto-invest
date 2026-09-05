@@ -232,6 +232,25 @@ exports.adjustBalance = async (req, res) => {
   }
 };
 
+// ─── Admin: View all investments ───
+exports.getInvestments = async (req, res) => {
+  try {
+    const investments = await Investment.find()
+      .populate('user', 'fullName email phone')
+      .populate('plan', 'name returnRate tenureDays minAmount maxAmount')
+      .sort({ createdAt: -1 });
+
+    res.render('admin/investments', {
+      title: 'All Investments',
+      investments
+    });
+  } catch (err) {
+    console.error(err);
+    req.flash('error_msg', 'Error loading investments');
+    res.redirect('/admin/dashboard');
+  }
+};
+
 // Plan Management
 exports.getPlans = async (req, res) => {
   try {

@@ -17,18 +17,20 @@
                 <a href="/admin/deposits" class="list-group-item list-group-item-action bg-transparent text-white"><i class="fas fa-credit-card me-2"></i>Deposits</a>
                 <a href="/admin/withdrawals" class="list-group-item list-group-item-action bg-transparent text-white"><i class="fas fa-hand-holding-usd me-2"></i>Withdrawals</a>
                 <a href="/admin/users" class="list-group-item list-group-item-action bg-transparent text-white"><i class="fas fa-users me-2"></i>Users</a>
+                <!-- ✅ NEW: Investments link -->
+                <a href="/admin/investments" class="list-group-item list-group-item-action bg-transparent text-white"><i class="fas fa-chart-pie me-2"></i>Investments</a>
                 <a href="/admin/plans" class="list-group-item list-group-item-action bg-transparent text-white"><i class="fas fa-cubes me-2"></i>Plans</a>
                 <a href="/admin/settings" class="list-group-item list-group-item-action bg-transparent text-white"><i class="fas fa-cog me-2"></i>Settings</a>
             <% } %>
             <a href="/logout" class="list-group-item list-group-item-action bg-transparent text-danger"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
         <% } else { %>
-            <!-- ✅ Guest users ke liye kuch nahi – sirf empty space -->
+            <!-- Guest users – empty -->
         <% } %>
     </div>
     <div class="text-center text-muted small mt-5">v1.0</div>
 </div>
 
-<!-- ========== TOGGLE SCRIPTS (same as before) ========== -->
+<!-- ========== TOGGLE SCRIPTS ========== -->
 <script>
     (function() {
         document.addEventListener('DOMContentLoaded', function() {
