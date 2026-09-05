@@ -9,18 +9,16 @@
                 <p><strong>UTR:</strong> <%= transaction.metadata.utr %></p>
                 
                 <hr>
-                <p class="text-muted">Please send the payment notification to the admin via WhatsApp:</p>
+                <p class="text-muted">Please send the payment notification to the admin via Telegram:</p>
                 
                 
-               <a href="https://wa.me/18252035161?text=Hello%20Admin%2C%20I%20have%20made%20a%20deposit%20of%20₹<%= transaction.amount.toFixed(2) %>%20with%20UTR%20<%= transaction.metadata.utr %>.%20Please%20verify%20and%20update%20my%20wallet." 
-                 target="_blank" 
-                 class="btn btn-success btn-lg mt-2">
-                 <i class="fab fa-whatsapp me-2"></i> Send Notification to Admin
-               </a>
+              <a href="https://t.me/coiinswitch"
+   target="_blank"
+   class="btn btn-primary btn-lg mt-2">
+   <i class="fab fa-telegram me-2"></i> Send Notification to Admin
+</a>
                 
-                <p class="text-muted mt-3">
-                    <small>Click the button to open WhatsApp with pre-filled message.</small>
-                </p>
+               
                 <a href="/dashboard" class="btn btn-outline-primary mt-3">Back to Dashboard</a>
             </div>
         </div>
