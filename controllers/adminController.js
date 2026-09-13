@@ -4,7 +4,7 @@ const InvestmentPlan = require('../models/InvestmentPlan');
 const Investment = require('../models/Investment');
 const { whatsappLink, calculateMaturity } = require('../utils/helpers');
 
-// Admin Dashboard
+// ============ ADMIN DASHBOARD ============
 exports.getDashboard = async (req, res) => {
   try {
     const totalUsers = await User.countDocuments({ role: 'user' });
@@ -26,7 +26,7 @@ exports.getDashboard = async (req, res) => {
   }
 };
 
-// Deposit Management
+// ============ DEPOSIT MANAGEMENT ============
 exports.getDeposits = async (req, res) => {
   try {
     const deposits = await Transaction.find({ type: 'deposit' })
@@ -49,7 +49,6 @@ exports.approveDeposit = async (req, res) => {
       return res.redirect('/admin/deposits');
     }
 
-    // Credit user's wallet
     const user = transaction.user;
     user.walletBalance += transaction.amount;
     await user.save();
@@ -87,7 +86,7 @@ exports.rejectDeposit = async (req, res) => {
   }
 };
 
-// Withdrawal Management
+// ============ WITHDRAWAL MANAGEMENT ============
 exports.getWithdrawals = async (req, res) => {
   try {
     const withdrawals = await Transaction.find({ type: 'withdrawal' })
@@ -110,14 +109,12 @@ exports.approveWithdrawal = async (req, res) => {
       return res.redirect('/admin/withdrawals');
     }
 
-    // Check if user has enough balance
     const user = transaction.user;
     if (user.walletBalance < transaction.amount) {
       req.flash('error_msg', 'Insufficient balance. Cannot approve.');
       return res.redirect('/admin/withdrawals');
     }
 
-    // Deduct from wallet
     user.walletBalance -= transaction.amount;
     await user.save();
 
@@ -154,7 +151,7 @@ exports.rejectWithdrawal = async (req, res) => {
   }
 };
 
-// User Management
+// ============ USER MANAGEMENT ============
 exports.getUsers = async (req, res) => {
   try {
     const users = await User.find({ role: 'user' }).sort({ createdAt: -1 });
@@ -213,7 +210,6 @@ exports.adjustBalance = async (req, res) => {
     }
     await user.save();
 
-    // Create transaction record for admin adjustment
     const transaction = new Transaction({
       user: user._id,
       type: 'admin_adjust',
@@ -232,7 +228,7 @@ exports.adjustBalance = async (req, res) => {
   }
 };
 
-// ─── Admin: View all investments ───
+// ============ INVESTMENT MANAGEMENT ============
 exports.getInvestments = async (req, res) => {
   try {
     const investments = await Investment.find()
@@ -251,7 +247,26 @@ exports.getInvestments = async (req, res) => {
   }
 };
 
-// Plan Management
+exports.deleteInvestment = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const investment = await Investment.findById(id);
+    if (!investment) {
+      req.flash('error_msg', 'Investment not found');
+      return res.redirect('/admin/investments');
+    }
+
+    await Investment.findByIdAndDelete(id);
+    req.flash('success_msg', 'Investment deleted successfully');
+    res.redirect('/admin/investments');
+  } catch (err) {
+    console.error(err);
+    req.flash('error_msg', 'Error deleting investment');
+    res.redirect('/admin/investments');
+  }
+};
+
+// ============ PLAN MANAGEMENT ============
 exports.getPlans = async (req, res) => {
   try {
     const plans = await InvestmentPlan.find().sort({ createdAt: -1 });
@@ -267,9 +282,10 @@ exports.getCreatePlan = (req, res) => {
   res.render('admin/plan-form', { title: 'Create Plan', plan: null });
 };
 
+// ✅ Clean & Single: Create Plan
 exports.postCreatePlan = async (req, res) => {
   try {
-    const { name, description, returnRate, tenureDays, minAmount, maxAmount } = req.body;
+    const { name, description, imageUrl, returnRate, tenureDays, minAmount, maxAmount } = req.body;
     if (!name || !returnRate || !tenureDays || !minAmount || !maxAmount) {
       req.flash('error_msg', 'All fields are required');
       return res.redirect('/admin/plans/create');
@@ -277,6 +293,7 @@ exports.postCreatePlan = async (req, res) => {
     const plan = new InvestmentPlan({
       name,
       description: description || '',
+      imageUrl: imageUrl || '',
       returnRate: parseFloat(returnRate),
       tenureDays: parseInt(tenureDays),
       minAmount: parseFloat(minAmount),
@@ -308,9 +325,10 @@ exports.getEditPlan = async (req, res) => {
   }
 };
 
+// ✅ Clean & Single: Edit Plan
 exports.postEditPlan = async (req, res) => {
   try {
-    const { name, description, returnRate, tenureDays, minAmount, maxAmount, isActive } = req.body;
+    const { name, description, imageUrl, returnRate, tenureDays, minAmount, maxAmount, isActive } = req.body;
     const plan = await InvestmentPlan.findById(req.params.id);
     if (!plan) {
       req.flash('error_msg', 'Plan not found');
@@ -318,6 +336,7 @@ exports.postEditPlan = async (req, res) => {
     }
     plan.name = name;
     plan.description = description || '';
+    plan.imageUrl = imageUrl || '';
     plan.returnRate = parseFloat(returnRate);
     plan.tenureDays = parseInt(tenureDays);
     plan.minAmount = parseFloat(minAmount);

@@ -24,6 +24,15 @@
                                   placeholder="Brief description of the plan"><%= plan ? plan.description : '' %></textarea>
                     </div>
 
+                    <!-- Image URL -->
+<div class="mb-3">
+    <label for="imageUrl" class="form-label">Image URL (optional)</label>
+    <input type="url" class="form-control" id="imageUrl" name="imageUrl"
+           value="<%= plan ? plan.imageUrl : '' %>"
+           placeholder="https://example.com/image.jpg">
+    <small class="text-muted">Google se koi bhi image ka direct link paste karo</small>
+</div>
+
                     <div class="row">
                         <!-- Return Rate -->
                         <div class="col-md-6 mb-3">
