@@ -601,10 +601,8 @@ body {
     <% if (plan.imageUrl) { %>
         <img src="<%= plan.imageUrl %>" alt="<%= plan.name %>" style="width:100%; height:150px; object-fit:cover; border-radius:12px; margin-bottom:10px;">
     <% } %>
-                            <span class="plan-badge"><i class="fas fa-star me-1"></i> Active</span>
-                            <div class="plan-icon">
-                                <i class="fas <%= ['fa-chart-simple', 'fa-arrow-trend-up', 'fa-coins', 'fa-sack-dollar', 'fa-circle-dollar', 'fa-bolt'][index % 6] %>"></i>
-                            </div>
+                            
+                            
                             <h3><%= plan.name %></h3>
                             <p class="plan-desc"><%= plan.description || 'Secure and profitable investment' %></p>
                             <div class="plan-details">
