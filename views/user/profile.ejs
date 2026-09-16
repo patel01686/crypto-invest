@@ -508,55 +508,6 @@
         </form>
     </div>
 </div>
-
-<!-- ===== REFERRAL SECTION ===== -->
-<div class="card shadow mt-4">
-    <div class="card-header bg-transparent">
-        <h5 class="mb-0"><i class="fas fa-user-friends me-2"></i>Refer & Earn ₹500</h5>
-    </div>
-    <div class="card-body">
-        <p>Share your referral code with friends. When they register:</p>
-        <ul>
-            <li><strong>You get ₹500</strong> in your wallet</li>
-            <li><strong>They get ₹300</strong> signup bonus</li>
-        </ul>
-
-        <label class="form-label"><strong>Your Referral Code</strong></label>
-        <div class="d-flex align-items-center gap-2 mb-3">
-            <input type="text" class="form-control" id="myRefCode" 
-                   value="<%= user.referralCode || 'N/A' %>" readonly>
-            <button class="btn btn-primary" onclick="copyRefCode()">
-                <i class="fas fa-copy"></i> Copy
-            </button>
-        </div>
-
-        <label class="form-label"><strong>Shareable Link</strong></label>
-        <div class="d-flex align-items-center gap-2 mb-3">
-            <input type="text" class="form-control" id="myRefLink" 
-                   value="<%= process.env.BASE_URL || 'http://localhost:3000' %>/register?ref=<%= user.referralCode %>" readonly>
-            <button class="btn btn-outline-primary" onclick="copyRefLink()">
-                <i class="fas fa-link"></i> Copy
-            </button>
-        </div>
-
-        <hr>
-        <h6>Users You Referred (<%= user.referrals ? user.referrals.length : 0 %>)</h6>
-        <% if (user.referrals && user.referrals.length > 0) { %>
-            <ul class="list-group">
-                <% user.referrals.forEach(ref => { %>
-                    <li class="list-group-item">
-                        <i class="fas fa-user me-2 text-primary"></i>
-                        <strong><%= ref.fullName || 'User' %></strong>
-                        <small class="text-muted"><%= ref.email || '' %></small>
-                    </li>
-                <% }) %>
-            </ul>
-        <% } else { %>
-            <p class="text-muted">No referrals yet. Share your link to get started!</p>
-        <% } %>
-    </div>
-</div>
-
 <script>
     function copyRefCode() {
         const input = document.getElementById('myRefCode');

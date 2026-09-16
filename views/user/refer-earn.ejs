@@ -9,257 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
     <style>
-        *, *::before, *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #eef2ff 0%, #f5f7fa 100%);
-            min-height: 100vh;
-            padding: 1.5rem 1rem;
-            color: #1e293b;
-        }
-
-        .profile-wrapper {
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-
-        /* ===== PAGE HEADER ===== */
-        .page-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        .page-header h1 {
-            font-size: 2rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #4f46e5, #7c3aed);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 0.3rem;
-        }
-        .page-header p {
-            color: #64748b;
-            font-size: 0.95rem;
-        }
-
-        /* ===== GRID ===== */
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        @media (max-width: 768px) {
-            .grid { grid-template-columns: 1fr; }
-        }
-
-        /* ===== CARDS ===== */
-        .card {
-            background: #ffffff;
-            border-radius: 20px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-            border: 1px solid rgba(79, 70, 229, 0.06);
-            overflow: hidden;
-            transition: transform 0.25s ease, box-shadow 0.3s ease;
-        }
-        .card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(79, 70, 229, 0.08);
-        }
-
-        .card-header {
-            padding: 1.1rem 1.5rem;
-            border-bottom: 1px solid #f1f5f9;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .card-header .icon-box {
-            width: 38px;
-            height: 38px;
-            border-radius: 10px;
-            background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(124, 58, 237, 0.1));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #4f46e5;
-            font-size: 1rem;
-        }
-        .card-header h5 {
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: #0f172a;
-            margin: 0;
-        }
-
-        .card-body {
-            padding: 1.5rem;
-        }
-
-        /* ===== PROFILE INFO ===== */
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem 0;
-            border-bottom: 1px dashed #f1f5f9;
-        }
-        .info-row:last-child { border-bottom: none; }
-        .info-label {
-            color: #64748b;
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-        .info-value {
-            color: #0f172a;
-            font-size: 0.95rem;
-            font-weight: 600;
-            text-align: right;
-            word-break: break-word;
-        }
-        .balance-value {
-            color: #16a34a;
-            font-size: 1.15rem;
-            font-weight: 800;
-        }
-
-        /* ===== LIST ITEMS ===== */
-        .list-group {
-            list-style: none;
-            margin-bottom: 1rem;
-        }
-        .list-item {
-            background: linear-gradient(135deg, #fafbff, #f8faff);
-            border: 1px solid #eef2ff;
-            border-radius: 14px;
-            padding: 0.9rem 1rem;
-            margin-bottom: 0.7rem;
-            transition: all 0.2s;
-            position: relative;
-        }
-        .list-item:hover {
-            background: #f5f7ff;
-            border-color: #c7d2fe;
-        }
-        .list-item .title {
-            font-weight: 700;
-            color: #0f172a;
-            font-size: 0.95rem;
-            margin-bottom: 0.2rem;
-        }
-        .list-item .detail {
-            font-size: 0.85rem;
-            color: #475569;
-            margin-bottom: 0.15rem;
-        }
-        .list-item .detail i {
-            color: #7c3aed;
-            width: 14px;
-            margin-right: 6px;
-            font-size: 0.75rem;
-        }
-        .list-item .remove-btn {
-            display: inline-block;
-            background: #fee2e2;
-            color: #dc2626;
-            padding: 0.25rem 0.7rem;
-            border-radius: 20px;
-            font-size: 0.72rem;
-            font-weight: 600;
-            text-decoration: none;
-            margin-top: 0.5rem;
-            transition: all 0.2s;
-        }
-        .list-item .remove-btn:hover {
-            background: #fecaca;
-            color: #b91c1c;
-        }
-
-        /* ===== FORM ===== */
-        .form-title {
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: #0f172a;
-            margin: 1rem 0 0.75rem;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .form-title i {
-            color: #4f46e5;
-        }
-
-        .form-control, .form-select {
-            width: 100%;
-            background: #fafbff;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 0.65rem 1rem;
-            font-size: 0.9rem;
-            color: #1e293b;
-            font-weight: 500;
-            font-family: inherit;
-            transition: all 0.25s;
-            margin-bottom: 0.6rem;
-            outline: none;
-        }
-        .form-control:focus, .form-select:focus {
-            border-color: #4f46e5;
-            background: #fff;
-            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.08);
-        }
-        .form-control::placeholder {
-            color: #94a3b8;
-            font-weight: 400;
-        }
-
-        .btn-primary {
-            width: 100%;
-            background: linear-gradient(135deg, #4f46e5, #7c3aed);
-            color: #fff;
-            border: none;
-            border-radius: 12px;
-            padding: 0.75rem 1.2rem;
-            font-weight: 700;
-            font-size: 0.9rem;
-            cursor: pointer;
-            font-family: inherit;
-            transition: all 0.25s;
-            box-shadow: 0 4px 14px rgba(79, 70, 229, 0.25);
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 22px rgba(79, 70, 229, 0.35);
-        }
-        .btn-primary:active {
-            transform: scale(0.98);
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 1.5rem 1rem;
-            color: #94a3b8;
-            font-size: 0.9rem;
-        }
-        .empty-state i {
-            font-size: 2rem;
-            color: #cbd5e1;
-            display: block;
-            margin-bottom: 0.5rem;
-        }
-
-        .divider {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
-            margin: 1.2rem 0;
-        }
-
         /* ===== REFER & EARN BANNER ===== */
         .refer-banner {
             background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #db2777 100%);
@@ -272,9 +21,12 @@
             box-shadow: 0 12px 35px rgba(79, 70, 229, 0.3);
             position: relative;
             overflow: hidden;
-            margin-top: 1.5rem;
+            margin: 1.5rem auto;
+            max-width: 1100px;
             transition: transform 0.25s;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
+
         .refer-banner::before {
             content: '';
             position: absolute;
@@ -282,29 +34,36 @@
             right: -20%;
             width: 300px;
             height: 300px;
-            background: radial-gradient(circle, rgba(255,255,255,0.15), transparent 70%);
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.15), transparent 70%);
             border-radius: 50%;
         }
+
         .refer-banner:hover {
             transform: translateY(-3px);
         }
+
         .refer-banner .banner-content {
             position: relative;
             z-index: 1;
         }
+
         .refer-banner h4 {
             font-size: 1.2rem;
             font-weight: 800;
-            margin-bottom: 0.3rem;
+            margin: 0 0 0.3rem 0;
             display: flex;
             align-items: center;
             gap: 8px;
+            color: #fff;
         }
+
         .refer-banner p {
             font-size: 0.85rem;
             opacity: 0.9;
             margin: 0;
+            color: #fff;
         }
+
         .refer-banner .btn-banner {
             background: #fff;
             color: #4f46e5;
@@ -320,156 +79,35 @@
             transition: all 0.25s;
             position: relative;
             z-index: 1;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
+
         .refer-banner .btn-banner:hover {
             transform: translateX(4px);
-            box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+            color: #4f46e5;
         }
 
         @media (max-width: 576px) {
-            body { padding: 1rem 0.75rem; }
-            .page-header h1 { font-size: 1.5rem; }
-            .card-body { padding: 1.1rem; }
-            .card-header { padding: 0.9rem 1.1rem; }
             .refer-banner {
                 flex-direction: column;
                 text-align: center;
                 gap: 1rem;
                 padding: 1.25rem;
+                margin: 1rem auto;
+                border-radius: 16px;
             }
-            .refer-banner h4 { justify-content: center; }
+            .refer-banner h4 {
+                justify-content: center;
+                font-size: 1.05rem;
+            }
+            .refer-banner p {
+                font-size: 0.8rem;
+            }
         }
     </style>
 </head>
 <body>
-
-<div class="profile-wrapper">
-
-    <!-- PAGE HEADER -->
-    <div class="page-header">
-        <h1><i class="fas fa-user-circle"></i> My Profile</h1>
-        <p>Manage your account, bank accounts, and wallet addresses</p>
-    </div>
-
-    <!-- TOP GRID: User Info + Bank Accounts -->
-    <div class="grid">
-
-        <!-- USER INFO CARD -->
-        <div class="card">
-            <div class="card-header">
-                <div class="icon-box"><i class="fas fa-user"></i></div>
-                <h5>Account Details</h5>
-            </div>
-            <div class="card-body">
-                <div class="info-row">
-                    <span class="info-label">Full Name</span>
-                    <span class="info-value"><%= user.fullName %></span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Email</span>
-                    <span class="info-value"><%= user.email %></span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Phone</span>
-                    <span class="info-value"><%= user.phone %></span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Wallet Balance</span>
-                    <span class="info-value balance-value">₹<%= user.walletBalance ? user.walletBalance.toFixed(2) : '0.00' %></span>
-                </div>
-            </div>
-        </div>
-
-        <!-- BANK ACCOUNTS CARD -->
-        <div class="card">
-            <div class="card-header">
-                <div class="icon-box"><i class="fas fa-university"></i></div>
-                <h5>Bank Accounts</h5>
-            </div>
-            <div class="card-body">
-                <% if (user.bankAccounts && user.bankAccounts.length) { %>
-                    <ul class="list-group">
-                        <% user.bankAccounts.forEach(acc => { %>
-                            <li class="list-item">
-                                <div class="title"><%= acc.accountHolder %></div>
-                                <div class="detail"><i class="fas fa-building"></i> <%= acc.bankName %></div>
-                                <div class="detail"><i class="fas fa-hashtag"></i> <%= acc.accountNumber %></div>
-                                <div class="detail"><i class="fas fa-code-branch"></i> IFSC: <%= acc.ifscCode %></div>
-                                <a href="/profile/remove-bank/<%= acc._id %>" class="remove-btn" onclick="return confirm('Remove this account?')">
-                                    <i class="fas fa-trash-alt"></i> Remove
-                                </a>
-                            </li>
-                        <% }) %>
-                    </ul>
-                <% } else { %>
-                    <div class="empty-state">
-                        <i class="fas fa-inbox"></i>
-                        No bank accounts added yet
-                    </div>
-                <% } %>
-
-                <div class="divider"></div>
-
-                <div class="form-title"><i class="fas fa-plus-circle"></i> Add New Bank Account</div>
-                <form action="/profile/add-bank" method="POST">
-                    <input type="text" class="form-control" name="accountHolder" placeholder="Account Holder Name" required>
-                    <input type="text" class="form-control" name="bankName" placeholder="Bank Name" required>
-                    <input type="text" class="form-control" name="accountNumber" placeholder="Account Number" required>
-                    <input type="text" class="form-control" name="ifscCode" placeholder="IFSC Code" required>
-                    <button type="submit" class="btn-primary"><i class="fas fa-save me-1"></i> Add Bank Account</button>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- WALLET ADDRESSES CARD (Full Width) -->
-    <div class="card">
-        <div class="card-header">
-            <div class="icon-box"><i class="fas fa-wallet"></i></div>
-            <h5>Wallet Addresses (USDT)</h5>
-        </div>
-        <div class="card-body">
-            <% if (user.walletAddresses && user.walletAddresses.length) { %>
-                <ul class="list-group">
-                    <% user.walletAddresses.forEach(w => { %>
-                        <li class="list-item">
-                            <div class="title">
-                                <i class="fas fa-coins me-1" style="color:#f59e0b;"></i>
-                                <%= w.network %> <%= w.label ? '('+w.label+')' : '' %>
-                            </div>
-                            <div class="detail" style="word-break:break-all;">
-                                <i class="fas fa-hashtag"></i> <%= w.address %>
-                            </div>
-                            <a href="/profile/remove-wallet/<%= w._id %>" class="remove-btn" onclick="return confirm('Remove this wallet?')">
-                                <i class="fas fa-trash-alt"></i> Remove
-                            </a>
-                        </li>
-                    <% }) %>
-                </ul>
-            <% } else { %>
-                <div class="empty-state">
-                    <i class="fas fa-inbox"></i>
-                    No wallet addresses added yet
-                </div>
-            <% } %>
-
-            <div class="divider"></div>
-
-            <div class="form-title"><i class="fas fa-plus-circle"></i> Add New Wallet Address</div>
-            <form action="/profile/add-wallet" method="POST">
-                <select class="form-select" name="network" required>
-                    <option value="">Select Network</option>
-                    <option value="TRC20">TRC20 (USDT)</option>
-                    <option value="ERC20">ERC20 (USDT)</option>
-                    <option value="BEP20">BEP20 (USDT)</option>
-                </select>
-                <input type="text" class="form-control" name="address" placeholder="Wallet Address" required>
-                <input type="text" class="form-control" name="label" placeholder="Label (optional, e.g., Binance)">
-                <button type="submit" class="btn-primary"><i class="fas fa-save me-1"></i> Add Wallet Address</button>
-            </form>
-        </div>
-    </div>
 
     <!-- REFER & EARN BANNER -->
     <div class="refer-banner">
@@ -481,8 +119,6 @@
             View <i class="fas fa-arrow-right"></i>
         </a>
     </div>
-
-</div>
 
 </body>
 </html>
