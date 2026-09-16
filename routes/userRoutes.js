@@ -4,7 +4,6 @@ const { ensureAuthenticated } = require('../middleware/auth');
 const { upload } = require('../middleware/upload');
 const User = require('../models/User');
 
-// Import controllers (only once)
 const dashboardController = require('../controllers/dashboardController');
 const depositController = require('../controllers/depositController');
 const withdrawController = require('../controllers/withdrawController');
@@ -19,6 +18,19 @@ router.get('/transactions', ensureAuthenticated, dashboardController.getTransact
 // My Investments
 router.get('/my-investments', ensureAuthenticated, dashboardController.getMyInvestments);
 
+// ✅ Refer & Earn
+router.get('/refer-earn', ensureAuthenticated, async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id)
+      .populate('referrals', 'fullName email createdAt');
+    res.render('user/refer-earn', { title: 'Refer & Earn', user });
+  } catch (err) {
+    console.error(err);
+    req.flash('error_msg', 'Error loading page');
+    res.redirect('/dashboard');
+  }
+});
+
 // Deposit
 router.get('/deposit', ensureAuthenticated, depositController.getDeposit);
 router.post('/deposit', ensureAuthenticated, depositController.postDeposit);
@@ -27,7 +39,7 @@ router.post('/deposit', ensureAuthenticated, depositController.postDeposit);
 router.get('/withdraw', ensureAuthenticated, withdrawController.getWithdraw);
 router.post('/withdraw', ensureAuthenticated, withdrawController.postWithdraw);
 
-// ✅ Profile (with referral details populated)
+// Profile
 router.get('/profile', ensureAuthenticated, async (req, res) => {
   try {
     const user = await User.findById(req.user._id)
@@ -39,12 +51,8 @@ router.get('/profile', ensureAuthenticated, async (req, res) => {
     res.redirect('/dashboard');
   }
 });
-
-// Bank Accounts
 router.post('/profile/add-bank', ensureAuthenticated, withdrawController.addBankAccount);
 router.get('/profile/remove-bank/:accountId', ensureAuthenticated, withdrawController.removeBankAccount);
-
-// Wallet Addresses
 router.post('/profile/add-wallet', ensureAuthenticated, withdrawController.addWalletAddress);
 router.get('/profile/remove-wallet/:addressId', ensureAuthenticated, withdrawController.removeWalletAddress);
 
