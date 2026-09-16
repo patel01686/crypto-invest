@@ -28,6 +28,8 @@ exports.postLogin = (req, res, next) => {
   })(req, res, next);
 };
 
+
+
 // GET Register
 exports.getRegister = (req, res) => {
   res.render('auth/register', {
@@ -35,13 +37,14 @@ exports.getRegister = (req, res) => {
     errors: [],
     fullName: '',
     email: '',
-    phone: ''
+    phone: '',
+    referralCode: req.query.ref || ''
   });
 };
 
 // POST Register
 exports.postRegister = async (req, res) => {
-  const { fullName, email, phone, password, password2 } = req.body;
+  const { fullName, email, phone, password, password2, referralCode } = req.body;
   let errors = [];
 
   if (!fullName || !email || !phone || !password || !password2) {
@@ -55,27 +58,89 @@ exports.postRegister = async (req, res) => {
   }
 
   if (errors.length > 0) {
-    return res.render('auth/register', { errors, title: 'Register', fullName, email, phone });
+    return res.render('auth/register', { errors, title: 'Register', fullName, email, phone, referralCode });
   }
 
   try {
     const existingUser = await User.findOne({ $or: [{ email }, { phone }] });
     if (existingUser) {
       errors.push({ msg: 'Email or Phone already registered' });
-      return res.render('auth/register', { errors, title: 'Register', fullName, email, phone });
+      return res.render('auth/register', { errors, title: 'Register', fullName, email, phone, referralCode });
     }
 
+    // Generate unique referral code
+    const generateCode = () => {
+      const prefix = fullName.substring(0, 3).toUpperCase().replace(/[^A-Z]/g, '');
+      const random = Math.random().toString(36).substring(2, 8).toUpperCase();
+      return (prefix || 'USR') + random;
+    };
+
+    let newReferralCode;
+    let exists = true;
+    while (exists) {
+      newReferralCode = generateCode();
+      exists = await User.findOne({ referralCode: newReferralCode });
+    }
+
+    // Check referrer
+    let referrer = null;
+    if (referralCode && referralCode.trim()) {
+      referrer = await User.findOne({ referralCode: referralCode.trim().toUpperCase() });
+    }
+
+    // ✅ NEW USER gets ₹300 signup bonus
     const newUser = new User({
       fullName,
       email,
       phone,
       password,
-      role: 'user'
+      role: 'user',
+      referralCode: newReferralCode,
+      referredBy: referrer ? referrer._id : null,
+      referrals: [],
+      walletBalance: 300  // ✅ ₹300 SIGNUP BONUS
     });
 
     await newUser.save();
-    req.flash('success_msg', 'Registration successful. Please login.');
-    res.redirect('/');
+
+    // ✅ REFERRER gets ₹500 bonus
+    if (referrer) {
+      referrer.referrals.push(newUser._id);
+      referrer.walletBalance += 500;  // ✅ ₹500 REFERRAL BONUS
+      await referrer.save();
+
+      // Transaction record for referrer
+      const Transaction = require('../models/Transaction');
+      await Transaction.create({
+        user: referrer._id,
+        type: 'return',
+        amount: 500,
+        status: 'completed',
+        metadata: { note: `Referral bonus – ${newUser.fullName} joined` }
+      });
+
+      // Transaction record for new user
+      await Transaction.create({
+        user: newUser._id,
+        type: 'return',
+        amount: 300,
+        status: 'completed',
+        metadata: { note: 'Signup bonus' }
+      });
+    } else {
+      // Agar koi referral nahi, sirf signup bonus ka transaction
+      const Transaction = require('../models/Transaction');
+      await Transaction.create({
+        user: newUser._id,
+        type: 'return',
+        amount: 300,
+        status: 'completed',
+        metadata: { note: 'Signup bonus' }
+      });
+    }
+
+    req.flash('success_msg', 'Registration successful! ₹300 bonus credited. Please login.');
+    res.redirect('/login');
   } catch (err) {
     console.error(err);
     req.flash('error_msg', 'Something went wrong');

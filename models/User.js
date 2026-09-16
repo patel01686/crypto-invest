@@ -28,6 +28,13 @@ const UserSchema = new mongoose.Schema({
   walletBalance: { type: Number, default: 0 },
   bankAccounts: [BankAccountSchema],
   walletAddresses: [WalletAddressSchema],
+
+   // ✅ YAHAN PASTE KARO
+  referralCode: { type: String, unique: true, sparse: true },
+  referredBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  referrals: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  // 
+  
   isActive: { type: Boolean, default: true },
   createdAt: { type: Date, default: Date.now },
 });
