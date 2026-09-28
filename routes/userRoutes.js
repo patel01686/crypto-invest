@@ -18,11 +18,29 @@ router.get('/transactions', ensureAuthenticated, dashboardController.getTransact
 // My Investments
 router.get('/my-investments', ensureAuthenticated, dashboardController.getMyInvestments);
 
-// ✅ Refer & Earn
+// ✅ Refer & Earn (auto-generate code if missing)
 router.get('/refer-earn', ensureAuthenticated, async (req, res) => {
   try {
-    const user = await User.findById(req.user._id)
+    let user = await User.findById(req.user._id)
       .populate('referrals', 'fullName email createdAt');
+
+    if (!user.referralCode) {
+      const generateCode = () => {
+        const prefix = user.fullName.substring(0, 3).toUpperCase().replace(/[^A-Z]/g, '');
+        const random = Math.random().toString(36).substring(2, 8).toUpperCase();
+        return (prefix || 'USR') + random;
+      };
+
+      let newCode;
+      let exists = true;
+      while (exists) {
+        newCode = generateCode();
+        exists = await User.findOne({ referralCode: newCode });
+      }
+      user.referralCode = newCode;
+      await user.save();
+    }
+
     res.render('user/refer-earn', { title: 'Refer & Earn', user });
   } catch (err) {
     console.error(err);
@@ -39,11 +57,29 @@ router.post('/deposit', ensureAuthenticated, depositController.postDeposit);
 router.get('/withdraw', ensureAuthenticated, withdrawController.getWithdraw);
 router.post('/withdraw', ensureAuthenticated, withdrawController.postWithdraw);
 
-// Profile
 router.get('/profile', ensureAuthenticated, async (req, res) => {
   try {
-    const user = await User.findById(req.user._id)
+    let user = await User.findById(req.user._id)
       .populate('referrals', 'fullName email createdAt');
+
+    // ✅ Auto-generate agar missing hai
+    if (!user.referralCode) {
+      const generateCode = () => {
+        const prefix = user.fullName.substring(0, 3).toUpperCase().replace(/[^A-Z]/g, '');
+        const random = Math.random().toString(36).substring(2, 8).toUpperCase();
+        return (prefix || 'USR') + random;
+      };
+
+      let newCode;
+      let exists = true;
+      while (exists) {
+        newCode = generateCode();
+        exists = await User.findOne({ referralCode: newCode });
+      }
+      user.referralCode = newCode;
+      await user.save();
+    }
+
     res.render('user/profile', { title: 'Profile', user });
   } catch (err) {
     console.error(err);
